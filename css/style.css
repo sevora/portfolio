@@ -1,0 +1,105 @@
+html, body {
+    max-width: 100%;
+    height: 100vh;
+
+    margin: 0;
+    overflow-x: hidden;
+
+    font-family: "Roboto Mono";
+    background-color: #171717;
+    scroll-behavior: smooth;
+}
+
+a, a:visited {
+    color: #DA0037;
+}
+
+.content {
+    color: #EDEDED;
+    text-align: left;
+    padding: 10px 15px;
+    z-index: 2;
+}
+
+div + div {
+    padding-top: 15px;
+}
+
+.middle-content > * {
+    margin-bottom: 15px;
+}
+
+.hero, .middle-content {
+    width: 100%;
+    padding: 0;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    
+    text-align: left;
+}
+
+.hero {
+    height: 100%;
+}
+
+.gradient-circle {
+    display: inline-block;
+    border-radius: 50%;
+    padding: 3px;
+    background-color: white;
+    background: linear-gradient(to bottom right, #b827fc 20%, #2c90fc 25%, #b8fd33 50%, #fec837 75%, #fd1892 100%);
+    animation: animatedgradient 10s ease alternate infinite;
+    background-size: 250% 250%;
+}
+
+.profile-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url("../images/profile.jpg");
+    border-radius:50%;
+}
+
+.hero .content {
+    color: #EDEDED;
+}
+
+.heading {
+    font-size: 48px;
+}
+
+.subtitle {
+    color: #DA0037;
+    padding-bottom: 15px;
+}
+
+.middle-content .content {
+    width: 70%;
+}
+
+#particles {
+    width: 100%;
+    height: 100%;
+    opacity: 0.4;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+@font-face {
+    font-family: "Roboto Mono";
+    src: url(RobotoMono.ttf);
+}
+
+@keyframes animatedgradient {
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
+}
