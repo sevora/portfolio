@@ -1,3 +1,5 @@
+import MoveCharacter from "./MoveCharacter";
+
 /**
  * This class is used to generate multiple moving characters from a single
  * element and be able to control them from a single instance.
@@ -139,3 +141,5 @@ class MoveGenerator {
 
     }
 }
+
+export default MoveGenerator;

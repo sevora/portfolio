@@ -111,3 +111,5 @@ class MoveCharacter {
         this.setPosition(x, y);
     }
 }
+
+export default MoveCharacter;

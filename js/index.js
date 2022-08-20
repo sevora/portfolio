@@ -1,3 +1,5 @@
+import MoveGenerator from "./MoveGenerator";
+
 // load the particles JS
 particlesJS.load('particles', 'assets/particlesjs-config.json');
 
@@ -71,10 +73,9 @@ function updateGeneratorsOnView() {
 }
 
 // wait for the whole window to load
-// window.addEventListener('load', () => main());
-
-// wait for the whole window to load
 document.addEventListener("DOMContentLoaded", function(event){
     document.body.style.opacity = '1.0';
     setTimeout(function() { main(); }, 100);
 });
+
+document.body.style.opacity = "0.0";
