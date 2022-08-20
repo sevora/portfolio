@@ -17,7 +17,7 @@ function main() {
     document.body.addEventListener('scroll', function() { updateGeneratorsOnView(); });
 
     // start the animation after a few milliseconds
-    setTimeout(function() { updateGeneratorsOnView(); }, 1000);
+    setTimeout(function() { updateGeneratorsOnView(); }, 1500);
 }
 
 /**
@@ -71,4 +71,10 @@ function updateGeneratorsOnView() {
 }
 
 // wait for the whole window to load
-window.addEventListener('load', () => main());
+// window.addEventListener('load', () => main());
+
+// wait for the whole window to load
+document.addEventListener("DOMContentLoaded", function(event){
+    document.body.style.opacity = '1.0';
+    setTimeout(function() { main(); }, 100);
+});
