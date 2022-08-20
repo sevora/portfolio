@@ -70,4 +70,5 @@ function updateGeneratorsOnView() {
     if (queue.length > 0 && runUpdate) queue[0].updateUntilDone(queueCallback);
 }
 
-main();
+// wait for the whole window to load
+window.addEventListener('load', () => main());
