@@ -75,7 +75,9 @@ function updateGeneratorsOnView() {
 // wait for the whole window to load
 window.onload = function() { 
     // reload to fix weird getClientBoundingRect
-    sessionStorage.setItem('reload', '1');
-    if ( !sessionStorage.getItem('reload') ) window.location.reload(); 
+    if ( !sessionStorage.getItem('reload') ) { 
+        sessionStorage.setItem('reload', '1');
+        window.location.reload(); 
+    }
     main(); 
 }
