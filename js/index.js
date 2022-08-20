@@ -73,9 +73,9 @@ function updateGeneratorsOnView() {
 }
 
 // wait for the whole window to load
-document.addEventListener("DOMContentLoaded", function(event){
-    document.body.style.opacity = '1.0';
-    setTimeout(function() { main(); }, 100);
-});
-
-document.body.style.opacity = "0.0";
+window.onload = function() { 
+    // reload to fix weird getClientBoundingRect
+    sessionStorage.setItem('reload', '1');
+    if ( !sessionStorage.getItem('reload') ) window.location.reload(); 
+    main(); 
+}
