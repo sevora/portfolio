@@ -97,7 +97,7 @@ div + div {
 
 @font-face {
     font-family: "Roboto Mono";
-    src: url(RobotoMono.ttf);
+    src: url(fonts/RobotoMono.ttf);
 }
 
 @keyframes animatedgradient {

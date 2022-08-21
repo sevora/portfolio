@@ -4,7 +4,7 @@ module.exports = {
     mode: "production",
     entry: "./js/index.js",
     output: {
-        path: path.resolve(__dirname, "assets/"),
+        path: path.resolve(__dirname, "assets/bundle/"),
         filename: "index.min.js"
     },
     module: {
