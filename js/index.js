@@ -24,7 +24,7 @@ function main() {
 
 /**
  * determines whether given element is in viewport
- * @param {*} element DOM element
+ * @param {HTMLElement} element DOM element
  * @returns boolean
  */
 function isElementInViewport(element) {
@@ -40,7 +40,7 @@ function isElementInViewport(element) {
 
 /**
  * this is specifically used as a callback for the queue
- * @param {*} generator a MoveGenerator instance
+ * @param {MoveGenerator} generator a MoveGenerator instance
  * @returns null
  */
 function queueCallback(generator) {

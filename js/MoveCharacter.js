@@ -8,9 +8,9 @@ class MoveCharacter {
      * this returns a value between start and end according to weight,
      * 0.0 means return value is equal to start, 1.0 means return value is equal to end,
      * anything else is in between.
-     * @param {*} start A number
-     * @param {*} end A number
-     * @param {*} weight A float ranging from 0.0 to 1.0
+     * @param {number} start A number
+     * @param {number} end A number
+     * @param {number} weight A float ranging from 0.0 to 1.0
      * @returns a floating point value
      */
     static lerp(start, end, weight) {
@@ -19,17 +19,17 @@ class MoveCharacter {
 
     /**
      * compares whether two numbers are similar
-     * @param {*} x1 a number
-     * @param {*} x2 a number
+     * @param {number} x1 a number
+     * @param {number} x2 a number
      * @returns boolean
      */
     static compare(x1, x2) {
-        return x1 == x2;
+        return Math.abs(x1 - x2) <= 1.0;
     }
 
     /**
      * this is used to construct the moving character
-     * @param {*} element DOM element containing a single text character (usually span element)
+     * @param {HTMLElement} element DOM element containing a single text character (usually span element)
      */
     constructor(element) {
         let { top, left } = element.getBoundingClientRect();
@@ -43,8 +43,8 @@ class MoveCharacter {
     /**
      * sets the moving character's goal, when update is called it will move
      * towards this goal
-     * @param {*} x a number representing position on x-axis from left
-     * @param {*} y a number representing position on y-axis from top
+     * @param {number} x a number representing position on x-axis from left
+     * @param {number} y a number representing position on y-axis from top
      */
     setGoal(x, y) {
         this.goalY = y;
@@ -54,8 +54,8 @@ class MoveCharacter {
 
     /**
      * sets the character's current position
-     * @param {*} x a number representing position on x-axis from left
-     * @param {*} y a number representing position on y-axis from top
+     * @param {number} x a number representing position on x-axis from left
+     * @param {number} y a number representing position on y-axis from top
      */
     setPosition(x, y) {
         this.element.style.top = y + "px";
@@ -72,7 +72,7 @@ class MoveCharacter {
     
     /**
      * computes the difference in position between this and another moving character
-     * @param {*} moveCharacter another instance of the moving character
+     * @param {MoveCharacter} moveCharacter another instance of the moving character
      * @returns an object { x, y } similar case with setGoal and setPosition params
      */
     getDifferenceInPosition(moveCharacter) {

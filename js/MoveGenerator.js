@@ -7,7 +7,7 @@ import MoveCharacter from "./MoveCharacter";
 class MoveGenerator {
     /**
      * accepts an array and returns a shuffled version of it, does not shuffle multidimensionally
-     * @param {*} array 
+     * @param {[]} array 
      * @returns array
      */
     static shuffle(array) {
@@ -25,7 +25,7 @@ class MoveGenerator {
 
     /**
      * accepts a text character and returns a span DOM element version of it.
-     * @param {*} character 
+     * @param {string} character 
      * @returns 
      */
     static createSpanElement(character) {
@@ -38,7 +38,7 @@ class MoveGenerator {
     /**
      * used to construct a moving character object from a single parent,
      * this could be used for example on paragraph elements.
-     * @param {*} rootElement a DOM element
+     * @param {HTMLElement} rootElement a DOM element
      */
     constructor(rootElement) {
         this.element = rootElement;
