@@ -139,7 +139,7 @@ class MoveGenerator {
                 
                 callback(this);
             }
-        }, 1000 / 55);
+        }, 20);
 
     }
 }

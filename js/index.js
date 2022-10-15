@@ -20,10 +20,14 @@ function main() {
     }
 
     // add an event listener for the scrolling
-    document.body.addEventListener('scroll', function() { updateGeneratorsOnView(); });
+    document.body.addEventListener('scroll', function() { 
+      updateGeneratorsOnView(); 
+    });
 
     // start the animation after a few milliseconds
-    setTimeout(function() { updateGeneratorsOnView(); }, 1500);
+    setTimeout(function() { 
+      updateGeneratorsOnView(); 
+    }, 1500);
 }
 
 /**
