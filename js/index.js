@@ -1,14 +1,18 @@
 import MoveGenerator from "./MoveGenerator";
 
-// load the particles JS
-particlesJS.load('particles', 'assets/particlesjs-config.json');
-
 // elements refer to the elements that should be scattered
 let elements = document.querySelectorAll(".scatter-parent");
 let generators = []; // has all the generators
 let queue = [];      // has the generators in queue for queueing the updates
 
 function main() {
+    // load the particles JS
+    if (window.innerWidth > 600 ) {
+        particlesJS.load('particles', 'assets/particlesjs-config.json');
+    } else {
+        particlesJS.load('particles', 'assets/particlesjs-config-mobile.json');
+    }
+
     // first we generate and scatter all the moving text
     for (let index = 0; index < elements.length; ++index) {
         generators.push( new MoveGenerator(elements[index]) );
@@ -45,7 +49,9 @@ function isElementInViewport(element) {
  */
 function queueCallback(generator) {
     queue.splice(0, 1);
-    if (queue.length > 0) queue[0].updateUntilDone(queueCallback);
+    if (queue.length > 0) {
+      queue[0].updateUntilDone(queueCallback);
+    }
     return null;
 }
 
@@ -67,9 +73,11 @@ function updateGeneratorsOnView() {
             queue.push(generator);
         }
     }
-
+  
     // this one only runs the queue code if necessary
-    if (queue.length > 0 && runUpdate) queue[0].updateUntilDone(queueCallback);
+    if (queue.length > 0 && runUpdate) {
+        queue[0].updateUntilDone(queueCallback);
+    }
 }
 
 // wait for the whole window to load

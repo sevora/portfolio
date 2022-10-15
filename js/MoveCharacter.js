@@ -105,8 +105,8 @@ class MoveCharacter {
             this.done = true;
         }
 
-        y = MoveCharacter.lerp(y, this.goalY, 0.1);
-        x = MoveCharacter.lerp(x, this.goalX, 0.1);
+        y = MoveCharacter.lerp(y, this.goalY, 0.2);
+        x = MoveCharacter.lerp(x, this.goalX, 0.2);
 
         this.setPosition(x, y);
     }

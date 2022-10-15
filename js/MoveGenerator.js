@@ -115,7 +115,9 @@ class MoveGenerator {
         for (let index = 0; index < this.characters.length; ++index) {
             let character = this.characters[index];
             character.update();
-            if (!character.done) done = false;
+            if (!character.done) {
+              done = false;
+            }
         }
 
         this.done = done;
@@ -137,7 +139,7 @@ class MoveGenerator {
                 
                 callback(this);
             }
-        }, 10);
+        }, 1000 / 55);
 
     }
 }
