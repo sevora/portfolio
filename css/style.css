@@ -20,8 +20,6 @@ a, a:visited {
     padding: 10px 15px;
     z-index: 2;
     overflow: hidden;
-
-    content-visibility: auto;
 }
 
 div + div {
