@@ -73,7 +73,7 @@ div + div {
 }
 
 .heading {
-    font-size: 48px;
+    font-size: 36px;
 }
 
 .subtitle {
@@ -85,11 +85,11 @@ div + div {
     width: 70%;
 }
 
-.scatter-parent, .scatter-parent span {
+/*.scatter-parent, .scatter-parent span {
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
-}
+}*/
 
 #particles {
     width: 100%;
@@ -111,4 +111,10 @@ div + div {
 	0% { background-position: 0% 50%; }
 	50% { background-position: 100% 50%; }
 	100% { background-position: 0% 50%; }
+}
+
+@media(min-width: 600px) {
+    .heading {
+        font-size: 48px;
+    }
 }
