@@ -26,7 +26,7 @@ class MoveGenerator {
     /**
      * accepts a text character and returns a span DOM element version of it.
      * @param {string} character 
-     * @returns 
+     * @returns {HTMLElement} the span element 
      */
     static createSpanElement(character) {
         let span = document.createElement('span');
@@ -43,8 +43,13 @@ class MoveGenerator {
     constructor(rootElement) {
         this.element = rootElement;
         this.characters = [];
-        this.timerID = null;
         this.done = true;
+
+        // variables necessary for FPS throttling of window.requestAnimationFrame
+        this.frameInterval = 1000 / 60; // milliseconds / frames
+        this.frameStartTime = null; // int
+        this.frameTimeNow = null;   // int 
+        this.frameThenTime = null;  // int
 
         let text = rootElement.innerText;
         rootElement.innerText = "";
@@ -56,23 +61,12 @@ class MoveGenerator {
         }
 
     }
-
-    /**
-     * randomly scatters the moving characters in the DOM
-     * all around the screen.
-     */
-    scatter() {
-        for (let index = 0; index < this.characters.length; ++index) {
-            this.characters[index].randomizePositionScreen();
-        }
-
-        this.done = false;
-    }
     
     /**
      * randomly scatters the moving characters in the DOM
      * along their parent and with accordance to the positions
      * of their siblings.
+     * @returns {void}
      */
     scatterOnParent() {
         let positions = [];
@@ -96,9 +90,7 @@ class MoveGenerator {
         for (let index = 0; index < this.characters.length; ++index) {
             let character = this.characters[index];
             let { x, y } = positions[index];
-
-            character.setPosition(x, y);
-            character.done = false;
+            character.setOrigin(x, y);
         }
 
         // set the state of this generator to not dne
@@ -108,6 +100,7 @@ class MoveGenerator {
     /**
      * call this to update the characters in the generator by a single frame.
      * remember all the characters eventually get back to their original position (0, 0).
+     * @returns {void}
      */
     update() {
         let done = true;
@@ -115,7 +108,7 @@ class MoveGenerator {
         for (let index = 0; index < this.characters.length; ++index) {
             let character = this.characters[index];
             character.update();
-            if (!character.done) {
+            if ( !character.isDone() ) {
               done = false;
             }
         }
@@ -127,20 +120,40 @@ class MoveGenerator {
      * use this to call the update method until the generator
      * is done (a.k.a. all the characters are back in place)
      * @param {*} callback a function to call when the generator is done
+     * @returns {void}
      */
     updateUntilDone(callback) {
-        // used an arrow function to preserve context
-        this.timerID = setInterval( () => {
-            this.update();
+        if (this.done) {
+          callback(this);
+          return;
+        }
 
-            if (this.done) {
-                clearInterval(this.timerID);
-                this.timerID = null;
-                
-                callback(this);
-            }
-        }, 20);
+        // for when this function is first called (manually)
+        if (this.frameThenTime == null) {
+          this.frameThenTime = Date.now();
+          this.frameStartTime = this.frameThenTime;
+        }
 
+        // logic here follows a method for the frame throttling for window.requestAnimationFrame
+        requestAnimationFrame( () => this.updateUntilDone(callback) );
+
+        this.frameNowTime = Date.now();
+        let elapsedTime = this.frameNowTime - this.frameThenTime;
+        
+        if (elapsedTime >= this.frameInterval) {
+          this.frameThenTime = this.frameNowTime - (elapsedTime % this.frameInterval);
+          this.update();
+        }
+        
+    }
+
+    /**
+     * Determines if the generator has finished updating all moving
+     * characters a.k.a all characters have reached their goal from origin
+     * @returns {boolean}
+     */
+    isDone() {
+      return this.done;
     }
 }
 

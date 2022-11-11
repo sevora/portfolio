@@ -25,7 +25,7 @@ function main() {
     });
 
     // start the animation after a few milliseconds
-    setTimeout(function() { 
+    setTimeout(function() {
       updateGeneratorsOnView(); 
     }, 1500);
 }
@@ -70,10 +70,11 @@ function updateGeneratorsOnView() {
 
     for (let index = 0; index < generators.length; ++index) {
         let generator = generators[index];
+
         // optimization here with the order of conditions
         // checking if done is the fastest, checking if in queue prevents bloat in queue,
         // and finally checking if in viewport last
-        if (!generator.done && !queue.includes(generator) && isElementInViewport(generator.element)) {
+        if (!generator.isDone() && !queue.includes(generator) && isElementInViewport(generator.element)) {
             queue.push(generator);
         }
     }

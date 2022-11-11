@@ -18,56 +18,54 @@ class MoveCharacter {
     }
 
     /**
-     * compares whether two numbers are similar
-     * @param {number} x1 a number
-     * @param {number} x2 a number
-     * @returns boolean
-     */
-    static compare(x1, x2) {
-        return Math.abs(x1 - x2) <= 1.0;
-    }
-
-    /**
      * this is used to construct the moving character
      * @param {HTMLElement} element DOM element containing a single text character (usually span element)
      */
     constructor(element) {
-        let { top, left } = element.getBoundingClientRect();
-
         this.element = element;
-        this.goalY = top;
-        this.goalX = left;
-        this.done = true;
+        this.originY = 0;
+        this.originX = 0;
+        this.goalY = 0;
+        this.goalX = 0;
+        this.progress = 1.0;
+        this.progressInterval = 0.0;
+    }
+    
+    /**
+     * sets the moving character's origin position where the character should be from
+     * @param {number} x a number representing position on x-axis from left
+     * @param {number} y a number representing position on y-axis from top
+     * @returns {void}
+     */
+    setOrigin(x, y) {
+        this.originY = y;
+        this.originX = x;
+        this.progress = 0.0;
+        this.setPosition(x, y);
     }
 
     /**
-     * sets the moving character's goal, when update is called it will move
-     * towards this goal
+     * sets the moving character's goal position, when update is called
+     * it will gradually move towards this goal
      * @param {number} x a number representing position on x-axis from left
      * @param {number} y a number representing position on y-axis from top
+     * @returns {void}
      */
     setGoal(x, y) {
         this.goalY = y;
         this.goalX = x;
-        this.done = false;
+        this.progress = 0.0;
     }
 
     /**
      * sets the character's current position
      * @param {number} x a number representing position on x-axis from left
      * @param {number} y a number representing position on y-axis from top
+     * @returns {void}
      */
-    setPosition(x, y) {
+    setPosition(x, y) { 
         this.element.style.top = y + "px";
         this.element.style.left = x + "px";
-    }
-
-    /**
-     * returns the position of the moving character in DOM
-     * @returns an object { x, y } similar case with setGoal and setPosition params
-     */
-    getPosition() {
-        return { x: parseInt(this.element.style.left) || this.goalX, y: parseInt(this.element.style.top) || this.goalY }
     }
     
     /**
@@ -83,32 +81,25 @@ class MoveCharacter {
     }
 
     /**
-     * randomizes the position of the 
-     * character limited to the screen width and height
+     * updates the moving character's current position by a single frame according
+     * to the origin and goal position
+     * @returns {void}
      */
-    randomizePositionScreen() {
-        let y = Math.floor(Math.random() * window.innerHeight).toFixed(2);
-        let x = Math.floor(Math.random() * window.innerWidth).toFixed(2);
+    update() {
+        let weight = Math.min(this.progress + this.progressInterval, 1.0);
+        let y = MoveCharacter.lerp(this.originY, this.goalY, weight);
+        let x = MoveCharacter.lerp(this.originX, this.goalX, weight);
         this.setPosition(x, y);
-        this.done = false;
+        this.progress = weight;
+        this.progressInterval += 1.0/60;
     }
 
     /**
-     * updates the character's position by a single frame
+     * Determines if the moving character should be done moving.
+     * returns {boolean}
      */
-    update() {
-        let { y, x } = this.getPosition();
-
-        if (MoveCharacter.compare(y, this.goalY) && MoveCharacter.compare(x, this.goalX)) {
-            y = this.goalY;
-            x = this.goalX;
-            this.done = true;
-        }
-
-        y = MoveCharacter.lerp(y, this.goalY, 0.2);
-        x = MoveCharacter.lerp(x, this.goalX, 0.2);
-
-        this.setPosition(x, y);
+    isDone() {
+      return this.progress >= 1.0;
     }
 }
 
