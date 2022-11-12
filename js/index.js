@@ -6,12 +6,8 @@ let generators = []; // has all the generators
 let queue = [];      // has the generators in queue for queueing the updates
 
 function main() {
-    // load the particles JS
-    if (window.innerWidth > 600 ) {
-        particlesJS.load('particles', 'assets/particlesjs-config.json');
-    } else {
-        particlesJS.load('particles', 'assets/particlesjs-config-mobile.json');
-    }
+    let particlesConfigPath = `assets/particlesjs-config${ window.innerWidth > 600 ? '' : '-mobile'}.json`;
+    particlesJS.load('particles', particlesConfigPath);
 
     // first we generate and scatter all the moving text
     for (let index = 0; index < elements.length; ++index) {

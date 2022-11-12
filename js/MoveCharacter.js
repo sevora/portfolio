@@ -28,7 +28,7 @@ class MoveCharacter {
         this.goalY = 0;
         this.goalX = 0;
         this.progress = 1.0;
-        this.progressInterval = 0.0;
+        this.progressInterval = 0.2;
     }
     
     /**
@@ -91,7 +91,7 @@ class MoveCharacter {
         let x = MoveCharacter.lerp(this.originX, this.goalX, weight);
         this.setPosition(x, y);
         this.progress = weight;
-        this.progressInterval += 1.0/60;
+        this.progressInterval = Math.max(this.progressInterval * 0.8, 0.01);
     }
 
     /**
