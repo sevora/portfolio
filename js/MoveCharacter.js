@@ -23,7 +23,6 @@ class MoveCharacter {
      */
     constructor(element) {
         let { left, bottom } = element.getBoundingClientRect();
-        let styles = window.getComputedStyle(element, null);
 
         this.element = element;
         this.x = left;
@@ -35,10 +34,6 @@ class MoveCharacter {
         this.goalX = 0;
         this.progress = 1.0;
         this.progressInterval = 0.2;
-
-        this.fontSize = styles.fontSize;
-        this.fontFamily = styles.fontFamily;
-        this.color = styles.color;
     }
     
     /**
@@ -108,7 +103,6 @@ class MoveCharacter {
 
     render(context) {
       context.fillStyle = this.color;
-      context.font = `${this.fontSize} ${this.fontFamily}`;
       context.textBaseline = "bottom";
       context.fillText(this.element.innerHTML, this.x, this.y);
     }

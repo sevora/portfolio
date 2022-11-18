@@ -31,7 +31,6 @@ class MoveGenerator {
     static createSpanElement(character) {
         let span = document.createElement('span');
         span.innerText = character;
-        span.style.visibility = "hidden";
         return span;
     }
 
@@ -44,6 +43,10 @@ class MoveGenerator {
         this.element = rootElement;
         this.characters = [];
         this.done = true;
+
+        this.fontSize = null;
+        this.fontFamily = null;
+        this.color = null;
 
         // variables necessary for FPS throttling of window.requestAnimationFrame
         this.frameInterval = 1000 / 60; // milliseconds / frames
@@ -58,17 +61,25 @@ class MoveGenerator {
 
         for (let index = 0; index < text.length; ++index) {
             let span = MoveGenerator.createSpanElement(text[index]);
-            span.style.display = "hidden";
             rootElement.appendChild(span);
             spanElements.push(span);
         }
 
-        // only add to array after everything else has been added and calculated
-        // right
+
+        // only add to array after everything else has been added
+        // so that style calculations would be right
         for (let span of spanElements) {
             this.characters.push( new MoveCharacter(span) );
         }
 
+        if (spanElements.length > 0) {
+          let { fontSize, fontFamily, color } = window.getComputedStyle(spanElements[0], null);
+          this.fontSize = fontSize;
+          this.fontFamily = fontFamily;
+          this.color = color;
+        }
+
+        this.element.style.visibility = "hidden";
     }
     
     /**
@@ -125,7 +136,10 @@ class MoveGenerator {
     }
 
     render(context) {
-      for (let character of this.characters) {
+      context.fillStyle = this.color;
+      context.font = `${this.fontSize} ${this.fontFamily}`;
+
+      for (let character of this.characters) {  
         character.render(context);
       }
     }

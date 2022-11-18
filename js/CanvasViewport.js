@@ -3,10 +3,8 @@ class CanvasViewport {
     let rectangle = element.getBoundingClientRect();
 
     return (
-      rectangle.top >= 0 &&
-      rectangle.left >= 0 &&
-      rectangle.bottom <= (window.innerHeight || document.documentElement.clientHeight) && 
-      rectangle.right <= (window.innerWidth || document.documentElement.clientWidth)
+      rectangle.top >= -rectangle.height &&
+      rectangle.bottom <= window.innerHeight + rectangle.height
     );
   }
 
@@ -29,7 +27,7 @@ class CanvasViewport {
 
     // event listeners for the DOM-elements
     this.onResize();
-    window.addEventListener("resize", () => this.onResize() );
+    // window.addEventListener("resize", () => this.onResize() );
     this.root.addEventListener("scroll", () => this.onScroll() );
 
     // ran only once to support devices with different DPI
@@ -99,8 +97,9 @@ class CanvasViewport {
 
   render() {
     this.context.clearRect(0, 0, this.width, this.height);
-
+    
     for (let moveGenerator of this.moveGenerators) {
+      if ( !CanvasViewport.isElementInViewport(moveGenerator.element) ) continue;
       moveGenerator.render(this.context);
     }
   }
