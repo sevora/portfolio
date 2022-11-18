@@ -22,13 +22,23 @@ class MoveCharacter {
      * @param {HTMLElement} element DOM element containing a single text character (usually span element)
      */
     constructor(element) {
+        let { left, bottom } = element.getBoundingClientRect();
+        let styles = window.getComputedStyle(element, null);
+
         this.element = element;
+        this.x = left;
+        this.y = bottom;
+        
         this.originY = 0;
         this.originX = 0;
         this.goalY = 0;
         this.goalX = 0;
         this.progress = 1.0;
         this.progressInterval = 0.2;
+
+        this.fontSize = styles.fontSize;
+        this.fontFamily = styles.fontFamily;
+        this.color = styles.color;
     }
     
     /**
@@ -64,8 +74,10 @@ class MoveCharacter {
      * @returns {void}
      */
     setPosition(x, y) { 
-        this.element.style.top = y + "px";
-        this.element.style.left = x + "px";
+        // this.element.style.top = y + "px";
+        // this.element.style.left = x + "px";
+        this.x = x;
+        this.y = y;
     }
     
     /**
@@ -92,6 +104,13 @@ class MoveCharacter {
         this.setPosition(x, y);
         this.progress = weight;
         this.progressInterval = Math.max(this.progressInterval * 0.8, 0.01);
+    }
+
+    render(context) {
+      context.fillStyle = this.color;
+      context.font = `${this.fontSize} ${this.fontFamily}`;
+      context.textBaseline = "bottom";
+      context.fillText(this.element.innerHTML, this.x, this.y);
     }
 
     /**

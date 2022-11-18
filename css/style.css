@@ -1,24 +1,37 @@
 html, body {
+    width: 100vw;
     max-width: 100%;
     height: 100vh;
 
     margin: 0;
     overflow-x: hidden;
 
-    font-family: "Roboto Mono";
+    font-family: "RobotoMono";
     background-color: #171717;
     scroll-behavior: smooth;
+    
+    position: relative;
+    top: 0;
+    left: 0;
+    overscroll-behavior: none;
+    overscroll-behavior: contain;
 }
 
 a, a:visited {
     color: #DA0037;
 }
 
+footer {
+    width: 100%;
+    height: 10px;
+    margin: 10px;
+}
+
 .content {
     color: #EDEDED;
     text-align: left;
     padding: 10px 15px;
-    z-index: 2;
+    z-index: 3;
     overflow: hidden;
 }
 
@@ -85,6 +98,16 @@ div + div {
     width: 70%;
 }
 
+.canvas-viewport {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    overflow: hidden;
+    overscroll-behavior: none;
+    touch-action: none;
+}
+
 /*.scatter-parent, .scatter-parent span {
     -webkit-user-select: none;
     -ms-user-select: none;
@@ -103,7 +126,7 @@ div + div {
 }
 
 @font-face {
-    font-family: "Roboto Mono";
+    font-family: "RobotoMono";
     src: url(fonts/RobotoMono.ttf);
 }
 

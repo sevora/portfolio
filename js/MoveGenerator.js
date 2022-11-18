@@ -30,8 +30,8 @@ class MoveGenerator {
      */
     static createSpanElement(character) {
         let span = document.createElement('span');
-        span.style.position = "relative";
         span.innerText = character;
+        span.style.visibility = "hidden";
         return span;
     }
 
@@ -50,14 +50,23 @@ class MoveGenerator {
         this.frameStartTime = null; // int
         this.frameTimeNow = null;   // int 
         this.frameThenTime = null;  // int
-
+      
+        
         let text = rootElement.innerText;
         rootElement.innerText = "";
+        let spanElements = [];
 
         for (let index = 0; index < text.length; ++index) {
             let span = MoveGenerator.createSpanElement(text[index]);
-            this.characters.push( new MoveCharacter(span) );
+            span.style.display = "hidden";
             rootElement.appendChild(span);
+            spanElements.push(span);
+        }
+
+        // only add to array after everything else has been added and calculated
+        // right
+        for (let span of spanElements) {
+            this.characters.push( new MoveCharacter(span) );
         }
 
     }
@@ -105,8 +114,7 @@ class MoveGenerator {
     update() {
         let done = true;
         
-        for (let index = 0; index < this.characters.length; ++index) {
-            let character = this.characters[index];
+        for (let character of this.characters) {
             character.update();
             if ( !character.isDone() ) {
               done = false;
@@ -114,6 +122,12 @@ class MoveGenerator {
         }
 
         this.done = done;
+    }
+
+    render(context) {
+      for (let character of this.characters) {
+        character.render(context);
+      }
     }
 
     /**
@@ -155,6 +169,7 @@ class MoveGenerator {
     isDone() {
       return this.done;
     }
+
 }
 
 export default MoveGenerator;

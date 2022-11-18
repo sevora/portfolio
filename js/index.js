@@ -1,14 +1,23 @@
 import MoveGenerator from "./MoveGenerator";
+import CanvasViewport from "./CanvasViewport";
 
 // elements refer to the elements that should be scattered
-let elements = document.querySelectorAll(".scatter-parent");
-let generators = []; // has all the generators
-let queue = [];      // has the generators in queue for queueing the updates
+// let elements = document.querySelectorAll(".scatter-parent");
+// let viewport;
+// let generators = []; // has all the generators
+// let queue = [];      // has the generators in queue for queueing the updates
 
 function main() {
     let particlesConfigPath = `assets/particlesjs-config${ window.innerWidth > 600 ? '' : '-mobile'}.json`;
     particlesJS.load('particles', particlesConfigPath);
 
+    let elements = Array.from( document.querySelectorAll(".scatter-parent") );
+    let generators = elements.map(element => new MoveGenerator(element) );
+   
+    let canvasViewport = new CanvasViewport(generators);
+    canvasViewport.instantiateDOM();
+    canvasViewport.start();
+    /*
     // first we generate and scatter all the moving text
     for (let index = 0; index < elements.length; ++index) {
         generators.push( new MoveGenerator(elements[index]) );
@@ -24,6 +33,7 @@ function main() {
     setTimeout(function() {
       updateGeneratorsOnView(); 
     }, 1500);
+    */
 }
 
 /**
@@ -81,12 +91,14 @@ function updateGeneratorsOnView() {
     }
 }
 
+
 // wait for the whole window to load
 window.onload = function() { 
     // reload to fix weird getClientBoundingRect
-    if ( !sessionStorage.getItem('reload') ) { 
+    /*if ( !sessionStorage.getItem('reload') ) { 
         sessionStorage.setItem('reload', '1');
         window.location.reload(); 
-    }
+    }*/
     main(); 
 }
+
