@@ -97,10 +97,15 @@ class CanvasViewport {
 
   render() {
     this.context.clearRect(0, 0, this.width, this.height);
-    
+    let hasRenderedElement = false;
+
     for (let moveGenerator of this.moveGenerators) {
-      if ( !CanvasViewport.isElementInViewport(moveGenerator.element) ) continue;
+      if ( !CanvasViewport.isElementInViewport(moveGenerator.element) ) {
+        if (hasRenderedElement) break;
+        continue;
+      }
       moveGenerator.render(this.context);
+      hasRenderedElement = true;
     }
   }
 

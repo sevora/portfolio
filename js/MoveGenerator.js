@@ -31,6 +31,7 @@ class MoveGenerator {
     static createSpanElement(character) {
         let span = document.createElement('span');
         span.innerText = character;
+        span.style.visibility = "hidden";
         return span;
     }
 
@@ -79,7 +80,7 @@ class MoveGenerator {
           this.color = color;
         }
 
-        this.element.style.visibility = "hidden";
+        // this.element.style.visibility = "hidden";
     }
     
     /**
