@@ -1,16 +1,17 @@
 class MapEmitterRenderer {
   constructor(imagePath, backgroundColor, windowElement, canvasElement) {
     this.data = null;
+    this.targetData = null;
+
     this.path = imagePath;
     this.background = backgroundColor;
 
     this.window = windowElement;
     this.canvas = canvasElement;
-    
     this.context = canvasElement.getContext('2d');
   }
 
-  loadAndStart() {
+  load(onLoadCallback) {
     let image = new Image();
     image.crossOrigin = '*';
 
@@ -18,47 +19,35 @@ class MapEmitterRenderer {
       let canvas = document.createElement("canvas");
       let context = canvas.getContext("2d");
 
-      let { width, height } = image;
-      let { innerWidth, innerHeight } = this.window;
-      canvas.width = innerWidth;
-      canvas.height = innerHeight;
+      let { width : sourceWidth, height : sourceHeight } = image;
+      let { innerWidth : targetWidth, innerHeight : targetHeight } = this.window;
 
-      /* Fit to screen
-      let isLandscape = innerWidth > innerHeight;
-      let aspectRatio = isLandscape ? innerHeight/innerWidth : innerWidth/innerHeight;
+      canvas.width = sourceWidth;
+      canvas.height = sourceHeight; 
 
-      width = isLandscape ? innerWidth : height * aspectRatio;
-      height = isLandscape ? width * aspectRatio : innerHeight;
-      */
-
-      context.drawImage(image, 0, 0, width, height);
-      this.data = context.getImageData(0, 0, width, height);
-      context.clearRect(0, 0, width, height); // could be commented, depends on performance
-
-      this._setup();
-      this._loop();
+      context.drawImage(image, 0, 0, sourceWidth, sourceHeight);
+      this.data = context.getImageData(0, 0, sourceWidth, sourceHeight);
+      this.targetData = new ImageData(targetWidth, targetHeight, { colorSpace: "srgb" });
+      context.clearRect(0, 0, sourceWidth, sourceHeight); // could be commented, maybe no performance gain here
+      
+      if (onLoadCallback) onLoadCallback();
     }
 
     image.src = this.path;
   }
 
-  _setup() {
-    console.log(this.data);
-    this.context.putImageData(this.data, 0, 0);
-  }
-
-  _loop() {
-    this.window.requestAnimationFrame( this._loop.bind(this) );
-    this._update();
-    this._render();
-  }
-
-  _update() {
+  setup() {
 
   }
 
-  _render() {
+  update() {
 
+  }
+
+  render() {
+    let originX = this.data.width / 2 - this.canvas.width / 2;
+    let originY = this.data.height / 2 - this.canvas.height / 2;
+    this.context.putImageData(this.data, -originX, -originY);
   }
 
 }
