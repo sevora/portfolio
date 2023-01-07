@@ -27,7 +27,7 @@ class MapEmitterRenderer {
 
       context.drawImage(image, 0, 0, sourceWidth, sourceHeight);
       this.data = context.getImageData(0, 0, sourceWidth, sourceHeight);
-      this.targetData = new ImageData(targetWidth, targetHeight, { colorSpace: "srgb" });
+      this.targetData = new ImageData(targetWidth, targetHeight);
       context.clearRect(0, 0, sourceWidth, sourceHeight); // could be commented, maybe no performance gain here
       
       if (onLoadCallback) onLoadCallback();
