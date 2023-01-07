@@ -1,9 +1,8 @@
-import MapWalkerRenderer from "./MapWalkerRenderer.js";
+import MapEmitterRenderer from "./MapEmitterRenderer.js";
 
 const canvas = document.querySelector("canvas");
-let x = new MapWalkerRenderer("../images/background/pattern-original-large.png", canvas, {
-  walkerSize: 100,
-  walkerSpeed: 30
-});
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+let x = new MapEmitterRenderer("../images/background/pattern-original-large.png", [23, 23, 23], window, canvas);
 
 x.loadAndStart();

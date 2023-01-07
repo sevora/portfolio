@@ -10,22 +10,10 @@ html, body {
     scroll-behavior: smooth;
 }
 
-.pattern-layer, .cover-layer, .gradient-layer {
+.cover-layer, .gradient-layer {
     position: absolute;
     top: 0;
     left: 0;
-
-    width: 100%;
-    height: 100%;
-}
-
-.pattern-layer {
-    z-index: 3;
-
-    background-image: url(../images/background/pattern-transparent-large.png);
-    background-size: cover;                     
-    /*background-repeat:   no-repeat;*/
-    background-position: center center;
 }
 
 .cover-layer {
@@ -33,6 +21,8 @@ html, body {
 }
 
 .gradient-layer {
+    width: 100%;
+    height: 100%;
     z-index: 1;
 
     background: linear-gradient(-90deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
