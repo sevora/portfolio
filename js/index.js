@@ -7,11 +7,13 @@ let now = Date.now();
 let then = now;
 let fps = 60;
 
-function main() {
-  onResize();
-  window.addEventListener("resize", onResize);
-  mapEmitter.load(loop);
-}
+canvas.width = window.document.body.clientWidth;
+canvas.height = window.document.body.clientHeight;
+
+mapEmitter.load(() => {
+    setup();
+    loop();
+});
 
 function loop() {
     window.requestAnimationFrame(loop);
@@ -27,6 +29,10 @@ function loop() {
     }
 }
 
+function setup() {
+  mapEmitter.setup();
+}
+
 function update() {
 
 }
@@ -35,12 +41,3 @@ function render() {
   mapEmitter.render();
 }
 
-//
-function onResize() {
-  let { innerWidth, innerHeight } = window;
-  canvas.width = innerWidth;
-  canvas.height = innerHeight;
-}
-
-//
-main();

@@ -20,15 +20,18 @@ class MapEmitterRenderer {
       let context = canvas.getContext("2d");
 
       let { width : sourceWidth, height : sourceHeight } = image;
-      let { innerWidth : targetWidth, innerHeight : targetHeight } = this.window;
+      let { width : targetWidth, height : targetHeight } = this.canvas;
 
-      canvas.width = sourceWidth;
-      canvas.height = sourceHeight; 
+      canvas.width = targetWidth;
+      canvas.height = targetHeight; 
 
-      context.drawImage(image, 0, 0, sourceWidth, sourceHeight);
-      this.data = context.getImageData(0, 0, sourceWidth, sourceHeight);
+      let originX = sourceWidth / 2 - targetWidth / 2;
+      let originY = sourceHeight / 2 - targetHeight / 2;
+
+      context.drawImage(image, -originX, -originY);
+      this.data = context.getImageData(0, 0, targetWidth, targetHeight);
       this.targetData = new ImageData(targetWidth, targetHeight);
-      context.clearRect(0, 0, sourceWidth, sourceHeight); // could be commented, maybe no performance gain here
+      context.clearRect(0, 0, targetWidth, targetHeight); // could be commented, maybe no performance gain here
       
       if (onLoadCallback) onLoadCallback();
     }
@@ -37,7 +40,15 @@ class MapEmitterRenderer {
   }
 
   setup() {
-
+    let pixels = this.targetData.data;
+    for (let index = 0; index < pixels.length/4; ++index) {
+      let [ redValue, greenValue, blueValue ] = this.background;
+      let current = index * 4;
+      pixels[current] = redValue;
+      pixels[current + 1] = greenValue;
+      pixels[current + 2] = blueValue;
+      pixels[current + 3] = 255; // alpha channel
+    }
   }
 
   update() {
@@ -45,9 +56,7 @@ class MapEmitterRenderer {
   }
 
   render() {
-    let originX = this.data.width / 2 - this.canvas.width / 2;
-    let originY = this.data.height / 2 - this.canvas.height / 2;
-    this.context.putImageData(this.data, -originX, -originY);
+    this.context.putImageData(this.data, 0, 0);
   }
 
 }
