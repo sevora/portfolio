@@ -51,9 +51,17 @@ class MapEmitterRenderer {
 
   // flood-fill algorithm that's breadth-first
   update() {
-    if (this.queue.isEmpty) return;
+    if (this.queue.isEmpty) {
+      // check if all open spaces are actually gone, else get the closest one from the center
+      // create a function from _initializeQueue, to reuse that new function here and there
+      return;
+    }
 
+    let { height, width } = this.data;
     let index = this.queue.dequeue();
+    let y = Math.floor(index / width);
+    let x = index % width;
+
     // boundary checking
     // if okay, set to two, reflect on targetData, add neighbors to queue
   }
