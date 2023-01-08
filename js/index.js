@@ -1,6 +1,7 @@
 import MapEmitterRenderer from "./MapEmitterRenderer.js";
 
-const canvas = document.querySelector("canvas");
+const gradient = document.querySelector(".gradient-layer");
+const canvas = document.querySelector(".cover-layer");
 let mapEmitter = new MapEmitterRenderer("../images/background/pattern-original-large.png", [23, 23, 23], window, canvas);
 
 let now = Date.now();
@@ -30,11 +31,13 @@ function loop() {
 }
 
 function setup() {
+  gradient.style.visibility = "visible";
   mapEmitter.setup();
+  console.log(mapEmitter);
 }
 
 function update() {
-
+  mapEmitter.update();
 }
 
 function render() {

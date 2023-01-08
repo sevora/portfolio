@@ -3,6 +3,9 @@ class MapEmitterRenderer {
     this.data = null;
     this.targetData = null;
 
+    this.map = null
+    this.startingIndex = -1;
+
     this.path = imagePath;
     this.background = backgroundColor;
 
@@ -30,7 +33,6 @@ class MapEmitterRenderer {
 
       context.drawImage(image, -originX, -originY);
       this.data = context.getImageData(0, 0, targetWidth, targetHeight);
-      this.targetData = new ImageData(targetWidth, targetHeight);
       context.clearRect(0, 0, targetWidth, targetHeight); // could be commented, maybe no performance gain here
       
       if (onLoadCallback) onLoadCallback();
@@ -40,7 +42,24 @@ class MapEmitterRenderer {
   }
 
   setup() {
-    let pixels = this.targetData.data;
+    this._initializeTargetData();
+    this._initializeMap();
+    this._initializeStartingIndex();
+  }
+
+  update() {
+
+  }
+
+  render() {
+    this.context.putImageData(this.targetData, 0, 0);
+  }
+
+  _initializeTargetData() {
+    this.targetData = new ImageData(this.data.width, this.data.height);
+    let { data : pixels } = this.targetData;
+
+    // set the targetData to render the background color
     for (let index = 0; index < pixels.length/4; ++index) {
       let [ redValue, greenValue, blueValue ] = this.background;
       let current = index * 4;
@@ -51,14 +70,45 @@ class MapEmitterRenderer {
     }
   }
 
-  update() {
+  _initializeMap() {
+    let { data : pixels } = this.data;
 
+    this.map = new Uint8Array(pixels.length);
+    let mapIndex = 0;
+
+    // store a new map with only 0s and 1s where 0 means it is open
+    // and 1 means it is a wall
+    for (let index = 0; index < pixels.length/4; ++index) {
+      let [ redValue, greenValue, blueValue ] = this.background;
+      let current = index * 4;
+      
+      let red = pixels[current];
+      let green = pixels[current + 1];
+      let blue = pixels[current + 2];
+
+      let isWall = 1;
+
+      // if the pixel does not match the background color pixel 
+      // then, it must not be a wall
+      if (red != redValue || green != greenValue || blue != blueValue) {
+        isWall = 0;
+      }
+
+      this.map[mapIndex] = isWall;
+      ++mapIndex;
+    }
   }
 
-  render() {
-    this.context.putImageData(this.data, 0, 0);
-  }
+  _initializeStartingIndex() {
+    let openIndices = new Int32Array(this.map.length);
+    let openIndicesIndex = 0;
 
+    for (let index = 0; index < this.map.length; ++index) {
+      if (this.map[index] == 0) openIndices[openIndicesIndex++] = index;
+    }
+
+    this.startingIndex = openIndices[Math.round( (openIndicesIndex - 1)/2 )]; 
+  }
 }
 
 export default MapEmitterRenderer;
