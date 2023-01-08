@@ -1,10 +1,12 @@
+import Queue from "./Queue.js";
+
 class MapEmitterRenderer {
   constructor(imagePath, backgroundColor, windowElement, canvasElement) {
     this.data = null;
     this.targetData = null;
 
     this.map = null
-    this.startingIndex = -1;
+    this.queue = null;
 
     this.path = imagePath;
     this.background = backgroundColor;
@@ -44,11 +46,16 @@ class MapEmitterRenderer {
   setup() {
     this._initializeTargetData();
     this._initializeMap();
-    this._initializeStartingIndex();
+    this._initializeQueue();
   }
 
+  // flood-fill algorithm that's breadth-first
   update() {
+    if (this.queue.isEmpty) return;
 
+    let index = this.queue.dequeue();
+    // boundary checking
+    // if okay, set to two, reflect on targetData, add neighbors to queue
   }
 
   render() {
@@ -99,7 +106,9 @@ class MapEmitterRenderer {
     }
   }
 
-  _initializeStartingIndex() {
+  _initializeQueue() {
+    this.queue = new Queue();
+
     let openIndices = new Int32Array(this.map.length);
     let openIndicesIndex = 0;
 
@@ -107,7 +116,7 @@ class MapEmitterRenderer {
       if (this.map[index] == 0) openIndices[openIndicesIndex++] = index;
     }
 
-    this.startingIndex = openIndices[Math.round( (openIndicesIndex - 1)/2 )]; 
+    this.queue.enqueue( openIndices[Math.round( (openIndicesIndex - 1)/2 )] );
   }
 }
 
