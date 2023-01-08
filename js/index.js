@@ -2,14 +2,21 @@ import MapEmitterRenderer from "./MapEmitterRenderer.js";
 
 const gradient = document.querySelector(".gradient-layer");
 const canvas = document.querySelector(".cover-layer");
-let mapEmitter = new MapEmitterRenderer("../images/background/pattern-original-large.png", [23, 23, 23], window, canvas);
+let scale = window.devicePixelRatio;
+let { clientWidth : width, clientHeight : height } = window.document.body;
+
+let basePath = "../images/background";
+let finalPath = width > 480 ? `${basePath}/pattern-desktop.png` : `${basePath}/pattern-mobile.png`;
+let mapEmitter = new MapEmitterRenderer(finalPath, [23, 23, 23], window, canvas);
 
 let now = Date.now();
 let then = now;
 let fps = 60;
 
-canvas.width = window.document.body.clientWidth;
-canvas.height = window.document.body.clientHeight;
+canvas.width = width * scale;
+canvas.height = height * scale;
+canvas.style.width = `${width}px`;
+canvas.style.height = `${height}px`;
 
 mapEmitter.load(() => {
     setup();

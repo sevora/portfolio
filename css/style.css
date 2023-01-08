@@ -27,21 +27,29 @@ html, body {
     height: 100%;
     z-index: 1;
     visibility: hidden;
-
-    background: linear-gradient(-90deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-	background-size: 200% 200%;
-	animation: gradient 2.5s ease infinite;
 }
 
-@keyframes gradient {
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
+.gradient-layer {
+    background: linear-gradient(0deg, #2443ee, #ffa000, #7600ff, #fb3232);
+    background-size: 800% 800%;
+
+    -webkit-animation: GradientAnimation 20s ease infinite;
+    -moz-animation: GradientAnimation 20s ease infinite;
+    animation: GradientAnimation 20s ease infinite;
 }
 
+@-webkit-keyframes GradientAnimation {
+    0%{background-position:52% 0%}
+    50%{background-position:49% 100%}
+    100%{background-position:52% 0%}
+}
+@-moz-keyframes GradientAnimation {
+    0%{background-position:52% 0%}
+    50%{background-position:49% 100%}
+    100%{background-position:52% 0%}
+}
+@keyframes GradientAnimation {
+    0%{background-position:52% 0%}
+    50%{background-position:49% 100%}
+    100%{background-position:52% 0%}
+}

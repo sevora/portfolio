@@ -14,6 +14,8 @@ class MapEmitterRenderer {
     this.window = windowElement;
     this.canvas = canvasElement;
     this.context = canvasElement.getContext('2d');
+
+    this.finished = false;
   }
 
   load(onLoadCallback) {
@@ -51,19 +53,44 @@ class MapEmitterRenderer {
 
   // flood-fill algorithm that's breadth-first
   update() {
-    if (this.queue.isEmpty) {
-      // check if all open spaces are actually gone, else get the closest one from the center
-      // create a function from _initializeQueue, to reuse that new function here and there
-      return;
+    if (this.finished) return;
+    let scale = this.window.devicePixelRatio;
+    let speed = this.data.width * scale * 0.25;
+
+    for (let times = 0; times < speed; ++times) {
+
+      if (this.queue.isEmpty) {
+        let newIndex = this._getMiddlemostIndex();
+        if (newIndex > -1) {
+          this.queue.enqueue(newIndex);
+        } else {
+          this.finished = true;
+          break;
+        }
+        // check if all open spaces are actually gone, else get the closest one from the center
+        // create a function from _initializeQueue, to reuse that new function here and there
+      }
+
+      let { height, width } = this.data;
+      let index = this.queue.dequeue();
+      
+      if (this.map[index] == 0) {
+        this.map[index] = 2;
+        this.targetData.data[index * 4 + 3] = 0; // alpha channel
+        
+        // top
+        if (index >= width) this.queue.enqueue(index - width);
+        // left
+        if (index % (width+1) != 0) this.queue.enqueue(index - 1);
+        // bottom
+        if (index < width * (height-1)) this.queue.enqueue(index + width);
+        // right
+        if (index % width != 0) this.queue.enqueue(index + 1);
+      }
     }
 
-    let { height, width } = this.data;
-    let index = this.queue.dequeue();
-    let y = Math.floor(index / width);
-    let x = index % width;
-
     // boundary checking
-    // if okay, set to two, reflect on targetData, add neighbors to queue
+    // if okay, set to two, reflect on targetData, boundary check to add neighbors to queue
   }
 
   render() {
@@ -88,7 +115,7 @@ class MapEmitterRenderer {
   _initializeMap() {
     let { data : pixels } = this.data;
 
-    this.map = new Uint8Array(pixels.length);
+    this.map = new Uint8Array(Math.floor(pixels.length / 4));
     let mapIndex = 0;
 
     // store a new map with only 0s and 1s where 0 means it is open
@@ -116,7 +143,10 @@ class MapEmitterRenderer {
 
   _initializeQueue() {
     this.queue = new Queue();
+    // this.queue.enqueue( this._getMiddlemostIndex() );
+  }
 
+  _getMiddlemostIndex() {
     let openIndices = new Int32Array(this.map.length);
     let openIndicesIndex = 0;
 
@@ -124,7 +154,10 @@ class MapEmitterRenderer {
       if (this.map[index] == 0) openIndices[openIndicesIndex++] = index;
     }
 
-    this.queue.enqueue( openIndices[Math.round( (openIndicesIndex - 1)/2 )] );
+    if (openIndicesIndex == 0) return -1;
+
+    let middle = Math.round( (openIndicesIndex - 1)/2 );
+    return openIndices[middle];
   }
 }
 
