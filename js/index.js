@@ -6,13 +6,14 @@ let scale = window.devicePixelRatio;
 let { clientWidth : width, clientHeight : height } = window.document.body;
 
 let basePath = "../images/background";
-let finalPath = width > 480 ? `${basePath}/pattern-desktop.png` : `${basePath}/pattern-mobile.png`;
+let finalPath = scale > 1.0 ? `${basePath}/pattern-dpi-2x.png` : `${basePath}/pattern-dpi-1x.png`;
 let mapEmitter = new MapEmitterRenderer(finalPath, [23, 23, 23], window, canvas);
 
 let now = Date.now();
 let then = now;
 let fps = 60;
 
+// this is for matching the DPI to keep the output crisp
 canvas.width = width * scale;
 canvas.height = height * scale;
 canvas.style.width = `${width}px`;
