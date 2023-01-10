@@ -85,6 +85,10 @@ div + div {
     width: 70%;
 }
 
+.middle-content {
+    margin-bottom: 75px;
+}
+
 /*.scatter-parent, .scatter-parent span {
     -webkit-user-select: none;
     -ms-user-select: none;
