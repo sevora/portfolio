@@ -17,12 +17,12 @@ function main() {
 
     // add an event listener for the scrolling
     document.body.addEventListener('scroll', function() { 
-      updateGeneratorsOnView(); 
+      updateGeneratorsOnView(true); 
     });
 
     // start the animation after a few milliseconds
     setTimeout(function() {
-      updateGeneratorsOnView(); 
+      updateGeneratorsOnView(false); 
     }, 1500);
 }
 
@@ -59,7 +59,7 @@ function queueCallback(generator) {
  * this updates the queue depending on if the elements with generators
  * are on view.
  */
-function updateGeneratorsOnView() {
+function updateGeneratorsOnView(prioritizeNew) {
     // this is used so that the queue code isn't run again
     // unless the queue is empty (refer to last line in function)
     let runUpdate = queue.length == 0;
@@ -71,6 +71,10 @@ function updateGeneratorsOnView() {
         // checking if done is the fastest, checking if in queue prevents bloat in queue,
         // and finally checking if in viewport last
         if (!generator.isDone() && !queue.includes(generator) && isElementInViewport(generator.element)) {
+            if (prioritizeNew) {
+              queue.unshift(generator);
+              continue;
+            }
             queue.push(generator);
         }
     }
