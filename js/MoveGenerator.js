@@ -123,20 +123,31 @@ class MoveGenerator {
      * @returns {void}
      */
     updateUntilDone(callback) {
+        setTimeout(() => {
+            if ( !this.isInViewport() ) {
+              callback(this);
+              return;
+            }
+            this.frameThenTime = Date.now();
+            this.frameStartTime = this.frameThenTime;
+            this._updateLoop(callback);
+        });     
+    }
+
+    /**
+     * this is to be treated as a private member and it contains
+     * the update loop that should call update until the generator
+     * is done
+     */
+    _updateLoop(callback) {
         if (this.done) {
           callback(this);
           return;
         }
 
-        // for when this function is first called (manually)
-        if (this.frameThenTime == null) {
-          this.frameThenTime = Date.now();
-          this.frameStartTime = this.frameThenTime;
-        }
+        window.requestAnimationFrame( () => this._updateLoop(callback) );
 
         // logic here follows a method for the frame throttling for window.requestAnimationFrame
-        requestAnimationFrame( () => this.updateUntilDone(callback) );
-
         this.frameNowTime = Date.now();
         let elapsedTime = this.frameNowTime - this.frameThenTime;
         
@@ -144,7 +155,6 @@ class MoveGenerator {
           this.frameThenTime = this.frameNowTime - (elapsedTime % this.frameInterval);
           this.update();
         }
-        
     }
 
     /**
@@ -154,6 +164,21 @@ class MoveGenerator {
      */
     isDone() {
       return this.done;
+    }
+
+    /**
+     * determines whether the generator is in the viewport
+     * @returns boolean
+     */
+    isInViewport() {
+      let rectangle = this.element.getBoundingClientRect();
+
+      return (
+        rectangle.top >= 0 &&
+        rectangle.left >= 0 &&
+        rectangle.bottom <= (window.innerHeight || document.documentElement.clientHeight) && 
+        rectangle.right <= (window.innerWidth || document.documentElement.clientWidth)
+      );
     }
 }
 

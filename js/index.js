@@ -27,27 +27,11 @@ function main() {
 }
 
 /**
- * determines whether given element is in viewport
- * @param {HTMLElement} element DOM element
- * @returns boolean
- */
-function isElementInViewport(element) {
-    let rectangle = element.getBoundingClientRect();
-
-    return (
-        rectangle.top >= 0 &&
-        rectangle.left >= 0 &&
-        rectangle.bottom <= (window.innerHeight || document.documentElement.clientHeight) && 
-        rectangle.right <= (window.innerWidth || document.documentElement.clientWidth)
-    );
-}
-
-/**
  * this is specifically used as a callback for the queue
  * @param {MoveGenerator} generator a MoveGenerator instance
  * @returns null
  */
-function queueCallback(generator) {
+function queueCallback(_generator) {
     queue.splice(0, 1);
     if (queue.length > 0) {
       queue[0].updateUntilDone(queueCallback);
@@ -69,20 +53,21 @@ function updateGeneratorsOnView(prioritizeNew) {
 
         // optimization here with the order of conditions
         // checking if done is the fastest, checking if in queue prevents bloat in queue,
-        // and finally checking if in viewport last
-        if (!generator.isDone() && !queue.includes(generator) && isElementInViewport(generator.element)) {
-            if (prioritizeNew) {
-              queue.unshift(generator);
-              continue;
-            }
-            queue.push(generator);
+        // and finally checking if in viewport last        
+        if (!generator.isDone() && !queue.includes(generator) && generator.isInViewport()) {
+          if (prioritizeNew) {
+            queue.unshift(generator);
+            continue;
+          } 
+          queue.push(generator);
         }
     }
-  
-    // this one only runs the queue code if necessary
+
+    // this one only runs the queue code if necessary 
     if (queue.length > 0 && runUpdate) {
-        queue[0].updateUntilDone(queueCallback);
+      queue[0].updateUntilDone(queueCallback);
     }
+
 }
 
 // wait for the whole window to load
