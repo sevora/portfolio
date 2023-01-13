@@ -30,26 +30,19 @@ html, body {
 }
 
 .gradient-layer {
-    background: linear-gradient(0deg, #2443ee, #ffa000, #7600ff, #fb3232);
-    background-size: 800% 800%;
-
-    -webkit-animation: GradientAnimation 20s ease infinite;
-    -moz-animation: GradientAnimation 20s ease infinite;
-    animation: GradientAnimation 20s ease infinite;
+  background: linear-gradient(300deg,deepskyblue,darkviolet,blue);
+  background-size: 180% 180%;
+  animation: gradient-animation 3s ease infinite;
 }
 
-@-webkit-keyframes GradientAnimation {
-    0%{background-position:52% 0%}
-    50%{background-position:49% 100%}
-    100%{background-position:52% 0%}
-}
-@-moz-keyframes GradientAnimation {
-    0%{background-position:52% 0%}
-    50%{background-position:49% 100%}
-    100%{background-position:52% 0%}
-}
-@keyframes GradientAnimation {
-    0%{background-position:52% 0%}
-    50%{background-position:49% 100%}
-    100%{background-position:52% 0%}
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }

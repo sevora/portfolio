@@ -2,28 +2,85 @@ import MapEmitterRenderer from "./MapEmitterRenderer.js";
 
 const gradient = document.querySelector(".gradient-layer");
 const canvas = document.querySelector(".cover-layer");
-let scale = window.devicePixelRatio;
-let { clientWidth : width, clientHeight : height } = window.document.body;
+const { clientWidth : width, clientHeight : height } = window.document.body;
 
-let basePath = "../images/background";
-let finalPath = scale > 1.0 ? `${basePath}/pattern-dpi-2x.png` : `${basePath}/pattern-dpi-1x.png`;
-let mapEmitter = new MapEmitterRenderer(finalPath, [23, 23, 23], window, canvas);
+let mapEmitter;
+let now, then;
+let fps;
 
-let now = Date.now();
-let then = now;
-let fps = 60;
+/**
+ *
+ *
+ */
+function getPresets(basis) {
+  let basePath = "../images/background";
+  let { devicePixelRatio, innerWidth } = window;
 
-// this is for matching the DPI to keep the output crisp
-canvas.width = width * scale;
-canvas.height = height * scale;
-canvas.style.width = `${width}px`;
-canvas.style.height = `${height}px`;
+  switch (basis) {
+    case 'DPI':
+      return {
+        scale: devicePixelRatio,
+        finalPath: devicePixelRatio > 1.0 ? `${basePath}/pattern-dpi-2x-3x.png` : `${basePath}/pattern-dpi-1x.png`,
+      };
+      break;
+    case 'screen-width':
+      return {
+        scale: Math.max(2.5, devicePixelRatio),
+        finalPath: innerWidth > 480 ? `${basePath}/pattern-desktop.png` : `${basePath}/pattern-mobile-v2.png`
+      };
+      break;
+  }
+}
 
-mapEmitter.load(() => {
+/**
+ *
+ *
+ */
+function main() {
+  let { scale, finalPath } = getPresets('screen-width');
+  mapEmitter = new MapEmitterRenderer(finalPath, [23, 23, 23], window, canvas);
+
+  now = Date.now();
+  then = now;
+  fps = 60;
+
+  // this is for matching the DPI to keep the output crisp
+  canvas.width = Math.ceil(width * scale);
+  canvas.height = Math.ceil(height * scale);
+  canvas.style.width = `${width}px`;
+  canvas.style.height = `${height}px`;
+
+  mapEmitter.load(() => {
     setup();
     loop();
-});
+  });
+}
 
+/**
+ *
+ */
+function setup() {
+  gradient.style.visibility = "visible";
+  mapEmitter.setup();
+}
+
+/**
+ *
+ */
+function update() {
+  mapEmitter.update();
+}
+
+/**
+ *
+ */
+function render() {
+  mapEmitter.render();
+}
+
+/**
+ *
+ */
 function loop() {
     window.requestAnimationFrame(loop);
 
@@ -38,17 +95,4 @@ function loop() {
     }
 }
 
-function setup() {
-  gradient.style.visibility = "visible";
-  mapEmitter.setup();
-  console.log(mapEmitter);
-}
-
-function update() {
-  mapEmitter.update();
-}
-
-function render() {
-  mapEmitter.render();
-}
-
+main();

@@ -18,6 +18,9 @@ class MapEmitterRenderer {
     this.finished = false;
   }
 
+  /**
+   * 
+   */
   load(onLoadCallback) {
     let image = new Image();
     image.crossOrigin = '*';
@@ -45,17 +48,23 @@ class MapEmitterRenderer {
     image.src = this.path;
   }
 
+  /**
+   * 
+   */
   setup() {
     this._initializeTargetData();
     this._initializeMap();
     this._initializeQueue();
   }
 
+  /**
+   * 
+   */
   // flood-fill algorithm that's breadth-first
   update() {
     if (this.finished) return;
     let scale = this.window.devicePixelRatio;
-    let speed = this.data.width * scale * 0.25;
+    let speed = Math.max(this.canvas.width, this.canvas.height);
 
     for (let times = 0; times < speed; ++times) {
 
@@ -81,11 +90,11 @@ class MapEmitterRenderer {
         // top
         if (index >= width) this.queue.enqueue(index - width);
         // left
-        if (index % (width+1) != 0) this.queue.enqueue(index - 1);
+        if (index % width != 0) this.queue.enqueue(index - 1);
         // bottom
-        if (index < width * (height-1)) this.queue.enqueue(index + width);
+        if (index <= width * (height-1) + 1) this.queue.enqueue(index + width);
         // right
-        if (index % width != 0) this.queue.enqueue(index + 1);
+        if (index % (width+1) != 0) this.queue.enqueue(index + 1);
       }
     }
 
@@ -93,17 +102,23 @@ class MapEmitterRenderer {
     // if okay, set to two, reflect on targetData, boundary check to add neighbors to queue
   }
 
+  /**
+   * 
+   */
   render() {
     this.context.putImageData(this.targetData, 0, 0);
   }
 
+  /**
+   * 
+   */
   _initializeTargetData() {
     this.targetData = new ImageData(this.data.width, this.data.height);
     let { data : pixels } = this.targetData;
+    let [ redValue, greenValue, blueValue ] = this.background;
 
     // set the targetData to render the background color
     for (let index = 0; index < pixels.length/4; ++index) {
-      let [ redValue, greenValue, blueValue ] = this.background;
       let current = index * 4;
       pixels[current] = redValue;
       pixels[current + 1] = greenValue;
@@ -112,8 +127,12 @@ class MapEmitterRenderer {
     }
   }
 
+  /**
+   * 
+   */
   _initializeMap() {
     let { data : pixels } = this.data;
+    let [ redValue, greenValue, blueValue ] = this.background;
 
     this.map = new Uint8Array(Math.floor(pixels.length / 4));
     let mapIndex = 0;
@@ -121,7 +140,6 @@ class MapEmitterRenderer {
     // store a new map with only 0s and 1s where 0 means it is open
     // and 1 means it is a wall
     for (let index = 0; index < pixels.length/4; ++index) {
-      let [ redValue, greenValue, blueValue ] = this.background;
       let current = index * 4;
       
       let red = pixels[current];
@@ -141,11 +159,17 @@ class MapEmitterRenderer {
     }
   }
 
+  /**
+   * 
+   */
   _initializeQueue() {
     this.queue = new Queue();
     // this.queue.enqueue( this._getMiddlemostIndex() );
   }
 
+  /**
+   * 
+   */
   _getMiddlemostIndex() {
     let openIndices = new Int32Array(this.map.length);
     let openIndicesIndex = 0;
