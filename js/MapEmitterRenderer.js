@@ -75,12 +75,12 @@ class MapEmitterRenderer {
   /**
    * 
    */
-  // flood-fill algorithm that's breadth-first
   update() {
     for (let index = this.emitters.length-1; index >= 0; --index) {
       let emitter = this.emitters[index];
- 
-      for (let repeats = 0; repeats < emitter.spreadLimit * 0.2; ++repeats) {
+      let speed = (emitter.isConservative ? 0.05 : 0.15) * emitter.spreadLimit;
+
+      for (let repeats = 0; repeats < speed; ++repeats) {
         emitter.update();
         if (emitter.isFinished) {
           this.emitters.splice(index, 1);
@@ -117,14 +117,23 @@ class MapEmitterRenderer {
    *
    *
    */
-  createEmitter(x, y, range, spread) {
+  createEmitter(x, y, range, spread, conservative) {
     let { sourceMap, width, height } = this;
     let { length } = this.emitters;
     let value = length > 0 ? (this.emitters[length-1].value + 1) % 256 : 2;
-    let emitter = new MapEmitter(sourceMap, width, height, { x, y, value, range, spread });
+    let emitter = new MapEmitter(sourceMap, width, height, { x, y, value, range, spread, conservative });
 
     emitter.setup();
     this.emitters.push(emitter);
+  }
+
+  /**
+   *
+   */
+  createRandomEmitter(range, spread, conservative) {
+    let x = Math.floor(Math.random() * this.width);
+    let y = Math.floor(Math.random() * this.height);
+    this.createEmitter(x, y, range, spread, conservative);
   }
 
   /**

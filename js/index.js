@@ -15,6 +15,8 @@ let finalPath;
 let now, then;
 let fps;
 
+let spawnNow, spawnThen;
+
 /**
  *
  *
@@ -84,7 +86,9 @@ function setup() {
   loader.style.display = "none";
   content.style.visibility = "visible";
   mapRenderer.setup();
-  console.log(mapRenderer);
+
+  spawnNow = Date.now();
+  spawnThen = spawnNow;
 }
 
 /**
@@ -92,6 +96,13 @@ function setup() {
  */
 function update() {
   mapRenderer.update();
+
+  if (spawnNow - spawnThen >= 100) {
+    mapRenderer.createRandomEmitter(250, 25000, true);
+    spawnThen = spawnNow;
+  }
+
+  spawnNow = Date.now();
 }
 
 /**
@@ -118,11 +129,14 @@ function loop() {
     }
 }
 
+/**
+ *
+ */
 function handleClickScreen(event) {
+  if (mapRenderer.emitters.length >= 20) return;
   let x = event.pageX * scale;
   let y = event.pageY * scale;
-  let spread = Math.max(50000 - mapRenderer.emitters.length * 10000, 10000);
-  mapRenderer.createEmitter(x, y, 250, spread);
+  mapRenderer.createEmitter(x, y, 250, 35000);
 }
 
 main();

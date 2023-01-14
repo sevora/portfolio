@@ -1,7 +1,7 @@
 import Queue from "./Queue.js";
 
 class MapEmitter {
-  constructor(sourceMap, sourceWidth, sourceHeight, { x=0, y=0, range=20, value=2, spread=100 }) {
+  constructor(sourceMap, sourceWidth, sourceHeight, { x=0, y=0, range=20, value=2, spread=100, conservative=false }) {
     this.x = x;
     this.y = y;
     this.value = value;
@@ -11,6 +11,7 @@ class MapEmitter {
     this.spreadLimit = spread;
     this.spreadQueue = null;
 
+    this.isConservative = conservative;
     this.isFilling = true;
     this.isFinished = false;
 
@@ -78,7 +79,7 @@ class MapEmitter {
     let { x, y, width, height } = this;
     let index = y * width + x;
     let offset = 1;
-    // let complete = 0;
+    let complete = 0;
 
     while (offset < this.range) {
       let top = index - width * offset;
@@ -89,31 +90,30 @@ class MapEmitter {
       // boundary checking if the current element from the offset
       // is valid, it is valid if it is on the same row and column, 
       // it exists and is an empty space (equal to 0)
-      if (top >= 0 && this.map[top] == targetValue) this.spreadQueue.enqueue(top);
+      /*if (top >= 0 && this.map[top] == targetValue) this.spreadQueue.enqueue(top);
       if (bottom <= width * height - 1 && this.map[bottom] == targetValue) this.spreadQueue.enqueue(bottom);
       if (Math.floor(left/width) == y && this.map[left] == targetValue) this.spreadQueue.enqueue(left);
-      if (Math.floor(right/width) == y && this.map[right] == targetValue) this.spreadQueue.enqueue(right);
+      if (Math.floor(right/width) == y && this.map[right] == targetValue) this.spreadQueue.enqueue(right);*/
 
-      /*
       if (top >= 0 && this.map[top] == targetValue && !(complete & 1)) {
         this.spreadQueue.enqueue(top);
-        complete |= 1;
+        if (this.isConservative) complete |= 1;
       }
 
       if (bottom <= width * height - 1 && this.map[bottom] == targetValue && !(complete & 2)) {
         this.spreadQueue.enqueue(bottom);
-        complete |= 2;
+        if (this.isConservative) complete |= 2;
       }
 
       if (Math.floor(left/width) == y && this.map[left] == targetValue && !(complete & 4)) {
         this.spreadQueue.enqueue(left);
-        complete |= 4;
+        if (this.isConservative) complete |= 4;
       }
 
       if (Math.floor(right/width) == y && this.map[right] == targetValue && !(complete & 8)) {
         this.spreadQueue.enqueue(right);
-        complete |= 8;
-      } */
+        if (this.isConservative) complete |= 8;
+      }
 
       ++offset;
     }
