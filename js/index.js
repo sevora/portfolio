@@ -97,8 +97,10 @@ function setup() {
 function update() {
   mapRenderer.update();
 
-  if (spawnNow - spawnThen >= 100) {
-    mapRenderer.createRandomEmitter(250, 25000, true);
+  if (spawnNow - spawnThen >= 1500) {
+    for (let index = 0; index < 3; ++index) {
+      mapRenderer.createRandomEmitter(250, 25000, true);
+    }
     spawnThen = spawnNow;
   }
 
