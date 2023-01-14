@@ -6,7 +6,8 @@ class MapEmitterRenderer {
   constructor(imagePath, windowElement, canvasElement, { 
     sourceBackgroundColor=new Color(0, 0, 0), 
     targetBackgroundColor=new Color(0, 0, 0),
-    targetForegroundColor=new Color(255, 255, 255)
+    targetForegroundColor=new Color(100, 100, 100),
+    targetActiveForegroundColor=new Color(255, 255, 255),
   }) {
     this.sourceData = null;
     this.targetData = null;
@@ -19,12 +20,12 @@ class MapEmitterRenderer {
     // 2 - part of the board (filled)
     this.sourceMap = null;
     this.sourceMapIndices = null;
-    this.indexQueue = null;
 
     this.sourcePath = imagePath;
     this.sourceBackgroundColor = sourceBackgroundColor;
     this.targetBackgroundColor = targetBackgroundColor;
     this.targetForegroundColor = targetForegroundColor;
+    this.targetActiveForegroundColor = targetActiveForegroundColor;
 
     this.emitters = [];
 
@@ -71,10 +72,9 @@ class MapEmitterRenderer {
    * 
    */
   setup() {
-    this._initializeSimpleMap();
-    this._initializeSimpleMapIndices();
+    this._initializeSourceMap();
+    this._initializeSourceMapIndices();
     this._initializeTargetData();
-    this._initializeIndexQueue();
   }
 
   /**
@@ -82,46 +82,30 @@ class MapEmitterRenderer {
    */
   // flood-fill algorithm that's breadth-first
   update() {
-    /*
-    if (this.isFinished) return;
-    let scale = this.window.devicePixelRatio;
-    let speed = Math.max(this.canvas.width, this.canvas.height);
-
-    for (let times = 0; times < speed; ++times) {
-
-      if (this.indexQueue.isEmpty) {
-        let newIndex = this._getMiddlemostIndex();
-        if (newIndex > -1) {
-          this.indexQueue.enqueue(newIndex);
-        } else {
-          this.isFinished = true;
-          break;
-        }
-        // check if all open spaces are actually gone, else get the closest one from the center
-        // create a function from _initializeQueue, to reuse that new function here and there
+    for (let index = this.emitters.length-1; index >= 0; --index) {
+      let emitter = this.emitters[index];
+      if (emitter.isFinished) {
+        this.emitters.splice(index, 1);
+        continue;
       }
-
-      let { height, width } = this;
-      let index = this.indexQueue.dequeue();
-      
-      if (this.sourceMap[index] == 0) {
-        this.sourceMap[index] = 2;
-        this.targetData.data[index * 4 + 3] = 0; // alpha channel
-        
-        // top
-        if (index >= width) this.indexQueue.enqueue(index - width);
-        // left
-        if (index % width != 0) this.indexQueue.enqueue(index - 1);
-        // bottom
-        if (index <= width * (height-1) + 1) this.indexQueue.enqueue(index + width);
-        // right
-        if (index % (width+1) != 0) this.indexQueue.enqueue(index + 1);
-      }
+      emitter.update();
     }
 
-    // boundary checking
-    // if okay, set to two, reflect on targetData, boundary check to add neighbors to queue
-    */
+    let { data : pixels } = this.targetData;
+
+    for (let index = 0; index < this.sourceMapIndices.length; ++index) {
+      let targetDataIndex = this.sourceMapIndices[index];
+
+      let sourceValue = this.sourceMap[targetDataIndex];
+      let color = sourceValue == 0 ? this.targetForegroundColor : this.targetActiveForegroundColor;
+      let [ r, g, b, a ] = color.unpack();
+
+      let pixelIndex = targetDataIndex * 4;
+      pixels[pixelIndex] = r;
+      pixels[pixelIndex + 1] = g;
+      pixels[pixelIndex + 2] = b;
+      pixels[pixelIndex + 3] = a;
+    }
   }
 
   /**
@@ -131,17 +115,30 @@ class MapEmitterRenderer {
     this.context.putImageData(this.targetData, 0, 0);
   }
 
-  /**
-   *
-   */
-  spawnEmitterAt(x, y) {
+  createEmitter(x, y, range, spread) {
+    let { sourceMap, width, height } = this;
 
+    let emitter = new MapEmitter(
+      sourceMap, 
+      width, 
+      height, 
+      {
+        x, 
+        y,
+        value: this.emitters.length + 2,
+        range,
+        spread
+      }
+    );
+
+    emitter.setup();
+    this.emitters.push(emitter);
   }
 
   /**
    * 
    */
-  _initializeSimpleMap() {
+  _initializeSourceMap() {
     let { data : pixels } = this.sourceData;
 
     this.sourceMap = new Uint8Array(Math.floor(pixels.length * 0.25));
@@ -151,7 +148,7 @@ class MapEmitterRenderer {
     // and 1 means it is a wall
     for (let index = 0; index < pixels.length/4; ++index) {
       let current = index * 4;
-      let color = new Color(pixels[current], pixels[current+1], pixels[current+2]);
+      let color = new Color(pixels[current], pixels[current+1], pixels[current+2], pixels[current+3]);
       let isWall = 1;
 
       // if the pixel does not match the background color pixel 
@@ -168,7 +165,7 @@ class MapEmitterRenderer {
   /**
    *
    */
-  _initializeSimpleMapIndices() {
+  _initializeSourceMapIndices() {
     let indices = new Uint32Array(this.sourceMap.length);
     let indicesIndex = 0;
 
@@ -186,34 +183,13 @@ class MapEmitterRenderer {
   }
 
   /**
-   *
-   */
-  _getSimpleMapIndices(value) {
-    let buffer = new Uint32Array(this.sourceMapIndices.length);
-    let bufferIndex = 0;
-
-    for (let index = 0; index < this.sourceMapIndices.length; ++index) {
-      let simpleMapIndex = this.sourceMapIndices[index];
-      let element = this.sourceMap[simpleMapIndex];
-      if (element == value) buffer[bufferIndex++] = simpleMapIndex;
-    }
-
-    let result = new Uint32Array(bufferIndex);
-    for (let index = 0; index < bufferIndex; ++index) {
-      result[index] = buffer[index];
-    }
-
-    return result;
-  }
-
-  /**
    * 
    */
   _initializeTargetData() {
     this.targetData = new ImageData(this.sourceData.width, this.sourceData.height);
     let { data : pixels } = this.targetData;
-    let [ r1, g1, b1 ] = this.targetBackgroundColor.unpack();
-    let [ r2, g2, b2 ] = this.targetForegroundColor.unpack();
+    let [ r1, g1, b1, a1 ] = this.targetBackgroundColor.unpack();
+    let [ r2, g2, b2, a2 ] = this.targetForegroundColor.unpack();
 
     // set the targetData to render the backgroundColor
     for (let index = 0; index < pixels.length/4; ++index) {
@@ -221,7 +197,7 @@ class MapEmitterRenderer {
       pixels[current] = r1;
       pixels[current + 1] = g1;
       pixels[current + 2] = b1;
-      pixels[current + 3] = 255; // alpha channel
+      pixels[current + 3] = a1; // alpha channel
     }
 
     // set the targetData to show the pattern with foregroundColor
@@ -230,25 +206,8 @@ class MapEmitterRenderer {
       pixels[current] = r2;
       pixels[current + 1] = g2;
       pixels[current + 2] = b2;
+      pixels[current + 3] = a2;
     }
-  }
-
-  /**
-   * 
-   */
-  _initializeIndexQueue() {
-    this.indexQueue = new Queue();
-    // this.indexQueue.enqueue( this._getMiddlemostIndex() );
-  }
-
-  /**
-   * 
-   */
-  _getMiddlemostIndex() {
-    let openIndices = this._getSimpleMapIndices(0);
-    if (openIndices.length == 0) return -1;
-    let middle = Math.round( (openIndices.length - 1) * 0.5 );
-    return openIndices[middle];
   }
 }
 

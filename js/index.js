@@ -1,5 +1,6 @@
 import Color from "./Color.js";
 import MapEmitterRenderer from "./MapEmitterRenderer.js";
+import MapEmitter from "./MapEmitter.js";
 
 const loader = document.querySelector(".loader-layer");
 const content = document.querySelector(".content-layer");
@@ -7,7 +8,10 @@ const content = document.querySelector(".content-layer");
 const canvas = document.querySelector(".cover-layer");
 const { clientWidth : width, clientHeight : height } = window.document.body;
 
-let mapEmitter;
+let mapRenderer;
+let scale;
+let finalPath;
+
 let now, then;
 let fps;
 
@@ -46,13 +50,14 @@ function main() {
   loader.style.display = "block";
   content.style.visibility = "hidden";
 
-  let { scale, finalPath } = getPresets('screen-width');
-  mapEmitter = new MapEmitterRenderer(finalPath, window, canvas, { 
-    sourceBackgroundColor: new Color(23, 23, 23), 
-    targetBackgroundColor: new Color(0, 0, 139),
-    targetForegroundColor: new Color(0, 0, 255)
+  ({ scale, finalPath } = getPresets('screen-width'));
+
+  mapRenderer = new MapEmitterRenderer(finalPath, window, canvas, { 
+    sourceBackgroundColor: new Color(23, 23, 23, 255), 
+    targetBackgroundColor: new Color(0, 0, 139, 255),
+    targetForegroundColor: new Color(8, 22, 209, 255),
+    targetActiveForegroundColor: new Color(0, 0, 0, 0)
   });
-  console.log(mapEmitter);
 
   now = Date.now();
   then = now;
@@ -64,9 +69,10 @@ function main() {
   canvas.style.width = `${width}px`;
   canvas.style.height = `${height}px`;
 
-  mapEmitter.load(() => {
+  mapRenderer.load(() => {
     setup();
     loop();
+    document.addEventListener("click", handleClickScreen);
   });
 }
 
@@ -77,21 +83,22 @@ function setup() {
   // gradient.style.visibility = "visible";
   loader.style.display = "none";
   content.style.visibility = "visible";
-  mapEmitter.setup();
+  mapRenderer.setup();
+  console.log(mapRenderer);
 }
 
 /**
  *
  */
 function update() {
-  mapEmitter.update();
+  mapRenderer.update();
 }
 
 /**
  *
  */
 function render() {
-  mapEmitter.render();
+  mapRenderer.render();
 }
 
 /**
@@ -109,6 +116,12 @@ function loop() {
         update();
         render();
     }
+}
+
+function handleClickScreen(event) {
+  let x = event.pageX * scale;
+  let y = event.pageY * scale;
+  mapRenderer.createEmitter(x, y, 250, 50000)
 }
 
 main();

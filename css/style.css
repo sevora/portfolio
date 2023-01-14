@@ -70,7 +70,7 @@ html, body {
 .gradient-layer {
   background: linear-gradient(300deg,deepskyblue,darkviolet,blue);
   background-size: 180% 180%;
-  animation: gradient-animation 3s ease infinite;
+  animation: gradient-animation 1s ease infinite;
 }
 
 @keyframes gradient-animation {
