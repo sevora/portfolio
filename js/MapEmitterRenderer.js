@@ -3,12 +3,7 @@ import MapEmitter from "./MapEmitter.js";
 import Queue from "./Queue.js";
 
 class MapEmitterRenderer {
-  constructor(imagePath, windowElement, canvasElement, { 
-    sourceBackgroundColor=new Color(0, 0, 0), 
-    targetBackgroundColor=new Color(0, 0, 0),
-    targetForegroundColor=new Color(100, 100, 100),
-    targetActiveForegroundColor=new Color(255, 255, 255),
-  }) {
+  constructor(imagePath, windowElement, canvasElement, { sourceBackgroundColor=new Color(0, 0, 0), targetBackgroundColor=new Color(0, 0, 0), targetForegroundColor=new Color(100, 100, 100), targetActiveForegroundColor=new Color(255, 255, 255) }) {
     this.sourceData = null;
     this.targetData = null;
 
@@ -17,7 +12,7 @@ class MapEmitterRenderer {
 
     // 0 - part of the board (empty)
     // 1 - wall, not fillable
-    // 2 - part of the board (filled)
+    // 2 to 255 - part of the board (filled)
     this.sourceMap = null;
     this.sourceMapIndices = null;
 
@@ -60,7 +55,7 @@ class MapEmitterRenderer {
       this.sourceData = context.getImageData(0, 0, targetWidth, targetHeight);
       this.width = targetWidth;
       this.height = targetHeight;
-      // context.clearRect(0, 0, targetWidth, targetHeight); // could be commented, maybe no performance gain here
+      context.clearRect(0, 0, targetWidth, targetHeight); // could be commented, maybe no performance gain here
       
       if (onLoadCallback) onLoadCallback();
     }
@@ -84,11 +79,14 @@ class MapEmitterRenderer {
   update() {
     for (let index = this.emitters.length-1; index >= 0; --index) {
       let emitter = this.emitters[index];
-      if (emitter.isFinished) {
-        this.emitters.splice(index, 1);
-        continue;
+ 
+      for (let repeats = 0; repeats < emitter.spreadLimit * 0.2; ++repeats) {
+        emitter.update();
+        if (emitter.isFinished) {
+          this.emitters.splice(index, 1);
+          break;
+        }
       }
-      emitter.update();
     }
 
     let { data : pixels } = this.targetData;
@@ -115,21 +113,15 @@ class MapEmitterRenderer {
     this.context.putImageData(this.targetData, 0, 0);
   }
 
+  /**
+   *
+   *
+   */
   createEmitter(x, y, range, spread) {
     let { sourceMap, width, height } = this;
-
-    let emitter = new MapEmitter(
-      sourceMap, 
-      width, 
-      height, 
-      {
-        x, 
-        y,
-        value: this.emitters.length + 2,
-        range,
-        spread
-      }
-    );
+    let { length } = this.emitters;
+    let value = length > 0 ? (this.emitters[length-1].value + 1) % 256 : 2;
+    let emitter = new MapEmitter(sourceMap, width, height, { x, y, value, range, spread });
 
     emitter.setup();
     this.emitters.push(emitter);

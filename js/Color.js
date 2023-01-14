@@ -11,6 +11,7 @@ class Color {
   }
 
   unpack() {
+    // what the fuck, don't use unpacking operator it is slow as hell
     return [ this.rgba[0], this.rgba[1], this.rgba[2], this.rgba[3] ];
   }
 }

@@ -32,7 +32,7 @@ function getPresets(basis) {
       break;
     case 'screen-width':
       return {
-        scale: Math.max(2.5, devicePixelRatio),
+        scale: Math.max(2.0, devicePixelRatio),
         finalPath: innerWidth > 480 ? `${basePath}/pattern-desktop.png` : `${basePath}/pattern-mobile.png`
       };
       break;
@@ -121,7 +121,8 @@ function loop() {
 function handleClickScreen(event) {
   let x = event.pageX * scale;
   let y = event.pageY * scale;
-  mapRenderer.createEmitter(x, y, 250, 50000)
+  let spread = Math.max(50000 - mapRenderer.emitters.length * 10000, 10000);
+  mapRenderer.createEmitter(x, y, 250, spread);
 }
 
 main();

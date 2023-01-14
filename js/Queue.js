@@ -24,7 +24,7 @@ class Queue {
   }
 
   get isEmpty() {
-    return this.length === 0;
+    return this.length <= 0;
   }
 }
 
