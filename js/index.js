@@ -1,6 +1,9 @@
+import Color from "./Color.js";
 import MapEmitterRenderer from "./MapEmitterRenderer.js";
 
-const gradient = document.querySelector(".gradient-layer");
+const loader = document.querySelector(".loader-layer");
+const content = document.querySelector(".content-layer");
+// const gradient = document.querySelector(".gradient-layer");
 const canvas = document.querySelector(".cover-layer");
 const { clientWidth : width, clientHeight : height } = window.document.body;
 
@@ -26,7 +29,7 @@ function getPresets(basis) {
     case 'screen-width':
       return {
         scale: Math.max(2.5, devicePixelRatio),
-        finalPath: innerWidth > 480 ? `${basePath}/pattern-desktop.png` : `${basePath}/pattern-mobile-v2.png`
+        finalPath: innerWidth > 480 ? `${basePath}/pattern-desktop.png` : `${basePath}/pattern-mobile.png`
       };
       break;
   }
@@ -37,8 +40,19 @@ function getPresets(basis) {
  *
  */
 function main() {
+  // hide all the content
+  // gradient.style.visibility = "hidden";
+  loader.style.zIndex = "99";
+  loader.style.display = "block";
+  content.style.visibility = "hidden";
+
   let { scale, finalPath } = getPresets('screen-width');
-  mapEmitter = new MapEmitterRenderer(finalPath, [23, 23, 23], window, canvas);
+  mapEmitter = new MapEmitterRenderer(finalPath, window, canvas, { 
+    sourceBackgroundColor: new Color(23, 23, 23), 
+    targetBackgroundColor: new Color(0, 0, 139),
+    targetForegroundColor: new Color(0, 0, 255)
+  });
+  console.log(mapEmitter);
 
   now = Date.now();
   then = now;
@@ -60,7 +74,9 @@ function main() {
  *
  */
 function setup() {
-  gradient.style.visibility = "visible";
+  // gradient.style.visibility = "visible";
+  loader.style.display = "none";
+  content.style.visibility = "visible";
   mapEmitter.setup();
 }
 
