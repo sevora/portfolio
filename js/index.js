@@ -151,7 +151,7 @@ function handleClick(event) {
   let { width : targetWidth, height : targetHeight } = canvas;
   let x = Math.floor( (sourceX/sourceWidth) * parseInt(targetWidth) );
   let y = Math.floor( (sourceY/sourceHeight) * parseInt(targetHeight) );
-  mapRenderer.createEmitter(x, y, 250, 30000);
+  mapRenderer.createEmitter(x, y, 250, 35000);
 }
 
 /**

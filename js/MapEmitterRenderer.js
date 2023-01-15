@@ -23,6 +23,7 @@ class MapEmitterRenderer {
     this.targetActiveForegroundColor = targetActiveForegroundColor;
 
     this.emitters = [];
+    this.value = 2; // starts at 2
 
     this.window = windowElement;
     this.canvas = canvasElement;
@@ -120,10 +121,17 @@ class MapEmitterRenderer {
    *
    */
   createEmitter(x, y, range, spread, conservative) {
-    let { sourceMap, width, height } = this;
+    // this.value valid range is 2-255 only
+    if (this.value > 255) {
+      this.value = 2;
+    } 
+
+    let { sourceMap, width, height, value } = this;
     let { length } = this.emitters;
-    let value = length > 0 ? (this.emitters[length-1].value + 1) % 256 : 2;
     let emitter = new MapEmitter(sourceMap, width, height, { x, y, value, range, spread, conservative });
+
+    // update this.value by 1 every time
+    ++this.value;
 
     emitter.setup();
     this.emitters.push(emitter);
