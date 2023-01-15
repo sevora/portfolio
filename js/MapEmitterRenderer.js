@@ -90,13 +90,15 @@ class MapEmitterRenderer {
     }
 
     let { data : pixels } = this.targetData;
+    let unfilled = this.targetForegroundColor.unpack();
+    let filled = this.targetActiveForegroundColor.unpack();
 
     for (let index = 0; index < this.sourceMapIndices.length; ++index) {
       let targetDataIndex = this.sourceMapIndices[index];
 
       let sourceValue = this.sourceMap[targetDataIndex];
-      let color = sourceValue == 0 ? this.targetForegroundColor : this.targetActiveForegroundColor;
-      let [ r, g, b, a ] = color.unpack();
+      let color = sourceValue == 0 ? unfilled : filled;
+      let [ r, g, b, a ] = color; 
 
       let pixelIndex = targetDataIndex * 4;
       pixels[pixelIndex] = r;

@@ -106,14 +106,15 @@ function setup() {
 function update() {
   mapRenderer.update();
 
-  if (spawnNow - spawnThen >= 1500) {
-    for (let index = 0; index < 3; ++index) {
-      mapRenderer.createRandomEmitter(250, 25000, true);
+  if (spawnNow - spawnThen >= 2000) {
+    for (let index = 0; index < 4; ++index) {
+      mapRenderer.createRandomEmitter(100, 15000, true);
     }
     spawnThen = spawnNow;
   }
 
   spawnNow = Date.now();
+  
 }
 
 /**
@@ -150,7 +151,7 @@ function handleClick(event) {
   let { width : targetWidth, height : targetHeight } = canvas;
   let x = Math.floor( (sourceX/sourceWidth) * parseInt(targetWidth) );
   let y = Math.floor( (sourceY/sourceHeight) * parseInt(targetHeight) );
-  mapRenderer.createEmitter(x, y, 250, 35000);
+  mapRenderer.createEmitter(x, y, 250, 30000);
 }
 
 /**
