@@ -3,6 +3,14 @@
     --background-color: #00008b;
 }
 
+/* 
+ * Remove the blue box when tapping on elements on mobile, happens 
+ * when tapping on an element with cursor:pointer;
+ */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
 html, body {
     color: var(--text-color);
     max-width: 100%;
@@ -55,6 +63,7 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 
 .cover-layer {

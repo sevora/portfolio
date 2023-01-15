@@ -2,10 +2,10 @@ import Queue from "./Queue.js";
 
 class MapEmitter {
   constructor(sourceMap, sourceWidth, sourceHeight, { x=0, y=0, range=20, value=2, spread=100, conservative=false }) {
-    this.x = x;
-    this.y = y;
-    this.value = value;
-    this.range = range;
+    this.x = x; // integer
+    this.y = y; // integer
+    this.value = value; // integer (0-255)
+    this.range = range; // integer
 
     this.spreadCurrent = 0;
     this.spreadLimit = spread;

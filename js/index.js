@@ -4,16 +4,15 @@ import MapEmitter from "./MapEmitter.js";
 
 const loader = document.querySelector(".loader-layer");
 const content = document.querySelector(".content-layer");
-// const gradient = document.querySelector(".gradient-layer");
+const gradient = document.querySelector(".gradient-layer");
 const canvas = document.querySelector(".cover-layer");
-const { clientWidth : width, clientHeight : height } = window.document.body;
 
 let mapRenderer;
-let scale;
-let finalPath;
+let { scale, finalPath } = getPresets('screen-width');
 
-let now, then;
-let fps;
+let now = Date.now();
+let then = now;
+let fps = 60;
 
 let spawnNow, spawnThen;
 
@@ -45,14 +44,28 @@ function getPresets(basis) {
  *
  *
  */
+function getViewportSize() {
+  let { clientWidth : width, clientHeight : height } = window.document.body;
+  return { width, height };
+}
+
+/**
+ *
+ *
+ */
 function main() {
-  // hide all the content
-  // gradient.style.visibility = "hidden";
+  // hide all the content and show the loader
   loader.style.zIndex = "99";
   loader.style.display = "block";
-  content.style.visibility = "hidden";
+  gradient.style.display = "none";
+  content.style.display = "none";
 
-  ({ scale, finalPath } = getPresets('screen-width'));
+  // this is for matching the DPI to keep the output crisp
+  let { width, height } = getViewportSize();
+  canvas.width = Math.ceil(width * scale);
+  canvas.height = Math.ceil(height * scale);
+  canvas.style.width = `${width}px`;
+  canvas.style.height = `${height}px`;
 
   mapRenderer = new MapEmitterRenderer(finalPath, window, canvas, { 
     sourceBackgroundColor: new Color(23, 23, 23, 255), 
@@ -61,20 +74,14 @@ function main() {
     targetActiveForegroundColor: new Color(0, 0, 0, 0)
   });
 
-  now = Date.now();
-  then = now;
-  fps = 60;
-
-  // this is for matching the DPI to keep the output crisp
-  canvas.width = Math.ceil(width * scale);
-  canvas.height = Math.ceil(height * scale);
-  canvas.style.width = `${width}px`;
-  canvas.style.height = `${height}px`;
-
+  // the callback function is called once the mapRenderer finishes loading
   mapRenderer.load(() => {
     setup();
     loop();
-    document.addEventListener("click", handleClickScreen);
+
+    // add event listeners for interaction and window resizing
+    document.addEventListener("click", handleClick);
+    window.addEventListener("resize", handleResize);
   });
 }
 
@@ -82,13 +89,15 @@ function main() {
  *
  */
 function setup() {
-  // gradient.style.visibility = "visible";
+  // hide the loader and show all content
   loader.style.display = "none";
-  content.style.visibility = "visible";
-  mapRenderer.setup();
-
+  gradient.removeAttribute("style");
+  content.removeAttribute("style");
+  
   spawnNow = Date.now();
   spawnThen = spawnNow;
+
+  mapRenderer.setup();
 }
 
 /**
@@ -134,11 +143,23 @@ function loop() {
 /**
  *
  */
-function handleClickScreen(event) {
+function handleClick(event) {
   if (mapRenderer.emitters.length >= 20) return;
-  let x = event.pageX * scale;
-  let y = event.pageY * scale;
+  let { width : sourceWidth, height : sourceHeight } = getViewportSize();
+  let { pageX : sourceX, pageY : sourceY } = event;
+  let { width : targetWidth, height : targetHeight } = canvas;
+  let x = Math.floor( (sourceX/sourceWidth) * parseInt(targetWidth) );
+  let y = Math.floor( (sourceY/sourceHeight) * parseInt(targetHeight) );
   mapRenderer.createEmitter(x, y, 250, 35000);
+}
+
+/**
+ *
+ */
+function handleResize(event) {
+  let { width, height } = getViewportSize();
+  canvas.style.width = `${width}px`;
+  canvas.style.height = `${height}px`;
 }
 
 main();
