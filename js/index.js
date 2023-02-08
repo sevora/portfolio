@@ -17,8 +17,9 @@ let fps = 60;
 let spawnNow, spawnThen;
 
 /**
- *
- *
+ * This is a helper function to quickly change settings.
+ * @param {String} basis can be 'DPI' or 'screen-width'.
+ * @returns an object with the values for scaling of canvas and finalPath of source image.
  */
 function getPresets(basis) {
   let basePath = "../images/background";
@@ -30,13 +31,11 @@ function getPresets(basis) {
         scale: devicePixelRatio,
         finalPath: devicePixelRatio > 1.0 ? `${basePath}/pattern-dpi-2x-3x.png` : `${basePath}/pattern-dpi-1x.png`,
       };
-      break;
     case 'screen-width':
       return {
         scale: Math.max(2.0, devicePixelRatio),
         finalPath: innerWidth > 480 ? `${basePath}/pattern-desktop.png` : `${basePath}/pattern-mobile.png`
       };
-      break;
   }
 }
 
@@ -50,8 +49,8 @@ function getViewportSize() {
 }
 
 /**
- *
- *
+ * The main function that is called initially
+ * when the page loads.
  */
 function main() {
   // hide all the content and show the loader
@@ -86,7 +85,7 @@ function main() {
 }
 
 /**
- *
+ * The setup step to call everything inside it once.
  */
 function setup() {
   // hide the loader and show all content
@@ -101,7 +100,7 @@ function setup() {
 }
 
 /**
- *
+ * Update step to be called repeatedly based on the game-loop implementation.
  */
 function update() {
   mapRenderer.update();
@@ -118,14 +117,15 @@ function update() {
 }
 
 /**
- *
+ * To be called after every update.
  */
 function render() {
   mapRenderer.render();
 }
 
 /**
- *
+ * This is the game-loop implementation that calls update and render
+ * at certain intervals.
  */
 function loop() {
     window.requestAnimationFrame(loop);
@@ -142,7 +142,8 @@ function loop() {
 }
 
 /**
- *
+ * This is called whenever the user clicks on any part
+ * of the window.
  */
 function handleClick(event) {
   if (mapRenderer.emitters.length >= 20) return;
@@ -155,9 +156,10 @@ function handleClick(event) {
 }
 
 /**
- *
+ * This is called when the window is resized.
+ * Not sophisticated.
  */
-function handleResize(event) {
+function handleResize(_event) {
   let { width, height } = getViewportSize();
   canvas.style.width = `${width}px`;
   canvas.style.height = `${height}px`;

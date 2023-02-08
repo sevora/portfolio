@@ -1,6 +1,5 @@
 import Color from "./Color.js";
 import MapEmitter from "./MapEmitter.js";
-import Queue from "./Queue.js";
 
 class MapEmitterRenderer {
   constructor(imagePath, windowElement, canvasElement, { sourceBackgroundColor=new Color(0, 0, 0), targetBackgroundColor=new Color(0, 0, 0), targetForegroundColor=new Color(100, 100, 100), targetActiveForegroundColor=new Color(255, 255, 255) }) {
@@ -33,7 +32,8 @@ class MapEmitterRenderer {
   }
 
   /**
-   * 
+   * use to load the image from imagePath where its pixel data will be used.
+   * @param {CallableFunction} onLoadCallback the callback function for when loading succeeds.
    */
   load(onLoadCallback) {
     let image = new Image();
@@ -65,7 +65,8 @@ class MapEmitterRenderer {
   }
 
   /**
-   * 
+   * Use to setup the MapEmitterRenderer for its initial state.
+   * As you can see it does a variety of things.
    */
   setup() {
     this._initializeSourceMap();
@@ -74,7 +75,7 @@ class MapEmitterRenderer {
   }
 
   /**
-   * 
+   * Use as an update step for the MapEmitterRenderer.
    */
   update() {
     for (let index = this.emitters.length-1; index >= 0; --index) {
@@ -110,15 +111,19 @@ class MapEmitterRenderer {
   }
 
   /**
-   * 
+   * Use to render the map.
    */
   render() {
     this.context.putImageData(this.targetData, 0, 0);
   }
 
   /**
-   *
-   *
+   * Use this to create or spawn an emitter.
+   * @param {Number} x The emitter's x-position.
+   * @param {Number} y The emitter's y-position.
+   * @param {Number} range How far is the range for the initial positions.
+   * @param {Number} spread How far does it spread.
+   * @param {Boolean} conservative Determines if the initial spread is conservative or not, conservative means less.
    */
   createEmitter(x, y, range, spread, conservative) {
     // this.value valid range is 2-255 only
@@ -127,7 +132,6 @@ class MapEmitterRenderer {
     } 
 
     let { sourceMap, width, height, value } = this;
-    let { length } = this.emitters;
     let emitter = new MapEmitter(sourceMap, width, height, { x, y, value, range, spread, conservative });
 
     // update this.value by 1 every time
@@ -137,8 +141,11 @@ class MapEmitterRenderer {
     this.emitters.push(emitter);
   }
 
-  /**
-   *
+   /**
+   * Use this to create or spawn an emitter at a random location.
+   * @param {Number} range How far is the range for the initial positions.
+   * @param {Number} spread How far does it spread.
+   * @param {Boolean} conservative Determines if the initial spread is conservative or not, conservative means less.
    */
   createRandomEmitter(range, spread, conservative) {
     let x = Math.floor(Math.random() * this.width);
@@ -147,7 +154,9 @@ class MapEmitterRenderer {
   }
 
   /**
-   * 
+   * Treat as private, initializes the source map value which is a simplified
+   * version of the pixel data. Pixel data contains 4 elements per pixel (rgba), this 
+   * one only contains 1 element per pixel indicating their state in the map.
    */
   _initializeSourceMap() {
     let { data : pixels } = this.sourceData;
@@ -174,7 +183,8 @@ class MapEmitterRenderer {
   }
 
   /**
-   *
+   * Treat as private, this is for faster iterations by storing the non-walls aka
+   * indices of the 0 elements in the source map.
    */
   _initializeSourceMapIndices() {
     let indices = new Uint32Array(this.sourceMap.length);
@@ -194,7 +204,8 @@ class MapEmitterRenderer {
   }
 
   /**
-   * 
+   * Treat as private, this initializes the targetData which will be rendered
+   * to the right pixel values for the source map to appear visually.
    */
   _initializeTargetData() {
     this.targetData = new ImageData(this.sourceData.width, this.sourceData.height);
