@@ -1,13 +1,15 @@
 import Color from "./Color.js";
 import MapEmitterRenderer from "./MapEmitterRenderer.js";
-import MapEmitter from "./MapEmitter.js";
 
 const loader = document.querySelector(".loader-layer");
 const content = document.querySelector(".content-layer");
 const gradient = document.querySelector(".gradient-layer");
 const canvas = document.querySelector(".cover-layer");
 
-let mapRenderer;
+/**
+ * @type {MapEmitterRenderer}
+ */
+let mapRenderer; 
 let { scale, finalPath } = getPresets('screen-width');
 
 let now = Date.now();
@@ -144,6 +146,7 @@ function loop() {
 /**
  * This is called whenever the user clicks on any part
  * of the window.
+ * @param {MouseEvent} event the mouse click event.
  */
 function handleClick(event) {
   if (mapRenderer.emitters.length >= 20) return;
@@ -152,7 +155,7 @@ function handleClick(event) {
   let { width : targetWidth, height : targetHeight } = canvas;
   let x = Math.floor( (sourceX/sourceWidth) * parseInt(targetWidth) );
   let y = Math.floor( (sourceY/sourceHeight) * parseInt(targetHeight) );
-  mapRenderer.createEmitter(x, y, 250, 35000);
+  mapRenderer.createEmitter(x, y, 250, 25000 * scale, false);
 }
 
 /**
