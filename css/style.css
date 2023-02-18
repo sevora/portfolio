@@ -105,6 +105,16 @@ a, a:visited {
   animation: gradient-animation 1s ease infinite;
 }
 
+.social-media-link {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;  
+}
+
+.social-media-link > img {
+    margin-right: 10px;
+}
+
 @keyframes gradient-animation {
   0% {
     background-position: 0% 50%;
