@@ -80,7 +80,7 @@ class MapEmitterRenderer {
   update() {
     for (let index = this.emitters.length-1; index >= 0; --index) {
       let emitter = this.emitters[index];
-      let speed = (emitter.isConservative ? 0.05 : 0.15) * emitter.spreadLimit;
+      let speed = (emitter.isConservative ? 0.10 : 0.20) * emitter.spreadLimit;
 
       for (let repeats = 0; repeats < speed; ++repeats) {
         emitter.update();

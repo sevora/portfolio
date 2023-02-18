@@ -10,7 +10,7 @@ const canvas = document.querySelector(".cover-layer");
  * @type {MapEmitterRenderer}
  */
 let mapRenderer; 
-let { scale, finalPath } = getPresets('screen-width');
+let { scale, finalPath, recommendedSpread } = getPresets('screen-width');
 
 let now = Date.now();
 let then = now;
@@ -32,11 +32,13 @@ function getPresets(basis) {
       return {
         scale: devicePixelRatio,
         finalPath: devicePixelRatio > 1.0 ? `${basePath}/pattern-dpi-2x-3x.png` : `${basePath}/pattern-dpi-1x.png`,
+        recommendedSpread: devicePixelRatio > 1.0 ? 20000 : 35000
       };
     case 'screen-width':
       return {
         scale: Math.max(2.0, devicePixelRatio),
-        finalPath: innerWidth > 480 ? `${basePath}/pattern-desktop.png` : `${basePath}/pattern-mobile.png`
+        finalPath: innerWidth > 480 ? `${basePath}/pattern-desktop.png` : `${basePath}/pattern-mobile.png`,
+        recommendedSpread: innerWidth > 480 ? 35000 : 20000
       };
   }
 }
@@ -155,8 +157,7 @@ function handleClick(event) {
   let { width : targetWidth, height : targetHeight } = canvas;
   let x = Math.floor( (sourceX/sourceWidth) * parseInt(targetWidth) );
   let y = Math.floor( (sourceY/sourceHeight) * parseInt(targetHeight) );
-  let spreadMultiplier = Math.max(targetWidth, targetHeight);
-  mapRenderer.createEmitter(x, y, 250, 15 * spreadMultiplier, false);
+  mapRenderer.createEmitter(x, y, 250, recommendedSpread, false);
 }
 
 /**
