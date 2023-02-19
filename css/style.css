@@ -100,9 +100,9 @@ a, a:visited {
 }
 
 .gradient-layer {
-  background: linear-gradient(300deg,deepskyblue,darkviolet,blue);
-  background-size: 180% 180%;
-  animation: gradient-animation 1s ease infinite;
+  background: linear-gradient(45deg,#2443ee, #ffa000, #7600ff, #fb3232);
+  background-size: 200% 200%;
+  animation: gradient-animation 5s linear infinite;
 }
 
 .social-media-link {
