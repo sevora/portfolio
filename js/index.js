@@ -110,8 +110,8 @@ function update() {
   mapRenderer.update();
 
   if (spawnNow - spawnThen >= 1000) {
-    for (let index = 0; index < 5; ++index) {
-      mapRenderer.createRandomEmitter(200, 20000, true);
+    for (let index = 0; index < 4; ++index) {
+      mapRenderer.createRandomEmitter(200, 18000, true);
     }
     spawnThen = spawnNow;
   }
