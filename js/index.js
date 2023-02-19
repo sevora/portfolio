@@ -32,13 +32,13 @@ function getPresets(basis) {
       return {
         scale: devicePixelRatio,
         finalPath: devicePixelRatio > 1.0 ? `${basePath}/pattern-dpi-2x-3x.png` : `${basePath}/pattern-dpi-1x.png`,
-        recommendedSpread: devicePixelRatio > 1.0 ? 20000 : 35000
+        recommendedSpread: devicePixelRatio > 1.0 ? 27000 : 35000
       };
     case 'screen-width':
       return {
         scale: Math.max(2.0, devicePixelRatio),
         finalPath: innerWidth > 480 ? `${basePath}/pattern-desktop.png` : `${basePath}/pattern-mobile.png`,
-        recommendedSpread: innerWidth > 480 ? 35000 : 20000
+        recommendedSpread: innerWidth > 480 ? 35000 : 27000
       };
   }
 }
@@ -72,8 +72,8 @@ function main() {
 
   mapRenderer = new MapEmitterRenderer(finalPath, window, canvas, { 
     sourceBackgroundColor: new Color(23, 23, 23, 255), 
-    targetBackgroundColor: new Color(0, 0, 139, 255),
-    targetForegroundColor: new Color(8, 22, 209, 255),
+    targetBackgroundColor: new Color(0, 0, 0, 255), // 139 255
+    targetForegroundColor: new Color(20, 20, 20, 255), // (8, 22, 209, 255)
     targetActiveForegroundColor: new Color(0, 0, 0, 0)
   });
 
@@ -110,8 +110,8 @@ function update() {
   mapRenderer.update();
 
   if (spawnNow - spawnThen >= 1000) {
-    for (let index = 0; index < 3; ++index) {
-      mapRenderer.createRandomEmitter(100, 15000, true);
+    for (let index = 0; index < 5; ++index) {
+      mapRenderer.createRandomEmitter(200, 20000, true);
     }
     spawnThen = spawnNow;
   }
