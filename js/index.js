@@ -1,81 +1,172 @@
-import MoveGenerator from "./MoveGenerator";
+import Color from "./Color.js";
+import MapEmitterRenderer from "./MapEmitterRenderer.js";
 
-// elements refer to the elements that should be scattered
-let elements = document.querySelectorAll(".scatter-parent");
-let generators = []; // has all the generators
-let queue = [];      // has the generators in queue for queueing the updates
+const loader = document.querySelector(".loader-layer");
+const content = document.querySelector(".content-layer");
+const gradient = document.querySelector(".gradient-layer");
+const canvas = document.querySelector(".cover-layer");
 
+/**
+ * @type {MapEmitterRenderer}
+ */
+let mapRenderer; 
+let { scale, finalPath, recommendedSpread } = getPresets('screen-width');
+
+let now = Date.now();
+let then = now;
+let fps = 60;
+
+let spawnNow, spawnThen;
+
+/**
+ * This is a helper function to quickly change settings.
+ * @param {String} basis can be 'DPI' or 'screen-width'.
+ * @returns an object with the values for scaling of canvas and finalPath of source image.
+ */
+function getPresets(basis) {
+  let basePath = "../images/background";
+  let { devicePixelRatio, innerWidth } = window;
+
+  switch (basis) {
+    case 'DPI':
+      return {
+        scale: devicePixelRatio,
+        finalPath: devicePixelRatio > 1.0 ? `${basePath}/pattern-dpi-2x-3x.png` : `${basePath}/pattern-dpi-1x.png`,
+        recommendedSpread: devicePixelRatio > 1.0 ? 27000 : 35000
+      };
+    case 'screen-width':
+      return {
+        scale: Math.max(2.0, devicePixelRatio),
+        finalPath: innerWidth > 480 ? `${basePath}/pattern-desktop.png` : `${basePath}/pattern-mobile.png`,
+        recommendedSpread: innerWidth > 480 ? 35000 : 27000
+      };
+  }
+}
+
+/**
+ *
+ *
+ */
+function getViewportSize() {
+  let { clientWidth : width, clientHeight : height } = window.document.body;
+  return { width, height };
+}
+
+/**
+ * The main function that is called initially
+ * when the page loads.
+ */
 function main() {
-    let particlesConfigPath = `assets/particlesjs-config${ window.innerWidth > 600 ? '' : '-mobile'}.json`;
-    particlesJS.load('particles', particlesConfigPath);
+  // show the loader
+  loader.style.zIndex = "99";
+  loader.style.display = "block";
 
-    // first we generate and scatter all the moving text
-    for (let index = 0; index < elements.length; ++index) {
-        generators.push( new MoveGenerator(elements[index]) );
-        generators[index].scatterOnParent();
-    }
+  // this is for matching the DPI to keep the output crisp
+  let { width, height } = getViewportSize();
+  canvas.width = Math.ceil(width * scale);
+  canvas.height = Math.ceil(height * scale);
+  canvas.style.width = `${width}px`;
+  canvas.style.height = `${height}px`;
 
-    // add an event listener for the scrolling
-    document.body.addEventListener('scroll', function() { 
-      updateGeneratorsOnView(true); 
-    });
+  mapRenderer = new MapEmitterRenderer(finalPath, window, canvas, { 
+    sourceBackgroundColor: new Color(23, 23, 23, 255), 
+    targetBackgroundColor: new Color(0, 0, 0, 255), // 139 255
+    targetForegroundColor: new Color(20, 20, 20, 255), // (8, 22, 209, 255)
+    targetActiveForegroundColor: new Color(0, 0, 0, 0)
+  });
 
-    // start the animation after a few milliseconds
-    setTimeout(function() {
-      updateGeneratorsOnView(false); 
-    }, 1500);
+  // the callback function is called once the mapRenderer finishes loading
+  mapRenderer.load(() => {
+    setup();
+    loop();
+
+    // add event listeners for interaction and window resizing
+    document.addEventListener("click", handleClick);
+    window.addEventListener("resize", handleResize);
+  });
 }
 
 /**
- * this is specifically used as a callback for the queue
- * @param {MoveGenerator} generator a MoveGenerator instance
- * @returns null
+ * The setup step to call everything inside it once.
  */
-function queueCallback(_generator) {
-    queue.splice(0, 1);
-    if (queue.length > 0) {
-      queue[0].updateUntilDone(queueCallback);
-    }
-    return null;
+function setup() {
+  // hide the loader and show all content
+  loader.style.display = "none";
+  gradient.removeAttribute("style");
+  content.removeAttribute("style");
+  
+  spawnNow = Date.now();
+  spawnThen = spawnNow;
+
+  mapRenderer.setup();
 }
 
 /**
- * this updates the queue depending on if the elements with generators
- * are on view.
+ * Update step to be called repeatedly based on the game-loop implementation.
  */
-function updateGeneratorsOnView(prioritizeNew) {
-    // this is used so that the queue code isn't run again
-    // unless the queue is empty (refer to last line in function)
-    let runUpdate = queue.length == 0;
+function update() {
+  mapRenderer.update();
 
-    for (let index = 0; index < generators.length; ++index) {
-        let generator = generators[index];
-
-        // optimization here with the order of conditions
-        // checking if done is the fastest, checking if in queue prevents bloat in queue,
-        // and finally checking if in viewport last        
-        if (!generator.isDone() && !queue.includes(generator) && generator.isInViewport()) {
-          if (prioritizeNew) {
-            queue.unshift(generator);
-            continue;
-          } 
-          queue.push(generator);
-        }
+  if (spawnNow - spawnThen >= 1000) {
+    for (let index = 0; index < 4; ++index) {
+      mapRenderer.createRandomEmitter(200, 18000, true);
     }
+    spawnThen = spawnNow;
+  }
 
-    // this one only runs the queue code if necessary 
-    if (queue.length > 0 && runUpdate) {
-      queue[0].updateUntilDone(queueCallback);
+  spawnNow = Date.now();
+  
+}
+
+/**
+ * To be called after every update.
+ */
+function render() {
+  mapRenderer.render();
+}
+
+/**
+ * This is the game-loop implementation that calls update and render
+ * at certain intervals.
+ */
+function loop() {
+    window.requestAnimationFrame(loop);
+
+    now = Date.now();
+    let elapsed = now - then;
+    let interval = 1000 / fps;
+
+    if (elapsed > interval) {
+        then = now - (elapsed % interval);
+        update();
+        render();
     }
 
 }
 
-// wait for the whole window to load
-window.onload = function() { 
-    // reload to fix weird getClientBoundingRect
-    if ( !sessionStorage.getItem('reload') ) { 
-        sessionStorage.setItem('reload', '1');
-        window.location.reload(); 
-    }
-    main(); 
+/**
+ * This is called whenever the user clicks on any part
+ * of the window.
+ * @param {MouseEvent} event the mouse click event.
+ */
+function handleClick(event) {
+  if (mapRenderer.emitters.length >= 20) return;
+  let { width : sourceWidth, height : sourceHeight } = getViewportSize();
+  let { pageX : sourceX, pageY : sourceY } = event;
+  let { width : targetWidth, height : targetHeight } = canvas;
+  let x = Math.floor( (sourceX/sourceWidth) * parseInt(targetWidth) );
+  let y = Math.floor( (sourceY/sourceHeight) * parseInt(targetHeight) );
+  mapRenderer.createEmitter(x, y, 250, recommendedSpread, false);
 }
+
+/**
+ * This is called when the window is resized.
+ * Not sophisticated.
+ */
+function handleResize(_event) {
+  let { width, height } = getViewportSize();
+  canvas.style.width = `${width}px`;
+  canvas.style.height = `${height}px`;
+}
+
+main();

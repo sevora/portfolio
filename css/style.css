@@ -1,124 +1,147 @@
+:root {
+    --text-color: #ededed;
+    --background-color: #000;
+}
+
+/* 
+ * Remove the blue box when tapping on elements on mobile, happens 
+ * when tapping on an element with cursor:pointer;
+ */
+/*
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+*/
+
 html, body {
+    color: var(--text-color);
     max-width: 100%;
     height: 100vh;
+    font-size: 12px;
 
     margin: 0;
+    padding: 0;
     overflow-x: hidden;
 
-    font-family: "Roboto Mono";
-    background-color: #171717;
+    font-family: Arial;
+    background-color: var(--background-color);
     scroll-behavior: smooth;
 }
 
 a, a:visited {
-    color: #DA0037;
-}
-
-.content {
-    color: #EDEDED;
-    text-align: left;
-    padding: 10px 15px;
-    z-index: 2;
-    overflow: hidden;
-}
-
-div + div {
-    padding-top: 15px;
-}
-
-.middle-content > * {
-    margin-bottom: 15px;
-}
-
-.hero, .middle-content {
-    width: 100%;
-    padding: 0;
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    
-    text-align: left;
+    color: var(--text-color);
 }
 
 .hero {
-    height: 100%;
-}
+    width: 100%;
+    height: 250px;
+    margin-top: 150px;
 
-.gradient-circle {
-    display: inline-block;
-    border-radius: 50%;
-    padding: 3px;
-    background-color: white;
-    background: linear-gradient(to bottom right, #b827fc 20%, #2c90fc 25%, #b8fd33 50%, #fec837 75%, #fd1892 100%);
-    animation: animatedgradient 10s ease alternate infinite;
-    background-size: 250% 250%;
-}
-
-.profile-image {
-    min-width: 100px;
-    min-height: 100px;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-image: url("../images/profile.jpg");
-    border-radius:50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*background: rgba(20, 20, 20, 0.5);*/
 }
 
 .hero .content {
-    color: #EDEDED;
+    font-family: Archive;
+    font-size: 3rem;
+    text-align: center;
+
+    padding: 20px;
+    border: 5px solid var(--text-color);
 }
 
-.heading {
-    font-size: 36px;
+.section {
+    font-family: Archive;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
 }
 
-.subtitle {
-    color: #DA0037;
-    padding-bottom: 15px;
+.section .content {
+    max-width: 65%;
 }
 
-.middle-content .content {
-    width: 70%;
-}
-
-.middle-content {
-    margin-bottom: 75px;
-}
-
-/*.scatter-parent, .scatter-parent span {
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}*/
-
-#particles {
-    width: 100%;
-    height: 100%;
-    opacity: 0.4;
-
+.loader-layer, .content-layer, .cover-layer, .gradient-layer {
     position: fixed;
     top: 0;
     left: 0;
+}
+
+.loader-layer {
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--background-color);
+}
+
+.loader-layer > div {
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+}
+
+.content-layer {
+    position: fixed;
+    z-index: 3;
+    width: 100vw;
+    height: 100vh;
+}
+
+.cover-layer {
+    z-index: 2;
+}
+
+.gradient-layer {
+    width: 100vw;
+    height: 100vh;
     z-index: 1;
 }
 
-@font-face {
-    font-family: "Roboto Mono";
-    src: url(fonts/RobotoMono.ttf);
+.gradient-layer {
+  background: linear-gradient(45deg,#2443ee, #ffa000, #7600ff, #fb3232);
+  background-size: 200% 200%;
+  animation: gradient-animation 5s linear infinite;
 }
 
-@keyframes animatedgradient {
-	0% { background-position: 0% 50%; }
-	50% { background-position: 100% 50%; }
-	100% { background-position: 0% 50%; }
+.social-media-link {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;  
 }
 
-@media(min-width: 600px) {
-    .heading {
-        font-size: 48px;
+.social-media-link > img {
+    margin-right: 10px;
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@media (min-width: 480px) {
+    html, body {
+        font-size: 18px;
     }
+    
+    .hero .content {
+        font-size: 4rem;
+    }
+    
+    .section .content {
+        max-width: 50%;
+    }
+} 
+
+@font-face {
+    font-family: Archive;
+    src: url(fonts/Archive-Regular.ttf);
 }
