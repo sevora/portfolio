@@ -60,8 +60,6 @@ function main() {
   // hide all the content and show the loader
   loader.style.zIndex = "99";
   loader.style.display = "block";
-  gradient.style.display = "none";
-  content.style.display = "none";
 
   // this is for matching the DPI to keep the output crisp
   let { width, height } = getViewportSize();
@@ -94,6 +92,7 @@ function main() {
 function setup() {
   // hide the loader and show all content
   loader.style.display = "none";
+  
   gradient.removeAttribute("style");
   content.removeAttribute("style");
   
