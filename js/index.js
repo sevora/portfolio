@@ -44,8 +44,8 @@ function getPresets(basis) {
 }
 
 /**
- *
- *
+ * This gets the viewport size and returns it as an object
+ * @returns an object with width and height keys and number (in pixels) as values
  */
 function getViewportSize() {
   let { clientWidth : width, clientHeight : height } = window.document.body;
@@ -102,7 +102,8 @@ function setup() {
 }
 
 /**
- * Update step to be called repeatedly based on the game-loop implementation.
+ * Update step to be called repeatedly based on the 
+ * game-loop implementation.
  */
 function update() {
   mapRenderer.update();
@@ -126,8 +127,8 @@ function render() {
 }
 
 /**
- * This is the game-loop implementation that calls update and render
- * at certain intervals.
+ * This is the game-loop implementation that calls 
+ * update and render at certain intervals.
  */
 function loop() {
     window.requestAnimationFrame(loop);
@@ -162,6 +163,7 @@ function handleClick(event) {
 /**
  * This is called when the window is resized.
  * Not sophisticated.
+ * @param {Event} _event 
  */
 function handleResize(_event) {
   let { width, height } = getViewportSize();
