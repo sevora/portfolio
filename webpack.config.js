@@ -1,24 +1,22 @@
 const path = require('path');
 
 module.exports = {
-    mode: "production",
-    entry: "./js/index.js",
-    output: {
-        path: path.resolve(__dirname, "assets/bundle/"),
-        filename: "index.min.js"
-    },
-    module: {
-        rules: [
-          {
-            test: /\.m?js$/,
-            exclude: /node_modules/,
-            use: {
-              loader: "babel-loader",
-              options: {
-                presets: ['@babel/preset-env']
-              }
-            }
-          }
-        ]
-    }
-}
+  entry: './src/index.ts',
+  mode: 'production',
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      }
+    ]
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
+  },
+  output: {
+    filename: 'bundle/index.min.js',
+    path: path.resolve(__dirname, 'assets')
+  }
+};
