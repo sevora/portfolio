@@ -2,17 +2,20 @@ import 'animate.css';
 import InteractiveWatch from './InteractiveWatch';
 import onViewportChange from './onViewportChange';
 
+// a vector interface
 interface Vector {
     x: number;
     y: number
 }
 
+// a mouse state interface
 interface MouseState {
     previous: Vector | null;
     current: Vector | null;
     pressed: boolean;
 }
 
+const root = document.querySelector('#root')!;
 const scrollable = document.querySelector('#scrollable')!;
 const canvas = document.querySelector('canvas')!;
 const context = canvas.getContext('2d');
@@ -29,6 +32,7 @@ let fps = 30;
  * This is the entrypoint of the program.
  */
 async function main() {
+    root.classList.remove('hidden');
     scrollable.querySelector('#centerpoint')!.scrollIntoView({ behavior: 'instant', block: 'center', inline: 'center' });
 
     document.querySelectorAll('[data-scroll-class]').forEach((element: HTMLElement) => {

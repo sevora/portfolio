@@ -11,6 +11,7 @@ html, body {
     padding: 0px;
 
     font-family: 'Times New Roman', Times, serif;
+    font-size: calc(0.75em + 1vmin);
     color: var(--text);
     background-color: var(--background);
 
@@ -23,6 +24,7 @@ html, body {
 
 header {
     color: var(--text);
+    background-color: var(--background);
     width: 100%;
     padding: 7px 10px;
     border-bottom: 1px solid #ddd;
@@ -52,6 +54,7 @@ h1, h2, h3, h4, h5, h6 {
 canvas {
     width: 200px;
     height: auto;
+    margin-bottom: 30px;
 }
 
 #root {
@@ -59,7 +62,7 @@ canvas {
     height: 100%;
 
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
 
     flex-direction: column;
@@ -68,8 +71,9 @@ canvas {
 }
 
 #scrollable {
-    max-height: 300px;
+    height: 65%;
     overflow: scroll;
+    overflow: -moz-scrollbars-none;
 }
 
 #scrollable::-webkit-scrollbar {
@@ -111,7 +115,7 @@ canvas {
 }
 
 .spacer {
-    margin: 200px 0 250px 0;
+    margin: 300px 0 250px 0;
 }
 
 .hidden {
@@ -121,7 +125,7 @@ canvas {
 /* portrait smartphones */
 @media screen and (min-width: 300px) {
     canvas {
-        width: 250px;
+        width: 200px;
     }
 }
 
@@ -130,6 +134,10 @@ canvas {
     #root {      
         width: 60%;
         flex-direction: row;
+    }
+
+    canvas {
+        width: 250px;
     }
 
     header img {
