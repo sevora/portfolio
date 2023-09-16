@@ -11,7 +11,7 @@ html, body {
     padding: 0px;
 
     font-family: 'Times New Roman', Times, serif;
-    font-size: clamp(1.0rem, 1vh, 2rem);
+    font-size: clamp(1rem, 2.5vh, 2rem);
     color: var(--text);
     background-color: var(--background);
 
@@ -91,9 +91,11 @@ canvas {
 
 .button {
     opacity: 0.6;
+    color: var(--text);
     transition-duration: 0.5s;
     text-decoration: none;
     font-weight: bold;
+    font-size: clamp(1rem, 2.5vh, 2rem);
     font-family: BelgianoSerif, 'Times New Roman', Times, serif;
 }
 
