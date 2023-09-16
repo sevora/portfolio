@@ -21,6 +21,8 @@ const canvas = document.querySelector('canvas')!;
 const context = canvas.getContext('2d');
 const watch = new InteractiveWatch();
 
+let angleHistory: number[] = []; 
+
 let mouseState: MouseState = { previous: null, current: null, pressed: false };
 let mouseVectorLatest: Vector | null = null;
 
@@ -92,9 +94,11 @@ function setup() {
  */
 function update() {
     // update the current and previous mouse events
-    mouseState.previous = mouseState.current;
-    mouseState.current = mouseVectorLatest;
-    
+    if (mouseState.pressed) {
+        mouseState.previous = mouseState.current;
+        mouseState.current = mouseVectorLatest;
+    }
+
     // this is the logic to compute how much the angle of the watch has changed
     if (mouseState.pressed && mouseState.previous && mouseState.current && !watch.isResetting) {
         const canvasBoundingBox = canvas.getBoundingClientRect();
@@ -109,10 +113,17 @@ function update() {
         const currentY =  mouseState.current.y - originY;
         const currentAngle = atan2(currentY, currentX);
         
-        // convert to degrees, then limit it
-        const totalAngle = (currentAngle - previousAngle) % 30;
-        if ( (scrollable.scrollTop > 0) || (scrollable.scrollTop + scrollable.clientHeight < scrollable.scrollHeight) ) scrollable.scrollTop += totalAngle;
-        watch.applyRotation(totalAngle);
+        // compute the change in angle 
+        let deltaAngle = Math.floor(currentAngle - previousAngle);
+
+        // if the change is more than 180 we want to set it to 1 instead
+        // I realized, that the not so smooth happenings always happened on
+        // an opposite direction
+        if (Math.abs(deltaAngle) >= 180) 
+            deltaAngle = Math.sign(deltaAngle) * 1;
+
+        scrollable.scrollTop += deltaAngle;
+        watch.applyRotation(deltaAngle);
         window.dispatchEvent(new CustomEvent('customscroll'));
     }
 
@@ -126,9 +137,7 @@ function update() {
  * @param x A numeric expression representing the cartesian x-coordinate.
  */
 function atan2(y: number, x: number) {
-    const radians = Math.atan2(y, x);
-    const degrees = (radians > 0 ? radians : (2 * Math.PI + radians)) * 360 / (2 * Math.PI);
-    return degrees;
+    return Math.atan2(y, x) / Math.PI * 180;
 }
 
 /**
@@ -160,6 +169,8 @@ function resetMouseState() {
     mouseState.previous = null;
     mouseState.current = null;
     mouseState.pressed = false;
+    mouseVectorLatest = null;
+    angleHistory = [];
 }
 
 /**
