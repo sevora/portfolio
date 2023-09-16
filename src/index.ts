@@ -2,9 +2,14 @@ import 'animate.css';
 import InteractiveWatch from './InteractiveWatch';
 import onViewportChange from './onViewportChange';
 
+interface Vector {
+    x: number;
+    y: number
+}
+
 interface MouseState {
-    previous: MouseEvent | null;
-    current: MouseEvent | null;
+    previous: Vector | null;
+    current: Vector | null;
     pressed: boolean;
 }
 
@@ -14,7 +19,7 @@ const context = canvas.getContext('2d');
 const watch = new InteractiveWatch();
 
 let mouseState: MouseState = { previous: null, current: null, pressed: false };
-let mouseEventLatest: MouseEvent | null = null;
+let mouseVectorLatest: Vector | null = null;
 
 let now = Date.now();
 let then = now;
@@ -64,7 +69,7 @@ function setup() {
 function update() {
     // update the current and previous mouse events
     mouseState.previous = mouseState.current;
-    mouseState.current = mouseEventLatest;
+    mouseState.current = mouseVectorLatest;
     
     // this is the logic to compute how much the angle of the watch has changed
     if (mouseState.pressed && mouseState.previous && mouseState.current && !watch.isResetting) {
@@ -72,12 +77,12 @@ function update() {
         const originX = (canvasBoundingBox.left + canvasBoundingBox.right)/2;
         const originY = (canvasBoundingBox.top + canvasBoundingBox.bottom)/2;
 
-        const previousX = mouseState.previous.clientX - originX;
-        const previousY =  mouseState.previous.clientY - originY
+        const previousX = mouseState.previous.x - originX;
+        const previousY =  mouseState.previous.y - originY
         const previousAngle = atan2(previousY, previousX);
 
-        const currentX = mouseState.current.clientX - originX;
-        const currentY =  mouseState.current.clientY - originY;
+        const currentX = mouseState.current.x - originX;
+        const currentY =  mouseState.current.y - originY;
         const currentAngle = atan2(currentY, currentX);
         
         // convert to degrees, then limit it
@@ -126,21 +131,25 @@ function loop() {
     }
 }
 
-/**
- * This resets the mouse state to its default values.
- */
-window.addEventListener('mouseup', () => {
+function resetMouseState() {
     mouseState.previous = null;
     mouseState.current = null;
     mouseState.pressed = false;
-    watch.applyRotation(0);
-});
+}
 
 /**
  * This sets the mouse state to be pressed.
  */
-window.addEventListener('mousedown', (event) => {
+window.addEventListener('mousedown', () => {
     mouseState.pressed = true;
+});
+
+/**
+ * This resets the mouse state to its default values.
+ */
+window.addEventListener('mouseup', () => {
+    resetMouseState();
+    watch.applyRotation(0);
 });
 
 /**
@@ -148,8 +157,32 @@ window.addEventListener('mousedown', (event) => {
  * the latest mouse event.
  */
 window.addEventListener('mousemove', (event: MouseEvent) => {
-    mouseEventLatest = event;
+    mouseVectorLatest = { x: event.clientX, y: event.clientY };
 });
+
+/**
+ * Mobile devices use touch events instead, same logic, this is for touching down.
+ */
+window.addEventListener('touchstart', (event: TouchEvent) => {
+    event.preventDefault();
+    mouseState.pressed = true;
+}, { passive: false });
+
+/**
+ * This is for stopping the touch.
+ */
+window.addEventListener('touchend', () => {
+    resetMouseState();
+    watch.applyRotation(0);
+});
+
+/**
+ * This is for when the touch is being moved.
+ */
+window.addEventListener('touchmove', (event: TouchEvent) => {
+    event.preventDefault();
+    mouseVectorLatest = { x: event.touches[0].clientX, y: event.touches[0].clientY };
+}, { passive: false })
 
 /**
  * This prevents scrolling normally on the scrollable content.
