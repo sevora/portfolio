@@ -84,8 +84,8 @@ class InteractiveWatch {
         if (this.isResetting) {
             let repetitions = 0;
 
-            // when resetting, we use 2% of the base rotations
-            while (repetitions < this.baseRotations * 0.02) {
+            // when resetting, we use 1% of the base rotations
+            while (repetitions < this.baseRotations * 0.01) {
                 rotations.second -= Math.sign(rotations.second);
                 if (rotations.second === 0) {
                     this.isResetting = false;

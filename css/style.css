@@ -11,7 +11,7 @@ html, body {
     padding: 0px;
 
     font-family: 'Times New Roman', Times, serif;
-    font-size: clamp(1.1rem, 2.1vw, 3vh);
+    font-size: clamp(1rem, 3vw, 3.5vh);
     color: var(--text);
     background-color: var(--background);
 
@@ -59,7 +59,7 @@ canvas {
 }
 
 #root {
-    width: 80%;
+    width: 85%;
     height: 90%;
 
     display: flex;
@@ -72,7 +72,8 @@ canvas {
 }
 
 #scrollable {
-    height: 60%;
+    width: 100%;
+    height: 70%;
     overflow: scroll;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
