@@ -18,12 +18,19 @@ class InteractiveWatch {
     images: InteractiveWatchImages = { body: new Image(), hour: new Image(), minute: new Image(), second: new Image() };
     rotations: InteractiveWatchRotations = { body: 0, hour: 0, minute: 0, second: 0 }
 
+    //
     baseHour: number = 0;
+    baseRotations: number = 0;
 
+    //
     width: number = 0;
     height: number = 0;
 
+    //
     velocity: number = 0;
+
+    //
+    isResetting: boolean = false;
 
     /**
      * 
@@ -50,11 +57,19 @@ class InteractiveWatch {
 
     /**
      * 
-     * @param velocity 
+     */
+    resetRotation() {
+        this.isResetting = true;
+        this.baseRotations = Math.abs(this.rotations.second);
+    }
+
+    /**
+     * 
+     * @param degrees 
      * @param adjustToOneSecondDegree - by default, 1 unit = 1 degree. if set to true, 1 unit = 6 degrees
      */
-    applyVelocity(velocity: number, adjustToOneSecondDegree?: true) {
-        this.velocity = velocity * (adjustToOneSecondDegree ? 1 : 1/InteractiveWatch.DEGREES_PER_SECOND);
+    applyRotation(degrees: number, adjustToOneSecondDegree?: true) {
+        this.velocity = degrees * (adjustToOneSecondDegree ? 1 : 1/InteractiveWatch.DEGREES_PER_SECOND);
     }
 
     /**
@@ -62,7 +77,23 @@ class InteractiveWatch {
      */
     update() {
         const { rotations } = this;
-        rotations.second += Math.floor(InteractiveWatch.DEGREES_PER_SECOND * this.velocity);
+
+        if (this.isResetting) {
+            let repetitions = 0;
+
+            while (repetitions < this.baseRotations * 0.02) {
+                rotations.second -= Math.sign(rotations.second);
+                if (rotations.second === 0) {
+                    this.isResetting = false;
+                    break;
+                }
+                ++repetitions;
+            }
+        }
+
+        if (!this.isResetting) {
+            rotations.second += Math.floor(InteractiveWatch.DEGREES_PER_SECOND * this.velocity);
+        }
         
         // minute hand has snappy changes
         rotations.minute = Math.floor(rotations.second / InteractiveWatch.DEGREES_PER_SECOND / 60) * InteractiveWatch.DEGREES_PER_MINUTE;
