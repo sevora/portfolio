@@ -1,147 +1,148 @@
+/* Default values for extremely small screens- foldables */
 :root {
-    --text-color: #ededed;
-    --background-color: #000;
+    --text: #292b2b;
+    --background: #eee;
 }
-
-/* 
- * Remove the blue box when tapping on elements on mobile, happens 
- * when tapping on an element with cursor:pointer;
- */
-/*
-* {
-  -webkit-tap-highlight-color: transparent;
-}
-*/
 
 html, body {
-    color: var(--text-color);
-    max-width: 100%;
+    width: 100vw;
     height: 100vh;
-    font-size: 12px;
+    margin: 0px;
+    padding: 0px;
 
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-
-    font-family: Arial;
-    background-color: var(--background-color);
-    scroll-behavior: smooth;
-}
-
-a, a:visited {
-    color: var(--text-color);
-}
-
-.hero {
-    width: 100%;
-    height: 250px;
-    margin-top: 150px;
+    font-family: 'Times New Roman', Times, serif;
+    color: var(--text);
+    background-color: var(--background);
 
     display: flex;
     justify-content: center;
     align-items: center;
-    /*background: rgba(20, 20, 20, 0.5);*/
+
+    scroll-behavior: smooth !important;
 }
 
-.hero .content {
-    font-family: Archive;
-    font-size: 3rem;
-    text-align: center;
-
-    padding: 20px;
-    border: 5px solid var(--text-color);
-}
-
-.section {
-    font-family: Archive;
-    margin-bottom: 20px;
+header {
+    color: var(--text);
+    width: 100%;
+    padding: 7px 10px;
+    border-bottom: 1px solid #ddd;
+    
     display: flex;
-    justify-content: center;
-}
+    align-items: center;
+    justify-content: flex-end;
+    column-gap: 10px;
 
-.section .content {
-    max-width: 65%;
-}
-
-.loader-layer, .content-layer, .cover-layer, .gradient-layer {
     position: fixed;
     top: 0;
     left: 0;
 }
 
-.loader-layer {
-    width: 100vw;
-    height: 100vh;
-    background-color: var(--background-color);
+header img {
+    width: 25px;
 }
 
-.loader-layer > div {
-     position: absolute;
-     top: 50%;
-     left: 50%;
-     transform: translate(-50%, -50%);
+img { 
+    border-radius: 15px;
 }
 
-.content-layer {
-    position: fixed;
-    z-index: 3;
-    width: 100vw;
-    height: 100vh;
+h1, h2, h3, h4, h5, h6 {
+    font-family: BelgianoSerif, 'Times New Roman', Times, serif;
 }
 
-.cover-layer {
-    z-index: 2;
+canvas {
+    width: 200px;
+    height: auto;
 }
 
-.gradient-layer {
-    width: 100vw;
-    height: 100vh;
-    z-index: 1;
-}
+#root {
+    width: 70%;
+    height: 100%;
 
-.gradient-layer {
-  background: linear-gradient(45deg,#2443ee, #ffa000, #7600ff, #fb3232);
-  background-size: 200% 200%;
-  animation: gradient-animation 5s linear infinite;
-}
-
-.social-media-link {
-    margin-bottom: 10px;
     display: flex;
-    align-items: center;  
+    justify-content: center;
+    align-items: center;
+
+    flex-direction: column;
+    row-gap: 10px;
+    user-select: none;
 }
 
-.social-media-link > img {
-    margin-right: 10px;
+#scrollable {
+    max-height: 300px;
+    overflow: scroll;
 }
 
-@keyframes gradient-animation {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+#scrollable::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
 }
 
-@media (min-width: 480px) {
-    html, body {
-        font-size: 18px;
+.caption {
+    display: block;
+    font-size: 1.125rem;
+}
+
+.button {
+    opacity: 0.6;
+    transition-duration: 0.5s;
+    text-decoration: none;
+    font-weight: bold;
+    font-family: BelgianoSerif, 'Times New Roman', Times, serif;
+}
+
+.button:visited {
+    color: currentColor;
+}
+
+.button:hover {
+    opacity: 0.8;
+}
+
+.no-margin {
+    margin: 0px;
+}
+
+.low-margin {
+    margin: 5px 0px;
+}
+
+.center {
+    text-align: center;
+}
+
+.spacer {
+    margin: 200px 0 250px 0;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+/* portrait smartphones */
+@media screen and (min-width: 300px) {
+    canvas {
+        width: 250px;
     }
-    
-    .hero .content {
-        font-size: 4rem;
+}
+
+/* portrait tablets or desktops */
+@media screen and (min-width: 600px) {
+    #root {      
+        width: 60%;
+        flex-direction: row;
     }
-    
-    .section .content {
-        max-width: 50%;
+
+    header img {
+        width: 20px;
     }
-} 
+
+    .hero {
+        margin: 120px 0 250px 0;
+        text-align: center;
+    }
+}
 
 @font-face {
-    font-family: Archive;
-    src: url(fonts/Archive-Regular.ttf);
+    font-family: BelgianoSerif;
+    src: url("fonts/BelgianoSerif2.otf"), url("fonts/BelgianoSerif2.ttf");
 }
