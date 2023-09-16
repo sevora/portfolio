@@ -1,6 +1,6 @@
 // import 'animate.css'; // we don't need to import this anymore
 import InteractiveWatch from './InteractiveWatch';
-import { onViewportChange, EfficientViewportObserver } from './viewport';
+import { EfficientViewportObserver } from './viewport';
 
 // a vector interface
 interface Vector {
@@ -19,6 +19,7 @@ const SCROLL_DIFFERENCE_CHECK = 20;
 
 const root = document.querySelector('#root')!;
 const scrollable = document.querySelector('#scrollable')!;
+const centerpoint = document.querySelector('#centerpoint')!;
 const canvas = document.querySelector('canvas')!;
 const context = canvas.getContext('2d');
 const watch = new InteractiveWatch();
@@ -56,7 +57,6 @@ async function main() {
     window.addEventListener('customscroll', handler, false);
     dispatchEvent( new CustomEvent('customscroll') );
 
-
     // this allows us to use smooth-scroll on anchor tags
     document.querySelectorAll('a.smooth-scroll').forEach((element: HTMLAnchorElement) => {
 
@@ -71,8 +71,9 @@ async function main() {
             targetElement.focus({ preventScroll: true });
             viewportObserver.reset();
 
-            // we want to trigger custom scroll again after resetting viewport observer
-            setTimeout(() => dispatchEvent( new CustomEvent('customscroll') ), 500);
+            // manually resetting the classes to show it as there is no callback for scrollIntoView
+            centerpoint.classList.remove('hidden');
+            centerpoint.classList.add(...(centerpoint as HTMLElement).dataset.scrollClass.split(' '));
 
             if (targetProperty === '#centerpoint') watch.resetRotation();
         });

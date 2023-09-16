@@ -11,7 +11,6 @@ const ADJUST_TOP_HEIGHT_REQUIREMENT = 100;
 function isElementInViewport(element: Element) {
     const rectangle = element.getBoundingClientRect();
     
-    element.clientTop
     return rectangle.bottom > 0 &&
            rectangle.right > 0 &&
            rectangle.left < (window.innerWidth || document.documentElement.clientWidth) &&
@@ -82,7 +81,9 @@ class EfficientViewportObserver {
         return () => {
             let resultingAnchorIndex = -1;
             const currentElement = this.children[this.anchorIndex];
-
+            
+            callback(isElementInViewport(currentElement), currentElement);
+            
             if (this.anchorIndex - 1 > 0) {
                 const index = this.anchorIndex - 1;
                 const previousElement = this.children[index];
@@ -111,8 +112,6 @@ class EfficientViewportObserver {
                 if (isNextElementInViewport) resultingAnchorIndex = index;
             }
 
-            callback(isElementInViewport(currentElement), currentElement);
-            
             // update the current anchor if resulting anchor has been determined
             if (resultingAnchorIndex > -1) 
                 this.anchorIndex = resultingAnchorIndex;
