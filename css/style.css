@@ -100,7 +100,7 @@ canvas {
 }
 
 .button:visited {
-    color: currentColor;
+    color: var(--text);
 }
 
 .button:hover {
