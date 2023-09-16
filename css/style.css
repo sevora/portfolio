@@ -11,7 +11,7 @@ html, body {
     padding: 0px;
 
     font-family: 'Times New Roman', Times, serif;
-    font-size: clamp(1rem, 2.5vh, 2rem);
+    font-size: clamp(1.1rem, 2.1vw, 3vh);
     color: var(--text);
     background-color: var(--background);
 
@@ -137,7 +137,7 @@ canvas {
 /* portrait tablets or desktops */
 @media screen and (min-width: 600px) {
     #root {      
-        width: 60%;
+        width: 55%;
         flex-direction: row;
     }
 
@@ -146,7 +146,7 @@ canvas {
     }
 
     canvas {
-        width: 250px;
+        width: 400px;
     }
 
     header img {
