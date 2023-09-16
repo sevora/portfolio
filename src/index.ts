@@ -31,11 +31,31 @@ let fps = 30;
 async function main() {
     scrollable.querySelector('#centerpoint')!.scrollIntoView({ behavior: 'instant', block: 'center', inline: 'center' });
 
-    document.querySelectorAll('.smooth-scroll').forEach(element => {
+    document.querySelectorAll('[data-scroll-class]').forEach((element: HTMLElement) => {
+        const handler = onViewportChange(element, (isInViewport) => {
+            const classes = element.dataset.scrollClass.split(' ');
+            if (isInViewport) {
+                element.classList.remove('hidden');
+                element.classList.add(...classes);
+                return
+            }
+            element.classList.add('hidden');
+            element.classList.remove(...classes);
+        });
+
+        window.addEventListener('customscroll', handler, false);
+    });
+
+    // this allows us to use smooth-scroll on anchor tags
+    document.querySelectorAll('a.smooth-scroll').forEach((element: HTMLAnchorElement) => {
+
+        // automatically binds click event listener for smooth scroll
         element.addEventListener('click', (event) => {
             event.preventDefault();
+            
+            const target = element.getAttribute('href');
             document.querySelector(element.getAttribute('href')).scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
-            watch.resetRotation();
+            if (target === '#centerpoint') watch.resetRotation();
         });
     });
 
@@ -89,6 +109,7 @@ function update() {
         const totalAngle = (currentAngle - previousAngle) % 30;
         if ( (scrollable.scrollTop > 0) || (scrollable.scrollTop + scrollable.clientHeight < scrollable.scrollHeight) ) scrollable.scrollTop += totalAngle;
         watch.applyRotation(totalAngle);
+        window.dispatchEvent(new CustomEvent('customscroll'));
     }
 
     // this must always be called to update the watch
@@ -163,8 +184,7 @@ window.addEventListener('mousemove', (event: MouseEvent) => {
 /**
  * Mobile devices use touch events instead, same logic, this is for touching down.
  */
-window.addEventListener('touchstart', (event: TouchEvent) => {
-    event.preventDefault();
+window.addEventListener('touchstart', () => {
     mouseState.pressed = true;
 }, { passive: false });
 

@@ -1,15 +1,15 @@
 import loadImage from './loadImage';
 
-//
+// these are the components of the watch
 type InteractiveWatchPart = "body" | "hour" | "minute" | "second";
 
-//
+// enumerated types from a part
 type InteractiveWatchImagePaths = { [part in InteractiveWatchPart]: string; }
 type InteractiveWatchImages = { [part in InteractiveWatchPart]: HTMLImageElement; }
 type InteractiveWatchRotations = { [part in InteractiveWatchPart]: number }
 
 class InteractiveWatch {
-    //
+    // these are constants that is used by this class in order to properly compute values
     static DEGREES_PER_SECOND = 360/60;
     static DEGREES_PER_MINUTE = 360/60;
     static DEGREES_PER_HOUR = 360/12;
@@ -18,23 +18,24 @@ class InteractiveWatch {
     images: InteractiveWatchImages = { body: new Image(), hour: new Image(), minute: new Image(), second: new Image() };
     rotations: InteractiveWatchRotations = { body: 0, hour: 0, minute: 0, second: 0 }
 
-    //
+    // these are base values that will be captured and changed accordingly
     baseHour: number = 0;
     baseRotations: number = 0;
 
-    //
+    // this is here to save computational power by storing the width and height that 
+    // shouldn't change
     width: number = 0;
     height: number = 0;
 
-    //
+    // refers to the velocity of the second-hand
     velocity: number = 0;
 
-    //
+    // refers to if the watch is being reset
     isResetting: boolean = false;
 
     /**
-     * 
-     * @param paths 
+     * Use this to load the watch part images.
+     * @param paths the paths/URLs of each watch part
      */
     async load(paths: InteractiveWatchImagePaths) {
         for (const part in paths) {
@@ -44,8 +45,8 @@ class InteractiveWatch {
     }
 
     /**
-     * 
-     * @param canvas 
+     * Use this to precompute the sizes it will use for rendering.
+     * @param canvas the canvas element from which it should be rendered from.
      */
     computeSizesFromCanvas(canvas: HTMLCanvasElement) {
         const { body } = this.images;
@@ -56,7 +57,8 @@ class InteractiveWatch {
     }
 
     /**
-     * 
+     * Use this to reset the rotation of the watch, 
+     * should trigger rotation inverse direction to get to 0.
      */
     resetRotation() {
         this.isResetting = true;
@@ -64,16 +66,17 @@ class InteractiveWatch {
     }
 
     /**
-     * 
-     * @param degrees 
-     * @param adjustToOneSecondDegree - by default, 1 unit = 1 degree. if set to true, 1 unit = 6 degrees
+     * Use this to rotate the watch hands.
+     * @param unit how much to rotate.
+     * @param adjustToOneSecondDegree by default, 1 unit = 1 degree. if set to true, 1 unit = 6 degrees
      */
-    applyRotation(degrees: number, adjustToOneSecondDegree?: true) {
-        this.velocity = degrees * (adjustToOneSecondDegree ? 1 : 1/InteractiveWatch.DEGREES_PER_SECOND);
+    applyRotation(unit: number, adjustToOneSecondDegree?: true) {
+        this.velocity = unit * (adjustToOneSecondDegree ? 1 : 1/InteractiveWatch.DEGREES_PER_SECOND);
     }
 
     /**
-     * 
+     * This is the logical update of this object.
+     * Must be called during the update stage.
      */
     update() {
         const { rotations } = this;
@@ -81,6 +84,7 @@ class InteractiveWatch {
         if (this.isResetting) {
             let repetitions = 0;
 
+            // when resetting, we use 2% of the base rotations
             while (repetitions < this.baseRotations * 0.02) {
                 rotations.second -= Math.sign(rotations.second);
                 if (rotations.second === 0) {
@@ -107,8 +111,8 @@ class InteractiveWatch {
     }
 
     /**
-     * 
-     * @param context 
+     * Use this to render the object into the canvas.
+     * @param context the canvas context where it would be rendered on.
      */
     render(context: CanvasRenderingContext2D) {
         const { width, height } = this;

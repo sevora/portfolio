@@ -41,6 +41,10 @@ header img {
     width: 25px;
 }
 
+img { 
+    border-radius: 15px;
+}
+
 h1, h2, h3, h4, h5, h6 {
     font-family: BelgianoSerif, 'Times New Roman', Times, serif;
 }
@@ -110,21 +114,19 @@ canvas {
     margin: 200px 0 250px 0;
 }
 
+.hidden {
+    visibility: hidden;
+}
+
 /* portrait smartphones */
 @media screen and (min-width: 300px) {
     canvas {
         width: 250px;
     }
-
-}
-
-/* landscape smartphones */
-@media screen and (min-width: 600px) {
-
 }
 
 /* portrait tablets or desktops */
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 600px) {
     #root {      
         width: 60%;
         flex-direction: row;
