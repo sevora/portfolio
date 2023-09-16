@@ -56,12 +56,12 @@ h1, h2, h3, h4, h5, h6 {
 canvas {
     width: 200px;
     height: auto;
-    padding-bottom: 50px;
 }
 
 #root {
     width: 80%;
     height: 100%;
+    padding-bottom: 30px;
 
     display: flex;
     justify-content: flex-end;
@@ -138,6 +138,7 @@ canvas {
     #root {      
         width: 60%;
         flex-direction: row;
+        padding-bottom: 0px;
     }
 
     canvas {

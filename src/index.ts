@@ -26,7 +26,7 @@ let mouseVectorLatest: Vector | null = null;
 
 let now = Date.now();
 let then = now;
-let fps = 30;
+let fps = 120;
 
 /**
  * This is the entrypoint of the program.
