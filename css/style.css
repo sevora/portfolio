@@ -73,7 +73,7 @@ canvas {
 
 #scrollable {
     width: 100%;
-    height: 70%;
+    height: 60%;
     overflow: scroll;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
@@ -147,7 +147,7 @@ canvas {
     }
 
     canvas {
-        width: 400px;
+        width: 250px;
     }
 
     header img {
@@ -157,6 +157,18 @@ canvas {
     .hero {
         margin: 120px 0 250px 0;
         text-align: center;
+    }
+
+    .spacer {
+        margin: 550px 0;
+    }
+}
+
+
+/* portrait tablets or desktops */
+@media screen and (min-width: 1200px) {
+    canvas {
+        width: 450px;
     }
 }
 
