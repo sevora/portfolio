@@ -18,9 +18,14 @@
   },
   "homepage": "https://github.com/sevora/portfolio#readme",
   "devDependencies": {
+    "css-loader": "^6.8.1",
+    "style-loader": "^3.3.3",
     "ts-loader": "^9.4.4",
     "typescript": "^5.2.2",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0"
+  },
+  "dependencies": {
+    "animate.css": "^4.1.1"
   }
 }

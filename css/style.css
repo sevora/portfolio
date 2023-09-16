@@ -1,4 +1,105 @@
+/* Default values for extremely small screens- foldables */
+:root {
+    --text: #292b2b;
+    --background: #eee;
+}
+
+html, body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0px;
+    padding: 0px;
+
+    font-family: 'Times New Roman', Times, serif;
+    color: var(--text);
+    background-color: var(--background);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header {
+    color: var(--text);
+    width: 100%;
+    padding: 2px 10px;
+    border-bottom: 1px solid #ddd;
+    
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: BelgianoSerif;
+}
+
 canvas {
-    width: 300px;
-    height: 300px;
+    width: 200px;
+    height: auto;
+}
+
+#root {
+    width: 70%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex-direction: column;
+    row-gap: 10px;
+    user-select: none;
+}
+
+#scrollable {
+    max-height: 300px;
+    overflow: scroll;
+}
+
+#scrollable::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
+
+.no-margin {
+    margin: 0px;
+}
+
+.center {
+    text-align: center;
+}
+
+.spacer {
+    margin: 200px 0 250px 0;
+}
+
+/* portrait smartphones */
+@media screen and (min-width: 300px) {
+    canvas {
+        width: 250px;
+    }
+
+}
+
+/* landscape smartphones */
+@media screen and (min-width: 600px) {
+}
+
+/* portrait tablets or desktops */
+@media screen and (min-width: 768px) {
+    #root {      
+        width: 60%;
+        flex-direction: row;
+    }
+
+    .hero {
+        margin: 120px 0 250px 0;
+        text-align: center;
+    }
+}
+
+@font-face {
+    font-family: BelgianoSerif;
+    src: url("fonts/BelgianoSerif2.otf"), url("fonts/BelgianoSerif2.ttf");
 }
