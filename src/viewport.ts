@@ -84,7 +84,7 @@ class EfficientViewportObserver {
             
             callback(isElementInViewport(currentElement), currentElement);
             
-            if (this.anchorIndex - 1 > 0) {
+            if (this.anchorIndex - 1 >= 0) {
                 const index = this.anchorIndex - 1;
                 const previousElement = this.children[index];
                 const isPreviousElementInViewport = isElementInViewport(previousElement);
