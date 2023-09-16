@@ -37,6 +37,8 @@ header {
     position: fixed;
     top: 0;
     left: 0;
+
+    z-index: 10;
 }
 
 header img {
@@ -54,11 +56,11 @@ h1, h2, h3, h4, h5, h6 {
 canvas {
     width: 200px;
     height: auto;
-    margin-bottom: 30px;
+    padding-bottom: 50px;
 }
 
 #root {
-    width: 70%;
+    width: 80%;
     height: 100%;
 
     display: flex;
@@ -73,11 +75,13 @@ canvas {
 #scrollable {
     height: 65%;
     overflow: scroll;
-    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
 #scrollable::-webkit-scrollbar {
     width: 0px;
+    display: none;
     background: transparent; /* make scrollbar transparent */
 }
 
