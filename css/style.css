@@ -60,7 +60,7 @@ canvas {
 
 #root {
     width: 80%;
-    height: 100%;
+    height: 90%;
 
     display: flex;
     justify-content: space-evenly;
@@ -72,7 +72,7 @@ canvas {
 }
 
 #scrollable {
-    height: 65%;
+    height: 60%;
     overflow: scroll;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
@@ -137,6 +137,10 @@ canvas {
     #root {      
         width: 60%;
         flex-direction: row;
+    }
+
+    #scrollable {
+        height: 70%;
     }
 
     canvas {
