@@ -12,4 +12,4 @@ function loadImage(url: string) {
     });
 }
 
-export default loadImage;
+export { loadImage };

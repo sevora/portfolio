@@ -1,4 +1,4 @@
-import loadImage from './loadImage';
+import { loadImage } from './image';
 
 // these are the components of the watch
 type InteractiveWatchPart = "body" | "hour" | "minute" | "second";
@@ -13,6 +13,9 @@ class InteractiveWatch {
     static DEGREES_PER_SECOND = 360/60;
     static DEGREES_PER_MINUTE = 360/60;
     static DEGREES_PER_HOUR = 360/12;
+
+    // the rate of how much the clock resets per frame
+    static RESET_ROTATION_RATE = 0.01;
 
     // these images must all have exactly the same dimensions
     images: InteractiveWatchImages = { body: new Image(), hour: new Image(), minute: new Image(), second: new Image() };
@@ -85,7 +88,7 @@ class InteractiveWatch {
             let repetitions = 0;
 
             // when resetting, we use 1% of the base rotations
-            while (repetitions < this.baseRotations * 0.01) {
+            while (repetitions < this.baseRotations * InteractiveWatch.RESET_ROTATION_RATE) {
                 rotations.second -= Math.sign(rotations.second);
                 if (rotations.second === 0) {
                     this.isResetting = false;

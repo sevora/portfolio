@@ -1,6 +1,6 @@
 // import 'animate.css'; // we don't need to import this anymore
 import InteractiveWatch from './InteractiveWatch';
-import onViewportChange from './onViewportChange';
+import { onViewportChange, EfficientViewportObserver } from './viewport';
 
 // a vector interface
 interface Vector {
@@ -15,14 +15,15 @@ interface MouseState {
     pressed: boolean;
 }
 
+const SCROLL_DIFFERENCE_CHECK = 20;
+
 const root = document.querySelector('#root')!;
 const scrollable = document.querySelector('#scrollable')!;
 const canvas = document.querySelector('canvas')!;
 const context = canvas.getContext('2d');
 const watch = new InteractiveWatch();
 
-let angleHistory: number[] = []; 
-
+let previousScrollTop: number = 0;
 let mouseState: MouseState = { previous: null, current: null, pressed: false };
 let mouseVectorLatest: Vector | null = null;
 
@@ -37,20 +38,24 @@ async function main() {
     root.classList.remove('hidden');
     scrollable.querySelector('#centerpoint')!.scrollIntoView({ behavior: 'instant', block: 'center', inline: 'center' });
 
-    document.querySelectorAll('[data-scroll-class]').forEach((element: HTMLElement) => {
-        const handler = onViewportChange(element, (isInViewport) => {
-            const classes = element.dataset.scrollClass.split(' ');
-            if (isInViewport) {
-                element.classList.remove('hidden');
-                element.classList.add(...classes);
-                return
-            }
-            element.classList.add('hidden');
-            element.classList.remove(...classes);
-        });
+    // this allows us to handle scroll events efficiently for a lot of elements in a specific scenario
+    const viewportObserver = new EfficientViewportObserver(scrollable, '[data-scroll-class]');
 
-        window.addEventListener('customscroll', handler, false);
+    // this handler automatically gives a boolean indicating if element is in viewport, and the element itself
+    const handler = viewportObserver.onViewportChange((isInViewport, element: HTMLElement) => {
+        const classes = element.dataset.scrollClass.split(' ');
+        if (isInViewport) {
+            element.classList.remove('hidden');
+            element.classList.add(...classes);
+            return
+        }
+        element.classList.add('hidden');
+        element.classList.remove(...classes);
     });
+
+    window.addEventListener('customscroll', handler, false);
+    dispatchEvent( new CustomEvent('customscroll') );
+
 
     // this allows us to use smooth-scroll on anchor tags
     document.querySelectorAll('a.smooth-scroll').forEach((element: HTMLAnchorElement) => {
@@ -59,9 +64,17 @@ async function main() {
         element.addEventListener('click', (event) => {
             event.preventDefault();
             
-            const target = element.getAttribute('href');
-            document.querySelector(element.getAttribute('href')).scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
-            if (target === '#centerpoint') watch.resetRotation();
+            const targetProperty = element.getAttribute('href');
+            const targetElement: HTMLElement = document.querySelector(element.getAttribute('href'));
+            
+            targetElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+            targetElement.focus({ preventScroll: true });
+            viewportObserver.reset();
+
+            // we want to trigger custom scroll again after resetting viewport observer
+            setTimeout(() => dispatchEvent( new CustomEvent('customscroll') ), 500);
+
+            if (targetProperty === '#centerpoint') watch.resetRotation();
         });
     });
 
@@ -114,17 +127,19 @@ function update() {
         const currentAngle = atan2(currentY, currentX);
         
         // compute the change in angle 
-        let deltaAngle = Math.floor(currentAngle - previousAngle);
+        const deltaAngle = Math.floor(currentAngle - previousAngle);
 
-        // if the change is more than 180 we want to set it to 1 instead
-        // I realized, that the not so smooth happenings always happened on
-        // an opposite direction
-        if (Math.abs(deltaAngle) >= 180) 
-            deltaAngle = Math.sign(deltaAngle) * 1;
+        // if the change is not abrupt (less than 180) we can applu the rotation
+        if (Math.abs(deltaAngle) < 180) {
+            scrollable.scrollTop += deltaAngle;
+            watch.applyRotation(deltaAngle);
 
-        scrollable.scrollTop += deltaAngle;
-        watch.applyRotation(deltaAngle);
-        window.dispatchEvent(new CustomEvent('customscroll'));
+            // minor optimization, ensures that customscroll is only ran whenever a set difference is met
+            if (Math.abs(scrollable.scrollTop - previousScrollTop) >= SCROLL_DIFFERENCE_CHECK) {
+                window.dispatchEvent( new CustomEvent('customscroll') );
+                previousScrollTop = scrollable.scrollTop;
+            }
+        }
     }
 
     // this must always be called to update the watch
@@ -170,7 +185,6 @@ function resetMouseState() {
     mouseState.current = null;
     mouseState.pressed = false;
     mouseVectorLatest = null;
-    angleHistory = [];
 }
 
 /**
