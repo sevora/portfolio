@@ -1,4 +1,4 @@
-import 'animate.css';
+// import 'animate.css'; // we don't need to import this anymore
 import InteractiveWatch from './InteractiveWatch';
 import onViewportChange from './onViewportChange';
 
