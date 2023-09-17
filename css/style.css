@@ -157,13 +157,9 @@ canvas {
     }
 
     canvas {
-        width: 50%;
+        width: 40%;
     }
-
-    header img {
-        width: 35px;
-    }
-
+    
     .hero {
         margin: 120px 0 250px 0;
         text-align: center;
@@ -174,6 +170,16 @@ canvas {
     }
 }
 
+/* portrait tablets or desktops */
+@media screen and (min-width: 768px) {
+    header img {
+        width: 35px;
+    }
+    
+    canvas {
+        width: 50%;
+    }
+}
 
 @font-face {
     font-family: BelgianoSerif;

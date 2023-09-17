@@ -1,7 +1,5 @@
 export type onViewportChangeCallback = (isInViewport: boolean, element: Element) => void;
 
-import { ADJUST_TOP_HEIGHT_REQUIREMENT } from './settings';
-
 /**
  * Use this to determine whether an element is in viewpoer or not.
  * @param element an Element.
@@ -13,7 +11,7 @@ function isElementInViewport(element: Element) {
     return rectangle.bottom > 0 &&
            rectangle.right > 0 &&
            rectangle.left < (window.innerWidth || document.documentElement.clientWidth) &&
-           rectangle.top + ADJUST_TOP_HEIGHT_REQUIREMENT < (window.innerHeight || document.documentElement.clientHeight);
+           rectangle.top < (window.innerHeight || document.documentElement.clientHeight);
 }
 
 /**
