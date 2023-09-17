@@ -45,11 +45,15 @@ async function main() {
     // this handler automatically gives a boolean indicating if element is in viewport, and the element itself
     const handler = viewportObserver.onViewportChange((isInViewport, element: HTMLElement) => {
         const classes = element.dataset.scrollClass.split(' ');
+        
+        // if element is in viewport we make it visible and apply animation 
         if (isInViewport) {
             element.classList.remove('hidden');
             element.classList.add(...classes);
             return
         }
+
+        // otherwise, we hide it and remove the animation classes
         element.classList.add('hidden');
         element.classList.remove(...classes);
     });
@@ -63,8 +67,10 @@ async function main() {
         // automatically binds click event listener for smooth scroll
         element.addEventListener('click', (event) => {
             event.preventDefault();
+
+            // we get the target property and the actual element it is referring to
             const targetProperty = element.getAttribute('href');
-            const targetElement: HTMLElement = document.querySelector(element.getAttribute('href'));
+            const targetElement: HTMLElement = document.querySelector( element.getAttribute('href') );
             targetElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
             targetElement.focus({ preventScroll: true });
           
@@ -83,16 +89,18 @@ async function main() {
     window.addEventListener('resize', () => {
         // on resizing we want to reset the viewport back to the centerpoint
         centerpoint.scrollIntoView({ behavior: 'instant', block: 'center', inline: 'center' });
-        (centerpoint as HTMLElement).focus({ preventScroll: true });
 
         // since it is instantaneous, we can do this as well
-        viewportObserver.reset();
         watch.reset(true);
-        window.dispatchEvent( new CustomEvent('customscroll') );
+        viewportObserver.reset();
+
+        // we unhide the centerpoint and apply the animation
+        centerpoint.classList.remove('hidden');
+        centerpoint.classList.add(...(centerpoint as HTMLElement).dataset.scrollClass.split(' '));
     });
 
     // trigger resize event when orientation changes
-    window.addEventListener('orientationchange', () => dispatchEvent(new Event('resize')) );
+    window.addEventListener('orientationchange', () => window.dispatchEvent(new Event('resize')) );
 
     // all the images must have the same size and that the hands are centered
     // in place as if the watch and the other hands are simply invisible
