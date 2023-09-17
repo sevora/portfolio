@@ -166,6 +166,7 @@ function attachEventListeners() {
             
             // manually resetting the classes to show it as there is no callback for scrollIntoView
             animationObserver.resetAnchor();
+            latestObserver.resetAnchor();
             targetElement.classList.remove('hidden');
             targetElement.classList.add(...(targetElement as HTMLElement).dataset.scrollClass.split(' '));
             watch.resetDial();
