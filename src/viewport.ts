@@ -1,7 +1,7 @@
 export type onViewportChangeCallback = (isInViewport: boolean, element: Element) => void;
 
 // this adjusts the isElementInViewport function condition by a set amount
-const ADJUST_TOP_HEIGHT_REQUIREMENT = 100;
+const ADJUST_TOP_HEIGHT_REQUIREMENT = 150;
 
 /**
  * Use this to determine whether an element is in viewpoer or not.
