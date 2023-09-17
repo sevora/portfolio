@@ -96,9 +96,9 @@ async function main() {
  * Place your setup code here...
  */
 function setup() {
-    // adjust the canvas to be 2x larger
-    canvas.width *= 2;
-    canvas.height *= 2;
+    // adjust the canvas to match device pixel ratio
+    canvas.width *= window.devicePixelRatio;
+    canvas.height *= window.devicePixelRatio;
     watch.computeSizesFromCanvas(canvas);
 }
 
