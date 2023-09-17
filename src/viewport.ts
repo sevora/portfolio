@@ -50,9 +50,20 @@ class EfficientViewportObserver {
      * @param parentElement The parent element of the elements to observe
      * @param query The query string so the children will be selected
      */
-    constructor(parentElement: Element, query: string) {
+    constructor(parentElement: Element, query: string, matchAnchorIndex?: (elements: Element[]) => number) {
         this.children = Array.from( parentElement.querySelectorAll(query) );
         
+        // we can use a matchAnchorIndex to get the anchor
+        if (matchAnchorIndex) this.anchorIndex = matchAnchorIndex(this.children);
+        if (this.anchorIndex === -1) this.computeAnchorIndex();
+        
+        this.originalAnchorIndex = this.anchorIndex;
+    }
+
+    /**
+     * Use this to assume an anchor index instead.
+     */
+    computeAnchorIndex() {
         for (let index = 0; index < this.children.length; ++index) {
             const child = this.children[index];
             if ( isElementInViewport(child) ) {
@@ -60,8 +71,6 @@ class EfficientViewportObserver {
                 break;
             }
         }
-
-        this.originalAnchorIndex = this.anchorIndex;
     }
 
     /**
