@@ -54,7 +54,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 canvas {
-    width: 200px;
+    width: 60%;
     height: auto;
 }
 
@@ -137,13 +137,6 @@ canvas {
     visibility: hidden;
 }
 
-/* portrait smartphones */
-@media screen and (min-width: 300px) {
-    canvas {
-        width: 200px;
-    }
-}
-
 /* portrait tablets or desktops */
 @media screen and (min-width: 600px) {
     #root {      
@@ -164,7 +157,7 @@ canvas {
     }
 
     canvas {
-        width: 250px;
+        width: 50%;
     }
 
     header img {
@@ -181,13 +174,6 @@ canvas {
     }
 }
 
-
-/* portrait tablets or desktops */
-@media screen and (min-width: 1200px) {
-    canvas {
-        width: 500px;
-    }
-}
 
 @font-face {
     font-family: BelgianoSerif;

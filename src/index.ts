@@ -63,20 +63,32 @@ async function main() {
         // automatically binds click event listener for smooth scroll
         element.addEventListener('click', (event) => {
             event.preventDefault();
-            
             const targetProperty = element.getAttribute('href');
             const targetElement: HTMLElement = document.querySelector(element.getAttribute('href'));
-            
             targetElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
             targetElement.focus({ preventScroll: true });
-            viewportObserver.reset();
-
+          
+            // the following lines should only apply to the centerpoint
+            if (targetProperty !== '#centerpoint') return;
+            
             // manually resetting the classes to show it as there is no callback for scrollIntoView
-            centerpoint.classList.remove('hidden');
-            centerpoint.classList.add(...(centerpoint as HTMLElement).dataset.scrollClass.split(' '));
-
-            if (targetProperty === '#centerpoint') watch.resetRotation();
+            viewportObserver.reset();
+            targetElement.classList.remove('hidden');
+            targetElement.classList.add(...(targetElement as HTMLElement).dataset.scrollClass.split(' '));
+            watch.reset();
         });
+    });
+
+    // add support for resizing, which makes the experience better
+    window.addEventListener('resize', () => {
+        // on resizing we want to reset the viewport back to the centerpoint
+        centerpoint.scrollIntoView({ behavior: 'instant', block: 'center', inline: 'center' });
+        (centerpoint as HTMLElement).focus({ preventScroll: true });
+
+        // since it is instantaneous, we can do this as well
+        viewportObserver.reset();
+        watch.reset(true);
+        window.dispatchEvent( new CustomEvent('customscroll') );
     });
 
     // all the images must have the same size and that the hands are centered
@@ -133,7 +145,7 @@ function update() {
         // if the change is not abrupt (less than 180) we can applu the rotation
         if (Math.abs(deltaAngle) < 180) {
             scrollable.scrollTop += deltaAngle;
-            watch.applyRotation(deltaAngle);
+            watch.turn(deltaAngle);
 
             // minor optimization, ensures that customscroll is only ran whenever a set difference is met
             if (Math.abs(scrollable.scrollTop - previousScrollTop) >= SCROLL_DIFFERENCE_CHECK) {
@@ -209,7 +221,7 @@ window.addEventListener('mousedown', () => {
  */
 window.addEventListener('mouseup', () => {
     resetMouseState();
-    watch.applyRotation(0);
+    watch.turn(0);
 });
 
 /**
@@ -232,7 +244,7 @@ window.addEventListener('touchstart', () => {
  */
 window.addEventListener('touchend', () => {
     resetMouseState();
-    watch.applyRotation(0);
+    watch.turn(0);
 });
 
 /**

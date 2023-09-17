@@ -62,8 +62,21 @@ class InteractiveWatch {
     /**
      * Use this to reset the rotation of the watch, 
      * should trigger rotation inverse direction to get to 0.
+     * Can be instantaneous as well.
      */
-    resetRotation() {
+    reset(instant?: true) {
+        if (instant) {
+            this.rotations = {
+                hour: 0,
+                minute: 0,
+                second: 0,
+                body: 0
+            };
+
+            this.isResetting = false;
+            return;
+        }
+
         this.isResetting = true;
         this.baseRotations = Math.abs(this.rotations.second);
     }
@@ -73,7 +86,7 @@ class InteractiveWatch {
      * @param unit how much to rotate.
      * @param adjustToOneSecondDegree by default, 1 unit = 1 degree. if set to true, 1 unit = 6 degrees
      */
-    applyRotation(unit: number, adjustToOneSecondDegree?: true) {
+    turn(unit: number, adjustToOneSecondDegree?: true) {
         this.velocity = unit * (adjustToOneSecondDegree ? 1 : 1/InteractiveWatch.DEGREES_PER_SECOND);
     }
 
@@ -87,9 +100,12 @@ class InteractiveWatch {
         if (this.isResetting) {
             let repetitions = 0;
 
-            // when resetting, we use 1% of the base rotations
+            // when resetting, we use 1% of the base rotations per frame 
             while (repetitions < this.baseRotations * InteractiveWatch.RESET_ROTATION_RATE) {
                 rotations.second -= Math.sign(rotations.second);
+
+                // if it reaches 0, regardless of whether repetitions has been
+                // met, the reset is done and we have to break the loop
                 if (rotations.second === 0) {
                     this.isResetting = false;
                     break;
@@ -98,9 +114,8 @@ class InteractiveWatch {
             }
         }
 
-        if (!this.isResetting) {
-            rotations.second += Math.floor(InteractiveWatch.DEGREES_PER_SECOND * this.velocity);
-        }
+        // if it isn't resetting we can do this
+        if (!this.isResetting) rotations.second += Math.floor(InteractiveWatch.DEGREES_PER_SECOND * this.velocity);
         
         // minute hand has snappy changes
         rotations.minute = Math.floor(rotations.second / InteractiveWatch.DEGREES_PER_SECOND / 60) * InteractiveWatch.DEGREES_PER_MINUTE;
