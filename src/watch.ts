@@ -153,6 +153,4 @@ class InteractiveWatch {
     }
 }
 
-
-
-export default InteractiveWatch;
+export { InteractiveWatch };
