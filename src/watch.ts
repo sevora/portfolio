@@ -64,7 +64,7 @@ class InteractiveWatch {
      * should trigger rotation inverse direction to get to 0.
      * Can be instantaneous as well.
      */
-    reset(instant?: true) {
+    resetDial(instant?: true) {
         if (instant) {
             this.rotations = {
                 hour: 0,
@@ -82,11 +82,11 @@ class InteractiveWatch {
     }
 
     /**
-     * Use this to rotate the watch hands.
+     * Use this to rotate the watch dial with animation.
      * @param unit how much to rotate.
      * @param adjustToOneSecondDegree by default, 1 unit = 1 degree. if set to true, 1 unit = 6 degrees
      */
-    turn(unit: number, adjustToOneSecondDegree?: true) {
+    applyDial(unit: number, adjustToOneSecondDegree?: true) {
         this.velocity = unit * (adjustToOneSecondDegree ? 1 : 1/InteractiveWatch.DEGREES_PER_SECOND);
     }
 

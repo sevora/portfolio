@@ -26,13 +26,8 @@ let fps = isMobile() ? 60 : 120;
 
 // these are our custom objects
 const watch = new InteractiveWatch();
-const viewportObserver = new EfficientViewportObserver(scrollable, '[data-scroll-class]', (elements) => {
-    for (let index = 0; index < elements.length; ++index) {
-        const element = elements[index];
-        if (element === centerpoint) return index;
-    }
-    return -1;
-});
+const animationObserver = new EfficientViewportObserver(scrollable, '[data-scroll-class]', findCenterpoint);
+const latestObserver = new EfficientViewportObserver(document, '#scrollable > *', findCenterpoint);
 
 /**
  * This is the entrypoint of the program's game loop,
@@ -99,7 +94,7 @@ function update() {
         // if the change is not abrupt (less than 180) we can applu the rotation
         if (Math.abs(deltaAngle) < 180) {
             scrollable.scrollTop += deltaAngle;
-            watch.turn(deltaAngle);
+            watch.applyDial(deltaAngle);
 
             // minor optimization, ensures that customscroll is only ran whenever a set difference is met
             if (Math.abs(scrollable.scrollTop - previousScrollTop) >= SCROLL_DIFFERENCE_CHECK) {
@@ -170,10 +165,10 @@ function attachEventListeners() {
             if (targetProperty !== '#centerpoint') return;
             
             // manually resetting the classes to show it as there is no callback for scrollIntoView
-            viewportObserver.reset();
+            animationObserver.resetAnchor();
             targetElement.classList.remove('hidden');
             targetElement.classList.add(...(targetElement as HTMLElement).dataset.scrollClass.split(' '));
-            watch.reset();
+            watch.resetDial();
         });
     });
 
@@ -185,7 +180,7 @@ function attachEventListeners() {
     // his resets the mouse state to its default values 
     window.addEventListener('mouseup', () => {
         resetMouseState();
-        watch.turn(0);
+        watch.applyDial(0);
     });
 
     // This is fired when the mouse is moved, we simply save 
@@ -202,7 +197,7 @@ function attachEventListeners() {
     // this is for stopping the touch.
     window.addEventListener('touchend', () => {
         resetMouseState();
-        watch.turn(0);
+        watch.applyDial(0);
     });
 
     // this is for when touching the screen
@@ -219,8 +214,8 @@ function attachEventListeners() {
     // trigger resize event when orientation changes. 
     window.addEventListener('orientationchange', () => window.dispatchEvent(new Event('resize')) );
 
-    // this is for our custom scroll event
-    window.addEventListener('customscroll', viewportObserver.onViewportChange( (isInViewport, element: HTMLElement) => {
+    // this is for our animation on custom scroll event
+    window.addEventListener('customscroll', animationObserver.onViewportChange( (isInViewport, element: HTMLElement) => {
         const classes = element.dataset.scrollClass.split(' ');
         
         // if element is in viewport we make it visible and apply animation 
@@ -235,20 +230,25 @@ function attachEventListeners() {
         element.classList.remove(...classes);
     }), false);
 
-    // handle resizing by resetting it to original point
-    // when being resized
+    // we also ensure that the latest observer is updated everytime customscroll is dispatched
+    window.addEventListener('customscroll', latestObserver.onViewportChange(() => null));
+
+    // handle resizing by scrolling on the last viewed element
     window.addEventListener('resize', () => {
-        // on resizing we want to reset the viewport back to the centerpoint
-        centerpoint.scrollIntoView({ behavior: 'instant', block: 'center', inline: 'center' });
-
-        // since it is instantaneous, we can do this as well
-        watch.reset(true);
-        viewportObserver.reset();
-
-        // we unhide the centerpoint and apply the animation
-        centerpoint.classList.remove('hidden');
-        centerpoint.classList.add(...(centerpoint as HTMLElement).dataset.scrollClass.split(' '));
+        latestObserver.getAnchor().scrollIntoView({ behavior: 'instant', block: 'center', inline: 'center' });
     });
+}
+
+/**
+ * This is used as a callback function for EfficientViewportObserver,
+ * and it finds the index of the centerpoint.
+ */
+function findCenterpoint(elements: Element[]) {
+    for (let index = 0; index < elements.length; ++index) {
+        const element = elements[index];
+        if (element === centerpoint) return index;
+    }
+    return -1;
 }
 
 /**

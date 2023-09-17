@@ -49,20 +49,22 @@ class EfficientViewportObserver {
      * @param parentElement The parent element of the elements to observe
      * @param query The query string so the children will be selected
      */
-    constructor(parentElement: Element, query: string, matchAnchorIndex?: (elements: Element[]) => number) {
+    constructor(parentElement: Element | Document, query: string, matchAnchorIndex?: (elements: Element[]) => number) {
         this.children = Array.from( parentElement.querySelectorAll(query) );
         
         // we can use a matchAnchorIndex to get the anchor
         if (matchAnchorIndex) this.anchorIndex = matchAnchorIndex(this.children);
-        if (this.anchorIndex === -1) this.computeAnchorIndex();
+        if (this.anchorIndex === -1) this._computeAnchorIndex();
         
         this.originalAnchorIndex = this.anchorIndex;
     }
 
     /**
      * Use this to assume an anchor index instead.
+     * This works by checking which element is in the viewport
+     * at the time of being called.
      */
-    computeAnchorIndex() {
+    _computeAnchorIndex() {
         for (let index = 0; index < this.children.length; ++index) {
             const child = this.children[index];
             if ( isElementInViewport(child) ) {
@@ -73,10 +75,18 @@ class EfficientViewportObserver {
     }
 
     /**
+     * 
+     * @returns an element th
+     */
+    getAnchor() {
+        return this.children[this.anchorIndex];
+    }
+
+    /**
      * Resets the anchorIndex to the originalAnchorIndex,
      * used when resetting scroll back to beginning
      */
-    reset() {
+    resetAnchor() {
         this.anchorIndex = this.originalAnchorIndex;
     }
 
