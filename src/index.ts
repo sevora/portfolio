@@ -91,6 +91,9 @@ async function main() {
         window.dispatchEvent( new CustomEvent('customscroll') );
     });
 
+    // trigger resize event when orientation changes
+    window.addEventListener('orientationchange', () => dispatchEvent(new Event('resize')) );
+
     // all the images must have the same size and that the hands are centered
     // in place as if the watch and the other hands are simply invisible
     await watch.load({ 
