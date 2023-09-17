@@ -74,10 +74,7 @@ canvas {
 #centerpoint {
     font-size: 2.6rem;
     margin: 600px 0px;
-}
-
-#centerpoint > span {
-    font-size: 1.3rem;
+    padding: 100px 0px;
 }
 
 #scrollable {
@@ -130,7 +127,7 @@ canvas {
 }
 
 .spacer {
-    margin: 370px 0;
+    margin: 60vh 0;
 }
 
 .hidden {
@@ -152,10 +149,6 @@ canvas {
         font-size: 2.5rem;
     }
 
-    #centerpoint > span {
-        font-size: 1.2rem;
-    }
-
     canvas {
         width: 40%;
     }
@@ -163,10 +156,6 @@ canvas {
     .hero {
         margin: 120px 0 250px 0;
         text-align: center;
-    }
-
-    .spacer {
-        margin: 550px 0;
     }
 }
 
