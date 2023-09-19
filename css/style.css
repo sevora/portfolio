@@ -133,6 +133,10 @@ canvas {
     visibility: hidden;
 }
 
+.no-display {
+    display: none;
+}
+
 /* portrait tablets or desktops */
 @media screen and (min-width: 600px) {
     #root {      
