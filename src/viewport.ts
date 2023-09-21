@@ -41,6 +41,7 @@ class EfficientViewportObserver {
     children: Element[] = [];
     anchorIndex: number = -1;
     originalAnchorIndex: number = -1;
+    previousStates: boolean[] = [];
 
     /**
      * Creates an efficient viewport observer
@@ -54,6 +55,7 @@ class EfficientViewportObserver {
         if (matchAnchorIndex) this.anchorIndex = matchAnchorIndex(this.children);
         if (this.anchorIndex === -1) this._computeAnchorIndex();
         
+        this._initializePreviousStates();
         this.originalAnchorIndex = this.anchorIndex;
     }
 
@@ -69,6 +71,12 @@ class EfficientViewportObserver {
                 this.anchorIndex = index;
                 break;
             }
+        }
+    }
+
+    _initializePreviousStates() {
+        for (let index = 0; index < this.children.length; ++index) {
+            this.previousStates.push(false);
         }
     }
 
@@ -96,39 +104,45 @@ class EfficientViewportObserver {
     onViewportChange(callback: onViewportChangeCallback) {
         return () => {
             let resultingAnchorIndex = -1;
-            const currentElement = this.children[this.anchorIndex];
-            
-            callback(isElementInViewport(currentElement), currentElement);
-            
-            if (this.anchorIndex - 1 >= 0) {
-                const index = this.anchorIndex - 1;
-                const previousElement = this.children[index];
-                const isPreviousElementInViewport = isElementInViewport(previousElement);
-                
-                callback(isPreviousElementInViewport, previousElement);
 
-                // automatically assume all other left-side neighbors to be false
-                for (let i = 0; i < index; ++i) 
-                    callback(false, this.children[i]);
-                
-                if (isPreviousElementInViewport) resultingAnchorIndex = index;
+            // as you can see we go through all the elements we targeted
+            for (let index = 0; index < this.children.length; ++index) {
+                const element = this.children[index];
+
+                // if the element is the anchor, we can assume that it is in the viewport
+                if (index === this.anchorIndex) {
+                    if (this.previousStates[index] !== true) {
+                        callback(true, element);
+                        this.previousStates[index] = true;
+                    }
+
+                    continue;
+                }
+
+                // if the element is a neighbor of anchor, we have to check if it is in the viewport
+                if (index === this.anchorIndex - 1 || index === this.anchorIndex + 1) {
+                    const isNeighborInViewport = isElementInViewport(element);
+
+                    if (isNeighborInViewport) {
+                        if (this.previousStates[index] !== isNeighborInViewport)
+                            callback(isNeighborInViewport, element);
+
+                        // of course, the neighbor found in the viewport is 
+                        // going to be the next anchor
+                        resultingAnchorIndex = index;
+                    }
+                    continue;
+                }
+
+                // every other element that is not the anchor, or its neighbors, is going
+                // to be assumed to not be in the viewport
+                if (this.previousStates[index] !== false) {
+                    callback(false, element);
+                    this.previousStates[index] = false;
+                }
             }
 
-            if (this.anchorIndex + 1 < this.children.length) {
-                const index = this.anchorIndex + 1;
-                const nextElement = this.children[index];
-                const isNextElementInViewport = isElementInViewport(nextElement);
-                
-                callback(isNextElementInViewport, nextElement);
-                
-                // automatically assume all other right-side neighbors to be false
-                for (let i = index + 1; i < this.children.length; ++i) 
-                    callback(false, this.children[i]);
-                
-                if (isNextElementInViewport) resultingAnchorIndex = index;
-            }
-
-            // update the current anchor if resulting anchor has been determined
+            // update the anchor index to the new one if there's one 
             if (resultingAnchorIndex > -1) 
                 this.anchorIndex = resultingAnchorIndex;
         }
