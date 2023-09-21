@@ -40,12 +40,20 @@ async function main() {
     attachEventListeners();
     dispatchEvent( new CustomEvent('customscroll') );
     
+    // this might take a while
     await watch.load({ 
         body: '/assets/watch/body.png', 
         hour: '/assets/watch/hour.png', 
         minute: '/assets/watch/minute.png', 
         second: '/assets/watch/second.png' 
     });
+
+    canvas.classList.remove('hidden');
+
+    // so we want to grab the attention of the user
+    // with a turn animation
+    canvas.classList.add('animate__animated');
+    canvas.classList.add('animate__rotateIn');
 
     setup();
     loop();
