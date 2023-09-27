@@ -1,8 +1,11 @@
 const path = require('path');
 
-module.exports = {
+/**
+ * This is the base configuration for webpack,
+ * it's handling all typescript source code
+ */
+const config = {
   entry: './src/index.ts',
-  mode: 'production',
   module: {
     rules: [
       {
@@ -24,3 +27,20 @@ module.exports = {
     path: path.resolve(__dirname, 'assets')
   }
 };
+
+/**
+ * We can add rules depending on the mode, i.e. 
+ * a live server on development and more. 
+ */
+module.exports = (_env, argv) => {
+  // NOTE: webpack still automatically adds optimization depending on the mode flag
+  if (argv.mode === 'development') {
+
+  }
+
+  if (argv.mode === 'production') {
+
+  }
+
+  return config;
+}
