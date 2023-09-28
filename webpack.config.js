@@ -1,4 +1,5 @@
 const path = require('path');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
 
 /**
  * This is the base configuration for webpack,
@@ -19,6 +20,11 @@ const config = {
       }
     ]
   },
+  devServer: {
+    static: './',
+    hot: false,
+    liveReload: true
+  },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
@@ -29,18 +35,20 @@ const config = {
 };
 
 /**
- * We can add rules depending on the mode, i.e. 
- * a live server on development and more. 
- */
+* We can add rules depending on the mode, i.e. 
+* a live server on development and more. 
+*/
 module.exports = (_env, argv) => {
-  // NOTE: webpack still automatically adds optimization depending on the mode flag
-  if (argv.mode === 'development') {
+ // NOTE: webpack still automatically adds optimization depending on the mode flag
+ if (argv.mode === 'development') {
+  config.plugins = [
+    new HTMLWebpackPlugin({ template: './index.html' })
+  ]
+ }
 
-  }
+ if (argv.mode === 'production') {
 
-  if (argv.mode === 'production') {
+ }
 
-  }
-
-  return config;
+ return config;
 }
