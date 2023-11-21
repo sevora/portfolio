@@ -81,8 +81,8 @@ class EfficientViewportObserver {
     }
 
     /**
-     * 
-     * @returns an element th
+     * Use this to retrieve the anchor element.
+     * @returns the element that is the anchor.
      */
     getAnchor() {
         return this.children[this.anchorIndex];

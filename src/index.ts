@@ -5,7 +5,7 @@ import { isMobile } from './mobile';
 import { EfficientViewportObserver } from './viewport';
 import { InteractiveWatch } from './watch';
 
-// these are all the DONM
+// these are all the DOM
 const root = document.querySelector('#root')!;
 const scrollable = document.querySelector('#scrollable')!;
 const centerpoint = document.querySelector('#centerpoint')!;
