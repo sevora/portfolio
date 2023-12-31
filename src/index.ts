@@ -2,7 +2,7 @@ import Interpolator from './interpolate';
 
 // these are the DOM elements necessary for this site
 const root: HTMLElement = document.querySelector(':root');
-const navigationLinks: NodeListOf<HTMLAnchorElement> = document.querySelectorAll('#navigation-bar > a');
+const navigationLinks: HTMLAnchorElement[] = Array.from( document.querySelectorAll('#navigation-bar > a') );
 
 // these are custom objects to make this site functional
 const interpolator = new Interpolator(0, 0, 0, 10);
@@ -18,10 +18,14 @@ function main() {
     }
 
     // here, we hook up the navigation links with the interpolator
-    Array.from(navigationLinks).map( (anchor, index) => {
+    navigationLinks.forEach( (anchor, index) => {
         anchor.addEventListener('click', () => {
+            navigationLinks.forEach(anchor => anchor.classList.remove('active') );
+            anchor.classList.add('active');
+            
             interpolator.setRange(interpolator.endValue, index); // we set the range to where the interpolator was last and set the goal to the new index
             interpolator.run();
+
         });
     });
 }
