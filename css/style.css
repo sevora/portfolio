@@ -1,34 +1,48 @@
 :root {
+    --navigation-bar-height: 60px;
+
     --active-tab-width: 30%;
     --active-tab-index: 0;
+
     --tabs-total: 3;
-
     --tab-height: 75%;
-}
 
+    --background-color: white;
+    --foreground-color: black;
+}
 
 html, body {
     width: 100%;
     height: 100%;
 
-    font-family: "Dolce Vita";
-    background-color: #010101;
+    font-family: Roboto;
+    color: var(--foreground-color);
+    background-color: var(--background-color);
 }
 
 #navigation-bar {
     width: 100%;
-    height: 60px;  
+    height: var(--navigation-bar-height);  
     
+    font-family: "Dolce Vita";
+    font-weight: 400;
+
     display: flex;
     justify-content: center;
     align-items: center;
     
     position: fixed;
+    background-color: var(--background-color);
+}
+
+#navigation-spacer {
+    height: var(--navigation-bar-height);
 }
 
 #navigation-bar > a {
+    text-decoration: none;
     text-transform: uppercase;
-    color: #EDEDED;
+    color: var(--foreground-color);
 
     font-size: 1rem;
     text-align: left;
@@ -52,18 +66,18 @@ html, body {
 }
 
 #navigation-bar > a:hover {
-    border: 2px solid #777;
+    border: 2px solid var(--foreground-color);
 }
 
 #navigation-bar > a.active {
     border: none;
-    color: #010101;
+    color: var(--background-color);
 }
 
 #navigation-bar > #active-tab {
     width: calc( var(--active-tab-width) - 10px);
     height: var(--tab-height);
-    background-color: white;
+    background-color: var(--foreground-color);
 
     z-index: 0;
 
@@ -76,18 +90,73 @@ html, body {
     transition-timing-function: ease-out;
 }
 
+.content {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.hidden {
+    display: none;   
+}
+
+#about {
+    flex-direction: column;
+    align-items: flex-start;
+    height: calc(100vh - var(--navigation-bar-height) - 40px);
+}
+
+#about h1 {
+    font-family: "Dolce Vita";
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 5rem;
+}
+
+#about h3 {
+    font-weight: 300;
+}
+
+
+#works {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+#works img {
+    width: 100%;
+    height: auto;
+}
+
 
 @media screen and (min-width: 1000px) {
     :root {
         --active-tab-width: 15%;
         --tab-height: 65%;
+        --navigation-bar-height: 75px;
     }   
         
-    #navigation-bar {
-        height: 75px;  
-    }
-
     #navigation-bar > a { 
         font-size: 1.5rem;
+    }
+
+    #about {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #works img {
+        width: 33.33%;
+    }
+
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-color: black;
+        --foreground-color: white;
     }
 }
