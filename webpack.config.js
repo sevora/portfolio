@@ -39,16 +39,14 @@ const config = {
 * a live server on development and more. 
 */
 module.exports = (_env, argv) => {
- // NOTE: webpack still automatically adds optimization depending on the mode flag
- if (argv.mode === 'development') {
-  config.plugins = [
-    new HTMLWebpackPlugin({ template: './index.html' })
-  ]
- }
+  // NOTE: webpack still automatically adds optimization depending on the mode flag
+  if (argv.mode === 'development') {
+    config.plugins = [
+      new HTMLWebpackPlugin({ template: './index.html' })
+    ]
+  }
 
- if (argv.mode === 'production') {
+  if (argv.mode === 'production') {}
 
- }
-
- return config;
+  return config;
 }
