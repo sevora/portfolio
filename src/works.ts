@@ -5,7 +5,7 @@
 const works: { [id: string]: Highlight } = {
     "aspire": {
         title: 'ASPIRE',
-        description: 'A COVID risk-estimator web application. ASPIRE stands for Activity Safety Planning and Infection Risk Estimator. It aims to estimate the possible risks one can have on their planned activities during the global pandemic. It is heavily based on Jimenez and Peng\'s estimator and the Goldberg et al.\'s MyCOVIDRisk App.',
+        description: 'A COVID risk-estimator web application. This was done mainly by a team in DLSU and I worked on optimizing or turning it into a custom single-page application. ASPIRE stands for Activity Safety Planning and Infection Risk Estimator. It aims to estimate the possible risks one can have on their planned activities during the global pandemic. It is heavily based on Jimenez and Peng\'s estimator and the Goldberg et al.\'s MyCOVIDRisk App.',
         github: 'https://github.com/sevora/covid-risk-estimator'
     },
     "blog": {

@@ -247,7 +247,7 @@ div.hidden, a.hidden {
 
 /* This is the container of text in the highlight viewer */
 #highlight-viewer .text-container {
-    padding: 15px 25px;
+    padding: 15px 35px;
 }
 
 /* These are for the buttons in the highlight viewer */
@@ -267,7 +267,7 @@ div.hidden, a.hidden {
 
 /* Highlight viewer button next to a button separation */
 #highlight-viewer .button + .button {
-    margin-top: 10px !important;
+    margin-top: 15px !important;
 }
 
 /* Highlight viewer github button */
@@ -371,7 +371,7 @@ div.hidden, a.hidden {
     /* Change the button sizes as well */
     #highlight-viewer .preview.button, #highlight-viewer .github.button {
         height: 55px;
-        width: 75%;
+        width: 85%;
     }
 }
 
