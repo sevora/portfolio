@@ -18,6 +18,8 @@ html, body {
     font-family: Roboto;
     color: var(--foreground-color);
     background-color: var(--background-color);
+    
+    scroll-behavior: smooth;
 }
 
 #navigation-bar {
@@ -91,10 +93,9 @@ html, body {
 }
 
 .content {
-    padding: 20px;
+    width: 100%;
+    height: calc(100vh - var(--navigation-bar-height) );
     display: flex;
-    align-items: center;
-    justify-content: center;
     flex-wrap: wrap;
 }
 
@@ -103,9 +104,11 @@ html, body {
 }
 
 #about {
+    padding: 20px;
     flex-direction: column;
-    align-items: flex-start;
-    height: calc(100vh - var(--navigation-bar-height) - 40px);
+
+    align-items: center;
+    justify-content: center;
 }
 
 #about h1 {
@@ -119,14 +122,17 @@ html, body {
     font-weight: 300;
 }
 
-
 #works {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
+    align-items: center;
 }
 
-#works img {
+#works #container {
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#works a {
     width: 100%;
     height: auto;
 }
@@ -148,7 +154,7 @@ html, body {
         align-items: center;
     }
 
-    #works img {
+    #works a {
         width: 33.33%;
     }
 
