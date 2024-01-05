@@ -8,6 +8,7 @@
     --tabs-total: 3;
     --tab-height: 75%;
 
+    /* By default light theme is used */
     --background-color: white;
     --foreground-color: black;
 }
@@ -68,7 +69,6 @@ body {
 
     z-index: 1;
     cursor: pointer;
-    transition-property: border-color;
 
     transition-property: color;
     transition-duration: 0.5s;
@@ -162,6 +162,7 @@ div.hidden, a.hidden {
     width: 100vw;
     height: 100vh;
 
+    /* By default light theme is used */
     background-color: rgba(255, 255, 255, 0.8);
     z-index: 1;
 
@@ -173,12 +174,14 @@ div.hidden, a.hidden {
 }
 
 
+/* This is the hint in the highlight-cover which says how to close the highlight viewer */
 #highlight-cover p {
     margin-top: 10px;
     text-align: center;
     font-weight: 300;
 }
 
+/* The highlight viewer should show the work/highlight information that was tapped */
 #highlight-viewer {
     width: 100%;
     height: 80%;
@@ -188,16 +191,15 @@ div.hidden, a.hidden {
     color: black;
     background-color: white;
 
-
     border-top-left-radius: 35px;
     border-top-right-radius: 35px;
 
     position: fixed;
-    bottom: 0%;
+    top: 20%;
     left: 0;
     z-index: 2;
 
-    transition-property: bottom;
+    transition-property: top, left;
     transition-duration: 0.3s;
 
     -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
@@ -205,11 +207,13 @@ div.hidden, a.hidden {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
 }
 
+/* When we have the highlight viewer we only want to place it way below */
 #highlight-viewer.hidden {
     display: block;
-    bottom: -100%;
+    top: 100%;
 }
 
+/* This is the box-shadow of the highlight viewer */
 #highlight-viewer::before,
 #highlight-viewer::after {
     content: "";
@@ -229,37 +233,45 @@ div.hidden, a.hidden {
     z-index: -1;
 }
 
+/* This is the image of the highlight viewer */
 #highlight-viewer img {
     width: 100%;
     height: auto;
 }
 
+/* This is the title of the highlight viewer */
 #highlight-viewer h1 {
     font-weight: 400;
     font-size: 2rem;
 }
 
-.text-container {
+/* This is the container of text in the highlight viewer */
+#highlight-viewer .text-container {
     padding: 15px 25px;
 }
 
-.button {
+/* These are for the buttons in the highlight viewer */
+#highlight-viewer .button {
     display: block;
 }
 
-.button:hover {
-    opacity: 0.9;
+/* Hover effects for the buttons */
+#highlight-viewer .button:hover {
+    opacity: 0.85;
 }
 
-.button:active {
-    opacity: 0.8;
+/* When the button is tapped we want that */
+#highlight-viewer .button:active {
+    opacity: 0.75;
 }
 
-.button + .button {
+/* Highlight viewer button next to a button separation */
+#highlight-viewer .button + .button {
     margin-top: 10px !important;
 }
 
-.github.button {
+/* Highlight viewer github button */
+#highlight-viewer .github.button {
     width: 90%;
     height: 45px;
     margin: auto;
@@ -273,7 +285,8 @@ div.hidden, a.hidden {
     background-position: center;
 }
 
-.preview.button {
+/* Highlight viewer preview button */
+#highlight-viewer .preview.button {
     width: 90%;
     height: 45px;
     margin: auto;
@@ -288,42 +301,81 @@ div.hidden, a.hidden {
     background-position: center;
 }
 
-
+/* When the screen is for desktop */
 @media screen and (min-width: 1000px) {
+    /* Change some variables accordingly */
     :root {
         --active-tab-width: 15%;
         --tab-height: 65%;
         --navigation-bar-height: 75px;
     }
 
+    /* We want a larger font-size on navigation bar links */
     #navigation-bar > a {
         font-size: 1.5rem;
     }
 
+    /* We adjust the alignment of about page */
     #about {
         flex-direction: column;
         align-items: center;
     }
 
+    /* Adjust image sizes on works */
     #works a {
         width: 33.33%;
     }
-
-    #highlight-viewer {
-        border-radius: 50px;
-        width: clamp(750px, 40%, 1000px);
-        height: auto;
-
-        left: 50%;
-        bottom: 10%;
-        transform: translateX(-50%);
+    
+    /* Adjust the hint on the highlight cover */
+    #highlight-cover p {
+        margin-top: 25px;
     }
 
-    .text-container {
+    /*  Adjust highlight viewer and its effects */
+    #highlight-viewer {
+        border-radius: 25px;
+        width: clamp(750px, 40%, 1000px);
+        height: auto;
+        padding-top: 0;
+
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        
+        opacity: 1.0;
+        transition-duration: 0.5s;
+        transition-property: opacity;
+    }
+
+    /* Adjust the shadows of the viewer */
+    #highlight-viewer::before,
+    #highlight-viewer::after { 
+        border-radius: 25px;
+    }
+
+    /* Change how the viewer goes hidden */
+    #highlight-viewer.hidden {
+        display: block;
+        top: 50%;
+        left: 50%;
+        
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    /* Change the spacing of the containers */
+    #highlight-viewer .text-container {
         padding: 20px 50px;
+    }
+
+    /* Change the button sizes as well */
+    #highlight-viewer .preview.button, #highlight-viewer .github.button {
+        height: 55px;
+        width: 75%;
     }
 }
 
+/* This is applied when the user prefers dark theme, by default the white theme is used */
 @media (prefers-color-scheme: dark) {
     :root {
         --background-color: black;
@@ -332,13 +384,5 @@ div.hidden, a.hidden {
 
     #highlight-cover {
         background-color: rgba(0, 0, 0, 0.8);
-    }
-
-    #highlight-cover p {
-        margin-top: 25px;
-    }
-
-    .preview.button, .github.button {
-        width: 85%;
     }
 }
