@@ -1,3 +1,4 @@
+/* This is where we can define all our CSS variables */
 :root {
     --navigation-bar-height: 60px;
 
@@ -11,36 +12,44 @@
     --foreground-color: black;
 }
 
-html, body {
+/* We want to make things consistent so we do this, we also set universal fonts and color schemes */
+html,
+body {
     width: 100%;
     height: 100%;
+    margin: 0;
+    padding: 0;
 
-    font-family: Roboto;
+    font-family: Roboto, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     color: var(--foreground-color);
     background-color: var(--background-color);
-    
+
     scroll-behavior: smooth;
 }
 
+/* This is the container for the navigation links */
 #navigation-bar {
     width: 100%;
-    height: var(--navigation-bar-height);  
-    
+    height: var(--navigation-bar-height);
+
     font-family: "Dolce Vita";
     font-weight: 400;
 
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
     position: fixed;
     background-color: var(--background-color);
 }
 
+/* Since the bar is fixed in position it doesn't take space, so we have the spacer which occupies the space the bar should take */
 #navigation-spacer {
+    width: 100%;
     height: var(--navigation-bar-height);
 }
 
+/* We style the links and color them accordingly to the theme */
 #navigation-bar > a {
     text-decoration: none;
     text-transform: uppercase;
@@ -67,17 +76,20 @@ html, body {
     -webkit-tap-highlight-color: transparent;
 }
 
+/* When we hover over a link in the navigation, we want to show a "highlighting" border */
 #navigation-bar > a:hover {
     border: 2px solid var(--foreground-color);
 }
 
+/* When the link is active meaning the active-tab is on it, we have to change its color */
 #navigation-bar > a.active {
     border: none;
     color: var(--background-color);
 }
 
+/* The active tab is the tab that moves inside the navigation bar over a link */
 #navigation-bar > #active-tab {
-    width: calc( var(--active-tab-width) - 10px);
+    width: calc(var(--active-tab-width) - 10px);
     height: var(--tab-height);
     background-color: var(--foreground-color);
 
@@ -85,24 +97,27 @@ html, body {
 
     position: absolute;
     left: calc(50% - var(--active-tab-width) * 0.5 * var(--tabs-total) + var(--active-tab-width) * var(--active-tab-index) + 5px);
-    top: calc( (100% - var(--tab-height) ) * 0.5);
+    top: calc((100% - var(--tab-height)) * 0.5);
 
     transition-duration: 0.4s;
     transition-property: left;
     transition-timing-function: ease-out;
 }
 
+/* This is a single page content that occupies the entire viewport space */
 .content {
     width: 100%;
-    height: calc(100vh - var(--navigation-bar-height) );
+    height: calc(100vh - var(--navigation-bar-height));
     display: flex;
     flex-wrap: wrap;
 }
 
-.hidden {
-    display: none;   
+/* Hide element helper */
+div.hidden, a.hidden {
+    display: none;
 }
 
+/* This is the about section and its design */
 #about {
     padding: 20px;
     flex-direction: column;
@@ -111,6 +126,7 @@ html, body {
     justify-content: center;
 }
 
+/* This is the main text or hero text */
 #about h1 {
     font-family: "Dolce Vita";
     text-transform: uppercase;
@@ -118,23 +134,158 @@ html, body {
     font-size: 5rem;
 }
 
+/* This is the subtext */
 #about h3 {
     font-weight: 300;
 }
 
+/* This is the works content */
 #works {
     align-items: center;
 }
 
-#works #container {
+/* The container should hold all the images */
+#works .container {
     height: auto;
     display: flex;
     flex-wrap: wrap;
 }
 
+/* This is a direct image container (a link) */
 #works a {
     width: 100%;
     height: auto;
+}
+
+/* This cover is supposed to be shown and interfere with touching other elements */
+#highlight-cover {
+    width: 100vw;
+    height: 100vh;
+
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 1;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    cursor: pointer;
+}
+
+
+#highlight-cover p {
+    margin-top: 10px;
+    text-align: center;
+    font-weight: 300;
+}
+
+#highlight-viewer {
+    width: 100%;
+    height: 80%;
+    padding: 35px 0px;
+    overflow-y: hidden;
+
+    color: black;
+    background-color: white;
+
+
+    border-top-left-radius: 35px;
+    border-top-right-radius: 35px;
+
+    position: fixed;
+    bottom: 0%;
+    left: 0;
+    z-index: 2;
+
+    transition-property: bottom;
+    transition-duration: 0.3s;
+
+    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+    -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+}
+
+#highlight-viewer.hidden {
+    display: block;
+    bottom: -100%;
+}
+
+#highlight-viewer::before,
+#highlight-viewer::after {
+    content: "";
+    border-top-left-radius: 35px;
+    border-top-right-radius: 35px;
+
+    -webkit-box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+   
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0px;
+    right: 0px;
+
+    z-index: -1;
+}
+
+#highlight-viewer img {
+    width: 100%;
+    height: auto;
+}
+
+#highlight-viewer h1 {
+    font-weight: 400;
+    font-size: 2rem;
+}
+
+.text-container {
+    padding: 15px 25px;
+}
+
+.button {
+    display: block;
+}
+
+.button:hover {
+    opacity: 0.9;
+}
+
+.button:active {
+    opacity: 0.8;
+}
+
+.button + .button {
+    margin-top: 10px !important;
+}
+
+.github.button {
+    width: 90%;
+    height: 45px;
+    margin: auto;
+
+    border-radius: 20px;
+
+    background-color: black;
+    background-image: url(/images/icons/Github_white.png);
+    background-repeat: no-repeat;
+    background-size: 35px;
+    background-position: center;
+}
+
+.preview.button {
+    width: 90%;
+    height: 45px;
+    margin: auto;
+
+    border: 1px solid lightgray;
+    border-radius: 20px;
+
+    background-color: white;
+    background-image: url(/images/icons/Play_black.png);
+    background-repeat: no-repeat;
+    background-size: 20px;
+    background-position: center;
 }
 
 
@@ -143,9 +294,9 @@ html, body {
         --active-tab-width: 15%;
         --tab-height: 65%;
         --navigation-bar-height: 75px;
-    }   
-        
-    #navigation-bar > a { 
+    }
+
+    #navigation-bar > a {
         font-size: 1.5rem;
     }
 
@@ -158,11 +309,36 @@ html, body {
         width: 33.33%;
     }
 
+    #highlight-viewer {
+        border-radius: 50px;
+        width: clamp(750px, 40%, 1000px);
+        height: auto;
+
+        left: 50%;
+        bottom: 10%;
+        transform: translateX(-50%);
+    }
+
+    .text-container {
+        padding: 20px 50px;
+    }
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
         --background-color: black;
         --foreground-color: white;
+    }
+
+    #highlight-cover {
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    #highlight-cover p {
+        margin-top: 25px;
+    }
+
+    .preview.button, .github.button {
+        width: 85%;
     }
 }

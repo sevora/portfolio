@@ -1,11 +1,6 @@
 declare global {
     interface Highlight {
         /**
-         * The selector of the DOM element associated with the highlight.
-         */
-        selector: string;
-
-        /**
          * The title of the highlight
          */
         title: string;

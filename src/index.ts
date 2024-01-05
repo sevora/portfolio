@@ -1,9 +1,25 @@
+import works from './works';
+
 // these are the DOM elements necessary for this site
 const root: HTMLElement = document.querySelector(':root');
 const activeTab: HTMLDivElement = document.querySelector('#active-tab');
 const navigationLinks: NodeListOf<HTMLAnchorElement> = document.querySelectorAll('#navigation-bar > a');
+const highlightLinks: NodeListOf<HTMLAnchorElement> = document.querySelectorAll('#works > .container > a');
+const highlightViewer: HTMLDivElement = document.querySelector('#highlight-viewer');
+const highlightCover: HTMLDivElement = document.querySelector('#highlight-cover');
 
+// these are the DOM elements for the highlight viewing
+const imageElement: HTMLImageElement = highlightViewer.querySelector('img');
+const titleElement: HTMLHeadingElement = highlightViewer.querySelector('h1');
+const contentElement: HTMLParagraphElement = highlightViewer.querySelector('p');
+const githubButton: HTMLAnchorElement = highlightViewer.querySelector('.github.button');
+const previewButton: HTMLAnchorElement = highlightViewer.querySelector('.preview.button');
+
+// stores the hash (or contentId) with its corresponding index
 const hash2Index: { [hash: string]: number } = {};
+
+// should contain the last scroll-y value
+let lastScrollY: number = 0;
 
 /**
  * This is the entrypoint of the program
@@ -28,10 +44,10 @@ function main() {
         const { hash } = link;
         hash2Index[hash] = index;
 
-        link.addEventListener('click', (event) => {
+        link.addEventListener('click', event => {
             // this is to prevent the automatic scroll to center but it also prevents changing URL
             event.preventDefault();
-            const target = event.target as HTMLAnchorElement;
+            const target = event.currentTarget as HTMLAnchorElement;
 
             // we need to push the history in order to change the URL
             history.pushState({ hash }, '', target.href);
@@ -40,6 +56,54 @@ function main() {
 
         // if the url has a hash we want to set the corresponding content
         if (hash === contentId) displayContent(hash);
+    });
+
+    // hook up the highlights so that they show in the highlight viewer
+    highlightLinks.forEach( (link) => {
+        link.addEventListener('click', event => {
+            const target = event.currentTarget as HTMLAnchorElement;
+            const image: HTMLImageElement = target.querySelector('img');
+            const highlight = works[target.id];
+
+            // if there is no highlight object then we can't proceed
+            if (!highlight) return;
+            event.preventDefault();
+
+            // otherwise we destructure
+            const { title, description, github, preview } = highlight;
+
+            // set the corresponding DOM elements
+            imageElement.src = image.src;
+            titleElement.innerText = title;
+            contentElement.innerText = description;
+            githubButton.href = github;
+            previewButton.href = preview;
+
+            // show or hide the corresponding buttons 
+            githubButton.classList[github ? 'remove' : 'add']('hidden');
+            previewButton.classList[preview ? 'remove' : 'add']('hidden');
+
+            // show the viewer and add the cover
+            highlightCover.classList.remove('hidden');
+            highlightViewer.classList.remove('hidden');
+        });
+    });
+
+    // when we click the highlight cover we want to close the viewer
+    highlightCover.addEventListener('click', event => {
+        const target = event.currentTarget as HTMLDivElement;
+        target.classList.add('hidden');
+        highlightViewer.classList.add('hidden');
+    });
+
+    // when the highlight cover is activated we want to disable scroll
+    window.addEventListener('scroll', () => {
+        if  ( !highlightCover.classList.contains('hidden') ) {
+            window.scrollTo({ top: lastScrollY, behavior: 'instant' });
+            return;
+        }
+        
+        lastScrollY = window.scrollY;
     });
 }
 
@@ -55,10 +119,15 @@ function displayContent(contentId: string) {
     navigationLinks[index].classList.add('active');
     root.style.setProperty('--active-tab-index', String(index) );
 
-    // here we show the right content
-    const content = document.querySelector(`.content${contentId}`);
-    document.querySelectorAll('.content').forEach(content => content.classList.add('hidden') );
-    if (content) content.classList.remove('hidden');
+    // here we show the right content which is done by hiding
+    // all other content except for the targetContent
+    const targetContent = document.querySelector(`.content${contentId}`);
+    document.querySelectorAll('.content').forEach(content => {
+        if (content === targetContent)
+            content.classList.remove('hidden') 
+        else 
+            content.classList.add('hidden')       
+    });
 }
 
 // this is called whenever the back button is pressed
