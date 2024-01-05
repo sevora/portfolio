@@ -251,17 +251,17 @@ div.hidden, a.hidden {
 }
 
 /* These are for the buttons in the highlight viewer */
-#highlight-viewer .button {
+.button {
     display: block;
 }
 
 /* Hover effects for the buttons */
-#highlight-viewer .button:hover {
+.button:hover {
     opacity: 0.85;
 }
 
 /* When the button is tapped we want that */
-#highlight-viewer .button:active {
+.button:active {
     opacity: 0.75;
 }
 
