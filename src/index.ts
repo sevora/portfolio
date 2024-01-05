@@ -1,5 +1,6 @@
 // these are the DOM elements necessary for this site
 const root: HTMLElement = document.querySelector(':root');
+const activeTab: HTMLDivElement = document.querySelector('#active-tab');
 const navigationLinks: NodeListOf<HTMLAnchorElement> = document.querySelectorAll('#navigation-bar > a');
 
 /**
@@ -9,6 +10,10 @@ const navigationLinks: NodeListOf<HTMLAnchorElement> = document.querySelectorAll
 function main() {
     // the url may contain a hash which indicates the content's id that should be shown
     const contentId = window.location.hash;
+
+    // we want to add the active tab and the first active navigation link
+    activeTab.style.removeProperty('display');
+    navigationLinks[0].classList.add('active');
 
     // here, we hook up the navigation links with setting the tab index
     navigationLinks.forEach( (link, index) => {
