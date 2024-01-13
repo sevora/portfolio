@@ -1,191 +1,440 @@
-/* Default values for extremely small screens- foldables */
+/* This is where we can define all our CSS variables */
 :root {
-    --text: #292b2b;
-    --background: #eee;
+    --navigation-bar-height: 60px;
+
+    --active-tab-width: 30%;
+    --active-tab-index: 0;
+
+    --tabs-total: 3;
+    --tab-height: 75%;
+
+    /* By default light theme is used */
+    --background-color: white;
+    --foreground-color: black;
 }
 
-html, body {
-    width: 100vw;
-    height: 100vh;
-    margin: 0px;
-    padding: 0px;
+/* We want to make things consistent so we do this, we also set universal fonts and color schemes */
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
 
-    font-family: 'Times New Roman', Times, serif;
-    font-size: clamp(1rem, 3vw, 3vh);
-    color: var(--text);
-    background-color: var(--background);
+    font-family: Roboto, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: var(--foreground-color);
+    background-color: var(--background-color);
+
+    scroll-behavior: smooth;
+}
+
+a.link {
+    color: var(--background-color);
+    background-color: var(--foreground-color);
+    text-decoration: none;
+
+    padding: 0px 7px;
+    border: 2px solid transparent;
+    border-radius: 10px;
+}
+
+a.link:hover {
+    opacity: 0.65;
+}
+
+/* Hide element helper */
+div.hidden, a.hidden {
+    display: none;
+}
+
+/* This is the container for the navigation links */
+#navigation-bar {
+    width: 100%;
+    height: var(--navigation-bar-height);
+
+    font-family: "Dolce Vita";
+    font-weight: 400;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
-    scroll-behavior: smooth !important;
+    position: fixed;
+    background-color: var(--background-color);
 }
 
-header {
-    color: var(--text);
-    background-color: var(--background);
+/* Since the bar is fixed in position it doesn't take space, so we have the spacer which occupies the space the bar should take */
+#navigation-spacer {
     width: 100%;
-    padding: 7px 15px;
-    border-bottom: 1px solid #ddd;
-    
+    height: var(--navigation-bar-height);
+}
+
+/* We style the links and color them accordingly to the theme */
+#navigation-bar > a {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-style: normal;
+
+    color: var(--foreground-color);
+    background-color: transparent;
+
+    font-size: 1rem;
+    text-align: left;
+    width: var(--active-tab-width);
+    height: var(--tab-height);
+
+    border: 2px solid transparent;
+    border-radius: 0%;
+
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: flex-end;
-    column-gap: 15px;
+
+    z-index: 1;
+    cursor: pointer;
+
+    transition-property: color;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-out;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* When we hover over a link in the navigation, we want to show a "highlighting" border */
+#navigation-bar > a:hover {
+    border: 2px solid var(--foreground-color);
+    opacity: 1.0;
+}
+
+/* When the link is active meaning the active-tab is on it, we have to change its color */
+#navigation-bar > a.active {
+    border: none;
+    color: var(--background-color);
+}
+
+/* The active tab is the tab that moves inside the navigation bar over a link */
+#navigation-bar > #active-tab {
+    width: calc(var(--active-tab-width) - 10px);
+    height: var(--tab-height);
+    background-color: var(--foreground-color);
+
+    z-index: 0;
+
+    position: absolute;
+    left: calc(50% - var(--active-tab-width) * 0.5 * var(--tabs-total) + var(--active-tab-width) * var(--active-tab-index) + 5px);
+    top: calc((100% - var(--tab-height)) * 0.5);
+
+    transition-duration: 0.4s;
+    transition-property: left;
+    transition-timing-function: ease-out;
+}
+
+/* This is a single page content that occupies the entire viewport space */
+.content {
+    width: 100%;
+    min-height: calc(100vh - var(--navigation-bar-height));
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* This is the about section and its design */
+#about {
+    padding: 20px;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+}
+
+/* This is the main text or hero text */
+#about h1 {
+    font-family: "Dolce Vita";
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 5rem;
+}
+
+/* This is the subtext */
+#about h3 {
+    font-weight: 300;
+}
+
+/* This is the works content */
+#works {
+    align-items: center;
+}
+
+/* The container should hold all the images */
+#works .container {
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* This is a direct image container (a link) */
+#works a {
+    width: 100%;
+    height: auto;
+}
+
+/* This cover is supposed to be shown and interfere with touching other elements */
+#highlight-cover {
+    width: 100vw;
+    height: 100vh;
+
+    /* By default light theme is used */
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 1;
 
     position: fixed;
     top: 0;
     left: 0;
 
-    z-index: 10;
+    cursor: pointer;
 }
 
-header img {
-    width: 25px;
+
+/* This is the hint in the highlight-cover which says how to close the highlight viewer */
+#highlight-cover p {
+    margin-top: 10px;
+    text-align: center;
+    font-weight: 300;
 }
 
-img { 
-    border-radius: 15px;
+/* The highlight viewer should show the work/highlight information that was tapped */
+#highlight-viewer {
+    width: 100%;
+    height: 80%;
+    padding: 35px 0px;
+    overflow-y: hidden;
+
+    color: black;
+    background-color: white;
+
+    border-top-left-radius: 35px;
+    border-top-right-radius: 35px;
+
+    position: fixed;
+    top: 20%;
+    left: 0;
+    z-index: 2;
+
+    transition-property: top, left;
+    transition-duration: 0.3s;
+
+    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+    -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    font-family: BelgianoSerif, 'Times New Roman', Times, serif;
+/* When we have the highlight viewer we only want to place it way below */
+#highlight-viewer.hidden {
+    display: block;
+    top: 100%;
 }
 
-canvas {
-    width: 60%;
+/* This is the box-shadow of the highlight viewer */
+#highlight-viewer::before,
+#highlight-viewer::after {
+    content: "";
+    border-top-left-radius: 35px;
+    border-top-right-radius: 35px;
+
+    -webkit-box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+   
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0px;
+    right: 0px;
+
+    z-index: -1;
+}
+
+/* This is the image of the highlight viewer */
+#highlight-viewer img {
+    width: 100%;
     height: auto;
 }
 
-#root {
-    width: 85%;
-    height: 90%;
-
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-
-    flex-direction: column;
-    row-gap: 10px;
-    user-select: none;
+/* This is the title of the highlight viewer */
+#highlight-viewer h1 {
+    font-weight: 400;
+    font-size: 2rem;
 }
 
-#centerpoint {
-    font-size: 2.6rem;
-    padding: 100px 0px;
+/* This is the container of text in the highlight viewer */
+#highlight-viewer .text-container {
+    padding: 15px 35px;
 }
 
-#scrollable {
-    width: 100%;
-    height: 60%;
-    overflow: scroll;
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-}
-
-#scrollable::-webkit-scrollbar {
-    width: 0px;
-    display: none;
-    background: transparent; /* make scrollbar transparent */
-}
-
-.caption {
-    display: block;
-    font-size: 1.125rem;
-}
-
+/* These are for the buttons in the highlight viewer */
 .button {
-    opacity: 0.7;
-    color: var(--text);
-    transition-duration: 0.2s;
-    text-decoration: none;
-    font-size: 1.4rem;
-    text-decoration: underline;
+    display: block;
 }
 
-.button.emphasized {
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.button.muted {
-    opacity: 0.6;
-}
-
-.button.muted:hover {
-    opacity: 0.9;
-}
-
-.button:visited {
-    color: var(--text);
-}
-
+/* Hover effects for the buttons */
 .button:hover {
-    opacity: 0.7;
+    opacity: 0.85;
 }
 
-.no-margin {
-    margin: 0px;
+/* When the button is tapped we want that */
+.button:active {
+    opacity: 0.75;
 }
 
-.low-margin {
-    margin: 5px 0px;
+/* Highlight viewer button next to a button separation */
+#highlight-viewer .button + .button {
+    margin-top: 15px !important;
 }
 
-.center {
-    text-align: center;
+/* Highlight viewer github button */
+#highlight-viewer .github.button {
+    width: 90%;
+    height: 45px;
+    margin: auto;
+
+    border-radius: 20px;
+
+    background-color: black;
+    background-image: url(/images/icons/Github_white.png);
+    background-repeat: no-repeat;
+    background-size: 35px;
+    background-position: center;
 }
 
-.spacer {
-    margin: 60vh 0;
+/* Highlight viewer preview button */
+#highlight-viewer .preview.button {
+    width: 90%;
+    height: 45px;
+    margin: auto;
+
+    border: 1px solid lightgray;
+    border-radius: 20px;
+
+    background-color: white;
+    background-image: url(/images/icons/Play_black.png);
+    background-repeat: no-repeat;
+    background-size: 20px;
+    background-position: center;
 }
 
-.hidden {
-    visibility: hidden;
+/* This is for the contact section */
+#contact {
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    row-gap: 15px;
 }
 
-.no-display {
-    display: none;
+/* Contact header */
+#contact h1 {
+    font-family: Roboto;
+    font-weight: 500;
 }
 
-/* portrait tablets or desktops */
-@media screen and (min-width: 600px) {
-    #root {      
+/* Contact elements layout */
+#contact h1, #contact p {
+    width: 100%;
+    text-align: left;
+}
+
+/* When the screen is for desktop */
+@media screen and (min-width: 1000px) {
+    /* Change some variables accordingly */
+    :root {
+        --active-tab-width: 15%;
+        --tab-height: 65%;
+        --navigation-bar-height: 75px;
+    }
+
+    html, body {
+        font-size: 18px;
+    }
+
+    /* We want a larger font-size on navigation bar links */
+    #navigation-bar > a {
+        font-size: 1.5rem;
+    }
+
+    /* We adjust the alignment of about page */
+    #about {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Adjust image sizes on works */
+    #works a {
+        width: 33.33%;
+    }
+    
+    /* Adjust the hint on the highlight cover */
+    #highlight-cover p {
+        margin-top: 25px;
+    }
+
+    /*  Adjust highlight viewer and its effects */
+    #highlight-viewer {
+        border-radius: 25px;
+        width: clamp(750px, 40%, 1000px);
+        height: auto;
+        padding-top: 0;
+
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        
+        opacity: 1.0;
+        transition-duration: 0.5s;
+        transition-property: opacity;
+    }
+
+    /* Adjust the shadows of the viewer */
+    #highlight-viewer::before,
+    #highlight-viewer::after { 
+        border-radius: 25px;
+    }
+
+    /* Change how the viewer goes hidden */
+    #highlight-viewer.hidden {
+        display: block;
+        top: 50%;
+        left: 50%;
+        
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    /* Change the spacing of the containers */
+    #highlight-viewer .text-container {
+        padding: 20px 50px;
+    }
+
+    /* Change the button sizes as well */
+    #highlight-viewer .preview.button, #highlight-viewer .github.button {
+        height: 55px;
+        width: 85%;
+    }
+
+    /* Changes the layout to be centered on larger devices */
+    #contact h1, #contact p {
         width: 60%;
-        flex-direction: row;
-    }
-
-    #scrollable {
-        height: 70%;
-    }
-
-    #centerpoint {
-        font-size: 2.5rem;
-    }
-
-    canvas {
-        width: 40%;
+        padding-left: 12%;
+        text-align: left;
     }
     
-    .hero {
-        margin: 120px 0 250px 0;
-        text-align: center;
-    }
 }
 
-/* portrait tablets or desktops */
-@media screen and (min-width: 768px) {
-    header img {
-        width: 35px;
+/* This is applied when the user prefers dark theme, by default the white theme is used */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-color: black;
+        --foreground-color: white;
     }
-    
-    canvas {
-        width: 50%;
-    }
-}
 
-@font-face {
-    font-family: BelgianoSerif;
-    src: url("fonts/BelgianoSerif2.otf"), url("fonts/BelgianoSerif2.ttf");
+    #highlight-cover {
+        background-color: rgba(0, 0, 0, 0.8);
+    }
 }

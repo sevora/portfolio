@@ -1,267 +1,141 @@
-import 'animate.css';
-import { SCROLL_DIFFERENCE_CHECK } from './settings';
-import { atan2 } from './math';
-import { isMobile } from './mobile';
-import { EfficientViewportObserver } from './viewport';
-import { InteractiveWatch } from './watch';
+import works from './works';
 
-// these are all the DOM
-const root = document.querySelector('#root')!;
-const scrollable = document.querySelector('#scrollable')!;
-const centerpoint = document.querySelector('#centerpoint')!;
-const canvas = document.querySelector('canvas')!;
-const context = canvas.getContext('2d');
+// these are the DOM elements necessary for this site
+const root: HTMLElement = document.querySelector(':root');
+const activeTab: HTMLDivElement = document.querySelector('#active-tab');
+const navigationLinks: NodeListOf<HTMLAnchorElement> = document.querySelectorAll('#navigation-bar > a');
+const highlightLinks: NodeListOf<HTMLAnchorElement> = document.querySelectorAll('#works > .container > a');
+const highlightViewer: HTMLDivElement = document.querySelector('#highlight-viewer');
+const highlightCover: HTMLDivElement = document.querySelector('#highlight-cover');
 
-// finally this is a scroll-related variable
-let previousScrollTop: number = 0;
+// these are the DOM elements for the highlight viewing
+const imageElement: HTMLImageElement = highlightViewer.querySelector('img');
+const titleElement: HTMLHeadingElement = highlightViewer.querySelector('h1');
+const contentElement: HTMLParagraphElement = highlightViewer.querySelector('p');
+const githubButton: HTMLAnchorElement = highlightViewer.querySelector('.github.button');
+const previewButton: HTMLAnchorElement = highlightViewer.querySelector('.preview.button');
 
-// these are mouse-state related variables
-let mouseState: MouseState = { previous: null, current: null, pressed: false };
-let mouseVectorLatest: Vector | null = null;
+// stores the hash (or contentId) with its corresponding index
+const hash2Index: { [hash: string]: number } = {};
 
-// these are game-loop related variables
-let now = Date.now();
-let then = now;
-let fps = isMobile() ? 60 : 120;
-
-// these are our custom objects
-const watch = new InteractiveWatch();
-const animationObserver = new EfficientViewportObserver(scrollable, '[data-scroll-class]', findCenterpoint);
-const latestObserver = new EfficientViewportObserver(document, '#scrollable > *', findCenterpoint);
+// should contain the last scroll-y value
+let lastScrollY: number = 0;
 
 /**
- * This is the entrypoint of the program's game loop,
- * we can set up other things here as well related to the DOM.
+ * This is the entrypoint of the program
+ * where everything is put together.
  */
-async function main() {            
-    root.classList.remove('hidden');
-    centerpoint.scrollIntoView({ behavior: 'instant', block: 'center', inline: 'center' });
+function main() {
+    // remove smooth scrolling when js is enabled
+    window.document.body.style.setProperty('scroll-behavior', 'auto');
 
-    attachEventListeners();
-    dispatchEvent( new CustomEvent('customscroll') );
-    
-    // this might take a while
-    await watch.load({ 
-        body: '/assets/watch/body.png', 
-        hour: '/assets/watch/hour.png', 
-        minute: '/assets/watch/minute.png', 
-        second: '/assets/watch/second.png' 
+    // when there's no hash, we want to use 'about'
+    if (!window.location.hash) window.location.hash = 'about';
+
+    // the url may contain a hash which indicates the content's id that should be shown
+    const contentId = window.location.hash;
+
+    // we want to add the active tab and the first active navigation link
+    activeTab.style.removeProperty('display');
+    navigationLinks[0].classList.add('active');
+
+    // here, we hook up the navigation links with setting the tab index
+    navigationLinks.forEach( (link, index) => {
+        const { hash } = link;
+        hash2Index[hash] = index;
+
+        link.addEventListener('click', event => {
+            // this is to prevent the automatic scroll to center but it also prevents changing URL
+            event.preventDefault();
+            const target = event.currentTarget as HTMLAnchorElement;
+
+            // we need to push the history in order to change the URL
+            history.pushState({ hash }, '', target.href);
+            displayContent(hash);
+        });
+
+        // if the url has a hash we want to set the corresponding content
+        if (hash === contentId) displayContent(hash);
     });
 
-    canvas.classList.remove('hidden');
+    // hook up the highlights so that they show in the highlight viewer
+    highlightLinks.forEach( (link) => {
+        link.addEventListener('click', event => {
+            const target = event.currentTarget as HTMLAnchorElement;
+            const image: HTMLImageElement = target.querySelector('img');
+            const highlight = works[target.id];
 
-    // so we want to grab the attention of the user
-    // with a turn animation
-    canvas.classList.add('animate__animated');
-    canvas.classList.add('animate__rotateIn');
-
-    setup();
-    loop();
-}
-
-/**
- * Setup code for canvas elements, where we setup 
- * canvas-related functionalities.
- */
-function setup() {
-    // adjust the canvas to match device pixel ratio
-    canvas.width *= window.devicePixelRatio;
-    canvas.height *= window.devicePixelRatio;
-    watch.computeSizesFromCanvas(canvas);
-}
-
-/**
- * This is the update code where logical update
- * steps happen.
- */
-function update() {
-    // update the current and previous mouse events
-    if (mouseState.pressed) {
-        mouseState.previous = mouseState.current;
-        mouseState.current = mouseVectorLatest;
-    }
-
-    // this is the logic to compute how much the angle of the watch has changed
-    if (mouseState.pressed && mouseState.previous && mouseState.current && !watch.isResetting) {
-        const canvasBoundingBox = canvas.getBoundingClientRect();
-        const originX = (canvasBoundingBox.left + canvasBoundingBox.right)/2;
-        const originY = (canvasBoundingBox.top + canvasBoundingBox.bottom)/2;
-
-        // we compute the angle of the previous location of our touch/mouse
-        const previousX = mouseState.previous.x - originX;
-        const previousY =  mouseState.previous.y - originY
-        const previousAngle = atan2(previousY, previousX);
-
-        // we compute the angle of the current location of our touch/mouse
-        const currentX = mouseState.current.x - originX;
-        const currentY =  mouseState.current.y - originY;
-        const currentAngle = atan2(currentY, currentX);
-        
-        const deltaAngle = Math.floor(currentAngle - previousAngle);
-
-        // if the change is not abrupt (less than 180) we can applu the rotation
-        if (Math.abs(deltaAngle) < 180) {
-            scrollable.scrollTop += deltaAngle;
-            watch.applyDial(deltaAngle);
-
-            // minor optimization, ensures that customscroll is only ran whenever a set difference is met
-            if (Math.abs(scrollable.scrollTop - previousScrollTop) >= SCROLL_DIFFERENCE_CHECK) {
-                window.dispatchEvent( new CustomEvent('customscroll') );
-                previousScrollTop = scrollable.scrollTop;
-            }
-        }
-    }
-
-    // this must always be called to update the watch
-    watch.update();
-}
-
-/**
- * This is where the render code is placed, where
- * objects are rendered unto the canvas.
- */
-function render() {
-    watch.render(context);
-}
-
-/**
- * This is the game loop which should call
- * update and render at the right time.
- */
-function loop() {
-    window.requestAnimationFrame(loop);
-
-    now = Date.now();
-    const elapsed = now - then;
-    const interval = 1000/fps;
-
-    if (elapsed > interval) {
-        then = now - (elapsed % interval);
-        update();
-        render();
-    }
-}
-
-/**
- * This is used to reset the mouse state.
- */
-function resetMouseState() {
-    mouseState.previous = null;
-    mouseState.current = null;
-    mouseVectorLatest = null;
-    mouseState.pressed = false;
-}
-
-/**
- * Attach all the event listeners for this site.
- */
-function attachEventListeners() {
-    // this allows us to use smooth-scroll on anchor tags
-    document.querySelectorAll('a.smooth-scroll').forEach((element: HTMLAnchorElement) => {
-
-        // automatically binds click event listener for smooth scroll
-        element.addEventListener('click', (event) => {
+            // if there is no highlight object then we can't proceed
+            if (!highlight) return;
             event.preventDefault();
 
-            // we get the target property and the actual element it is referring to
-            const targetProperty = element.getAttribute('href');
-            const targetElement: HTMLElement = document.querySelector( element.getAttribute('href') );
-            targetElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
-            targetElement.focus({ preventScroll: true });
-            
-            // the following lines should only apply to the centerpoint
-            if (targetProperty !== '#centerpoint') return;
-            
-            // manually resetting the classes to show it as there is no callback for scrollIntoView
-            animationObserver.resetAnchor();
-            latestObserver.resetAnchor();
-            targetElement.classList.remove('hidden');
-            targetElement.classList.add(...(targetElement as HTMLElement).dataset.scrollClass.split(' '));
-            watch.resetDial();
+            // otherwise we destructure
+            const { title, description, github, preview } = highlight;
+
+            // set the corresponding DOM elements
+            imageElement.src = image.src;
+            titleElement.innerText = title;
+            contentElement.innerText = description;
+            githubButton.href = github;
+            previewButton.href = preview;
+
+            // show or hide the corresponding buttons 
+            githubButton.classList[github ? 'remove' : 'add']('hidden');
+            previewButton.classList[preview ? 'remove' : 'add']('hidden');
+
+            // show the viewer and add the cover
+            highlightCover.classList.remove('hidden');
+            highlightViewer.classList.remove('hidden');
         });
     });
 
-     // this sets the mouse state to be pressed. 
-    window.addEventListener('mousedown', () => {
-        mouseState.pressed = true;
+    // when we click the highlight cover we want to close the viewer
+    highlightCover.addEventListener('click', event => {
+        const target = event.currentTarget as HTMLDivElement;
+        target.classList.add('hidden');
+        highlightViewer.classList.add('hidden');
     });
 
-    // his resets the mouse state to its default values 
-    window.addEventListener('mouseup', () => {
-        resetMouseState();
-        watch.applyDial(0);
-    });
-
-    // This is fired when the mouse is moved, we simply save 
-    // the latest mouse event.
-    window.addEventListener('mousemove', (event: MouseEvent) => {
-        mouseVectorLatest = { x: event.clientX, y: event.clientY };
-    });
-
-    // mobile devices use touch events instead, same logic, this is for touching down.    
-    window.addEventListener('touchstart', () => {
-        mouseState.pressed = true;
-    }, { passive: false });
-
-    // this is for stopping the touch.
-    window.addEventListener('touchend', () => {
-        resetMouseState();
-        watch.applyDial(0);
-    });
-
-    // this is for when touching the screen
-    window.addEventListener('touchmove', (event: TouchEvent) => {
-        event.preventDefault();
-        mouseVectorLatest = { x: event.touches[0].clientX, y: event.touches[0].clientY };
-    }, { passive: false })
-
-    // This prevents scrolling normally on the scrollable content
-    scrollable.addEventListener('wheel', (event: WheelEvent) => {
-        event.preventDefault();
-    }, { passive: false })
-
-    // trigger resize event when orientation changes. 
-    window.addEventListener('orientationchange', () => window.dispatchEvent(new Event('resize')) );
-
-    // this is for our animation on custom scroll event
-    window.addEventListener('customscroll', animationObserver.onViewportChange( (isInViewport, element: HTMLElement) => {
-        const classes = element.dataset.scrollClass.split(' ');
-        
-        // if element is in viewport we make it visible and apply animation 
-        if (isInViewport) {
-            element.classList.remove('hidden');
-            element.classList.add(...classes);
-            return
+    // when the highlight cover is activated we want to disable scroll
+    window.addEventListener('scroll', () => {
+        if  ( !highlightCover.classList.contains('hidden') ) {
+            window.scrollTo({ top: lastScrollY, behavior: 'instant' });
+            return;
         }
-
-        // otherwise, we hide it and remove the animation classes
-        element.classList.add('hidden');
-        element.classList.remove(...classes);
-    }), false);
-
-    // we also ensure that the latest observer is updated everytime customscroll is dispatched
-    window.addEventListener('customscroll', latestObserver.onViewportChange(() => null));
-
-    // handle resizing by scrolling on the last viewed element
-    window.addEventListener('resize', () => {
-        latestObserver.getAnchor().scrollIntoView({ behavior: 'instant', block: 'center', inline: 'center' });
+        
+        lastScrollY = window.scrollY;
     });
 }
 
 /**
- * This is used as a callback function for EfficientViewportObserver,
- * and it finds the index of the centerpoint.
+ * Use this to set the navigation bar amd content shown in the page.
+ * @param contentId corresponds to the id property of the content element (also a hash of its 
+ * corresponding anchor tag and has a class called content).
  */
-function findCenterpoint(elements: Element[]) {
-    for (let index = 0; index < elements.length; ++index) {
-        const element = elements[index];
-        if (element === centerpoint) return index;
-    }
-    return -1;
+function displayContent(contentId: string) {
+    // here we set the values to make the navigation bar look right
+    const index = hash2Index[contentId];
+    navigationLinks.forEach(link => link.classList.remove('active') );
+    navigationLinks[index].classList.add('active');
+    root.style.setProperty('--active-tab-index', String(index) );
+
+    // here we show the right content which is done by hiding
+    // all other content except for the targetContent
+    const targetContent = document.querySelector(`.content${contentId}`);
+    document.querySelectorAll('.content').forEach(content => {
+        if (content === targetContent)
+            content.classList.remove('hidden') 
+        else 
+            content.classList.add('hidden')       
+    });
 }
 
-/**
- * Call the main function when the 
- * page loads.
- */
+// this is called whenever the back button is pressed
+window.addEventListener('popstate', (event) => {
+    if (!event.state) return;
+    const hash: string = event.state.hash;
+    if (hash) displayContent(hash);
+});
+
+// calls the main function when the page loads
 window.addEventListener('load', main);
