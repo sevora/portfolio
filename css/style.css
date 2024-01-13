@@ -229,7 +229,7 @@ div.hidden, a.hidden {
 /* When we have the highlight viewer we only want to place it way below */
 #highlight-viewer.hidden {
     display: block;
-    top: 100%;
+    top: 200%;
 }
 
 /* This is the box-shadow of the highlight viewer */
