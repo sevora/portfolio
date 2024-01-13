@@ -1,3 +1,4 @@
+import 'swiped-events';
 import works from './works';
 
 // these are the DOM elements necessary for this site
@@ -16,10 +17,11 @@ const githubButton: HTMLAnchorElement = highlightViewer.querySelector('.github.b
 const previewButton: HTMLAnchorElement = highlightViewer.querySelector('.preview.button');
 
 // stores the hash (or contentId) with its corresponding index
-const hash2Index: { [hash: string]: number } = {};
+const hashes: string[] = [];
 
 // should contain the last scroll-y value
 let lastScrollY: number = 0;
+let lastIndex: number = 0;
 
 /**
  * This is the entrypoint of the program
@@ -42,7 +44,7 @@ function main() {
     // here, we hook up the navigation links with setting the tab index
     navigationLinks.forEach( (link, index) => {
         const { hash } = link;
-        hash2Index[hash] = index;
+        hashes.push(hash);
 
         link.addEventListener('click', event => {
             // this is to prevent the automatic scroll to center but it also prevents changing URL
@@ -50,12 +52,12 @@ function main() {
             const target = event.currentTarget as HTMLAnchorElement;
 
             // we need to push the history in order to change the URL
-            history.pushState({ hash }, '', target.href);
-            displayContent(hash);
+            history.pushState({ index }, '', target.href);
+            displayContent(index);
         });
 
         // if the url has a hash we want to set the corresponding content
-        if (hash === contentId) displayContent(hash);
+        if (hash === contentId) displayContent(index);
     });
 
     // hook up the highlights so that they show in the highlight viewer
@@ -109,21 +111,22 @@ function main() {
 
 /**
  * Use this to set the navigation bar amd content shown in the page.
- * @param contentId corresponds to the id property of the content element (also a hash of its 
- * corresponding anchor tag and has a class called content).
+ * @param index the index that corresponds to an element with the content class 
+ * according to document order.
  */
-function displayContent(contentId: string) {
-    // here we set the values to make the navigation bar look right
-    const index = hash2Index[contentId];
+function displayContent(index: number) {
+    lastIndex = index;
+
     navigationLinks.forEach(link => link.classList.remove('active') );
     navigationLinks[index].classList.add('active');
     root.style.setProperty('--active-tab-index', String(index) );
 
     // here we show the right content which is done by hiding
     // all other content except for the targetContent
-    const targetContent = document.querySelector(`.content${contentId}`);
-    document.querySelectorAll('.content').forEach(content => {
-        if (content === targetContent)
+    const contents = document.querySelectorAll(`.content`);
+    const target = contents[index];
+    contents.forEach(content => {
+        if (content === target)
             content.classList.remove('hidden') 
         else 
             content.classList.add('hidden')       
@@ -133,8 +136,28 @@ function displayContent(contentId: string) {
 // this is called whenever the back button is pressed
 window.addEventListener('popstate', (event) => {
     if (!event.state) return;
-    const hash: string = event.state.hash;
-    if (hash) displayContent(hash);
+    const index: number = event.state.index;
+    if (index !== undefined) displayContent(index);
+});
+
+// this is called on mobile devices when they swipe right
+document.addEventListener('swiped-right', () => {
+    let previousIndex = lastIndex - 1;
+    if (previousIndex < 0) previousIndex = hashes.length-1;
+    displayContent(previousIndex);
+    
+    // we also push that into the history to update it
+    history.pushState({ index: previousIndex }, '', hashes[previousIndex]);
+});
+
+// this is called on mobile devices when they swipe left
+document.addEventListener('swiped-left', () => {
+    let nextIndex = lastIndex + 1;
+    if (nextIndex > hashes.length-1) nextIndex = 0;
+    displayContent(nextIndex);
+
+    // we also push that into the history to update it
+    history.pushState({ index: nextIndex }, '', hashes[nextIndex]);
 });
 
 // calls the main function when the page loads
