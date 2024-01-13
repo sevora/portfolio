@@ -320,6 +320,7 @@ div.hidden, a.hidden {
     background-position: center;
 }
 
+/* This is for the contact section */
 #contact {
     padding: 20px;
     align-items: center;
@@ -328,10 +329,13 @@ div.hidden, a.hidden {
     row-gap: 15px;
 }
 
+/* Contact header */
 #contact h1 {
+    font-family: Roboto;
     font-weight: 500;
 }
 
+/* Contact elements layout */
 #contact h1, #contact p {
     width: 100%;
     text-align: left;
@@ -414,6 +418,7 @@ div.hidden, a.hidden {
         width: 85%;
     }
 
+    /* Changes the layout to be centered on larger devices */
     #contact h1, #contact p {
         width: 60%;
         padding-left: 12%;
