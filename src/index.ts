@@ -141,7 +141,7 @@ window.addEventListener('popstate', (event) => {
 });
 
 // this is called on mobile devices when they swipe right
-document.addEventListener('swiped-right', () => {
+document.addEventListener('swiped-left', () => {
     let previousIndex = lastIndex - 1;
     if (previousIndex < 0) previousIndex = hashes.length-1;
     displayContent(previousIndex);
@@ -151,7 +151,7 @@ document.addEventListener('swiped-right', () => {
 });
 
 // this is called on mobile devices when they swipe left
-document.addEventListener('swiped-left', () => {
+document.addEventListener('swiped-right', () => {
     let nextIndex = lastIndex + 1;
     if (nextIndex > hashes.length-1) nextIndex = 0;
     displayContent(nextIndex);
