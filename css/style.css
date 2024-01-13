@@ -28,6 +28,25 @@ body {
     scroll-behavior: smooth;
 }
 
+a.link {
+    color: var(--background-color);
+    background-color: var(--foreground-color);
+    text-decoration: none;
+
+    padding: 0px 7px;
+    border: 2px solid transparent;
+    border-radius: 10px;
+}
+
+a.link:hover {
+    opacity: 0.65;
+}
+
+/* Hide element helper */
+div.hidden, a.hidden {
+    display: none;
+}
+
 /* This is the container for the navigation links */
 #navigation-bar {
     width: 100%;
@@ -54,7 +73,10 @@ body {
 #navigation-bar > a {
     text-decoration: none;
     text-transform: uppercase;
+    font-style: normal;
+
     color: var(--foreground-color);
+    background-color: transparent;
 
     font-size: 1rem;
     text-align: left;
@@ -62,6 +84,7 @@ body {
     height: var(--tab-height);
 
     border: 2px solid transparent;
+    border-radius: 0%;
 
     display: flex;
     justify-content: center;
@@ -79,6 +102,7 @@ body {
 /* When we hover over a link in the navigation, we want to show a "highlighting" border */
 #navigation-bar > a:hover {
     border: 2px solid var(--foreground-color);
+    opacity: 1.0;
 }
 
 /* When the link is active meaning the active-tab is on it, we have to change its color */
@@ -107,14 +131,9 @@ body {
 /* This is a single page content that occupies the entire viewport space */
 .content {
     width: 100%;
-    height: calc(100vh - var(--navigation-bar-height));
+    min-height: calc(100vh - var(--navigation-bar-height));
     display: flex;
     flex-wrap: wrap;
-}
-
-/* Hide element helper */
-div.hidden, a.hidden {
-    display: none;
 }
 
 /* This is the about section and its design */
@@ -301,6 +320,23 @@ div.hidden, a.hidden {
     background-position: center;
 }
 
+#contact {
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    row-gap: 15px;
+}
+
+#contact h1 {
+    font-weight: 500;
+}
+
+#contact h1, #contact p {
+    width: 100%;
+    text-align: left;
+}
+
 /* When the screen is for desktop */
 @media screen and (min-width: 1000px) {
     /* Change some variables accordingly */
@@ -308,6 +344,10 @@ div.hidden, a.hidden {
         --active-tab-width: 15%;
         --tab-height: 65%;
         --navigation-bar-height: 75px;
+    }
+
+    html, body {
+        font-size: 18px;
     }
 
     /* We want a larger font-size on navigation bar links */
@@ -373,6 +413,13 @@ div.hidden, a.hidden {
         height: 55px;
         width: 85%;
     }
+
+    #contact h1, #contact p {
+        width: 60%;
+        padding-left: 12%;
+        text-align: left;
+    }
+    
 }
 
 /* This is applied when the user prefers dark theme, by default the white theme is used */

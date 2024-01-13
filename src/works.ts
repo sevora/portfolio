@@ -5,7 +5,7 @@
 const works: { [id: string]: Highlight } = {
     "aspire": {
         title: 'ASPIRE',
-        description: 'A COVID risk-estimator web application. This was done mainly by a team in DLSU and I worked on optimizing or turning it into a custom single-page application. ASPIRE stands for Activity Safety Planning and Infection Risk Estimator. It aims to estimate the possible risks one can have on their planned activities during the global pandemic. It is heavily based on Jimenez and Peng\'s estimator and the Goldberg et al.\'s MyCOVIDRisk App.',
+        description: 'A COVID risk-estimator web application. This was done mainly by a team in DLSU (De La Salle University) and I worked on optimizing or turning it into a custom single-page application. It is a web-application that computes the likelihood of viral spread (COVID) from given parameters such as location, activity, and so on.',
         github: 'https://github.com/sevora/covid-risk-estimator'
     },
     "blog": {
@@ -31,13 +31,13 @@ const works: { [id: string]: Highlight } = {
     },
     "stmviz": {
         title: 'stmviz',
-        description: 'This is a visualizer for the classic Gale-Shapley Algorithm. Implemented through a web-application and ES6. This is specifically designed to work on desktops. To support a wide array of browsers, a build system is in place which is Grunt. One of the tasks it automatically does is transpiling all the ES6 code to ES5 with the help of Babel. The build system also minifies the stylesheets and the final scripts.',
+        description: 'This is a visualizer for the classic Gale-Shapley Algorithm as a submission on a competition. Implemented through a web-application and ES6. This is specifically designed to work on desktops.',
         preview: 'https://visualizer.ralphlouisgopez.com',
         github: 'https://github.com/sevora/stmviz'
     },
     "story": {
         title: 'Story',
-        description: ' This is a website that shows my personal story. It won\'t give off a professional vibe but rather something more homey (at least for me). I used the idea and the theme of a "watch" as I like the concept of being able to show the past and the present. Check it out to see what I mean. I optimized how it works as much as possible on both mobile and desktop.',
+        description: ' This is a website that shows my personal story. It won\'t give off a professional vibe but rather something more homey. I used the idea and the theme of a "watch" as I like the concept of being able to show the past and the present. Check it out to see what I mean. I optimized how it works as much as possible on both mobile and desktop.',
         preview: 'https://story.ralphlouisgopez.com',
         github: 'https://github.com/sevora/story'
     }
