@@ -17,7 +17,8 @@ const githubButton: HTMLAnchorElement = highlightViewer.querySelector('.github.b
 const previewButton: HTMLAnchorElement = highlightViewer.querySelector('.preview.button');
 
 // stores the hash (or contentId) with its corresponding index
-const hashes: string[] = [];
+let hashes: string[] = [];
+let isViewerOpen: boolean = false;
 
 // should contain the last scroll-y value
 let lastScrollY: number = 0;
@@ -76,8 +77,8 @@ function main() {
 
             // set the corresponding DOM elements
             imageElement.src = image.src;
-            titleElement.innerText = title;
-            contentElement.innerText = description;
+            titleElement.innerHTML = title;
+            contentElement.innerHTML = description;
             githubButton.href = github;
             previewButton.href = preview;
 
@@ -88,6 +89,7 @@ function main() {
             // show the viewer and add the cover
             highlightCover.classList.remove('hidden');
             highlightViewer.classList.remove('hidden');
+            isViewerOpen = true;
         });
     });
 
@@ -96,6 +98,7 @@ function main() {
         const target = event.currentTarget as HTMLDivElement;
         target.classList.add('hidden');
         highlightViewer.classList.add('hidden');
+        isViewerOpen = false;
     });
 
     // when the highlight cover is activated we want to disable scroll
@@ -140,20 +143,20 @@ window.addEventListener('popstate', (event) => {
     if (index !== undefined) displayContent(index);
 });
 
-// this is called on mobile devices when they swipe right
+// this is called on mobile devices when they swipe left
 document.addEventListener('swiped-left', () => {
-    let previousIndex = lastIndex - 1;
-    if (previousIndex < 0) previousIndex = hashes.length-1;
+    if (isViewerOpen) return;
+    const previousIndex = Math.max(0, lastIndex - 1);
     displayContent(previousIndex);
     
     // we also push that into the history to update it
     history.pushState({ index: previousIndex }, '', hashes[previousIndex]);
 });
 
-// this is called on mobile devices when they swipe left
+// this is called on mobile devices when they swipe right
 document.addEventListener('swiped-right', () => {
-    let nextIndex = lastIndex + 1;
-    if (nextIndex > hashes.length-1) nextIndex = 0;
+    if (isViewerOpen) return;
+    const nextIndex = Math.min(lastIndex + 1, hashes.length-1);
     displayContent(nextIndex);
 
     // we also push that into the history to update it
