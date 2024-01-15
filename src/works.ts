@@ -19,6 +19,12 @@ const works: { [id: string]: Highlight } = {
         description: 'A suite of tools to aid filmmakers bring their imagination into reality. This project, also a company, was founded by <a target="_blank" href="https://www.linkedin.com/in/gil-ponce-6704389">Gil Ponce</a>. I am the fullstack developer of the work-in-progress web application and is continuously adding features and optimizations into the site.',
         preview: 'https://workspace.cinelaya.com'
     },
+    'cell-theory-timeline': {
+        title: 'Cell Theory Timeline',
+        description: 'This was for a presentation I did on high school. At the time, I decided that I won\'t enjoy making the usual materials for presentation so I instead built a website to show my work. This is intended for desktops only due to the screen size requirement for the layouting of the content.',
+        preview: 'https://sevora.github.io/cell-theory-timeline/index.html',
+        github: 'https://github.com/sevora/cell-theory-timeline'
+    },
     'deebait': {
         title: 'Deebait',
         description: 'This is a website made for 1-to-1 anonymous chat but with a twist. It it not currently working or hosted anymore. Users select a preference regarding a topic and get matched up with someone who has answers opposite to theirs. For example, cat lovers will get matched with dog lovers and so on. The point is for people to have a debate.',
