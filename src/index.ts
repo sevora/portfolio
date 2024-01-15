@@ -87,9 +87,7 @@ function main() {
             previewButton.classList[preview ? 'remove' : 'add']('hidden');
 
             // show the viewer and add the cover
-            highlightCover.classList.remove('hidden');
-            highlightViewer.classList.remove('hidden');
-            isViewerOpen = true;
+            displayViewer(true);
         });
     });
 
@@ -97,8 +95,7 @@ function main() {
     highlightCover.addEventListener('click', event => {
         const target = event.currentTarget as HTMLDivElement;
         target.classList.add('hidden');
-        highlightViewer.classList.add('hidden');
-        isViewerOpen = false;
+        displayViewer(false);
     });
 
     // when the highlight cover is activated we want to disable scroll
@@ -110,6 +107,17 @@ function main() {
         
         lastScrollY = window.scrollY;
     });
+}
+
+/**
+ * Use this to hide/display the highlight viewer
+ * @param show a boolean indicating whether to show the viewer or not.
+ */
+function displayViewer(show: boolean) {
+    const displayMethodKey: 'add' | 'remove' = show ? 'remove' : 'add';
+    highlightCover.classList[displayMethodKey]('hidden');
+    highlightViewer.classList[displayMethodKey]('hidden');
+    isViewerOpen = show;
 }
 
 /**
@@ -140,12 +148,16 @@ function displayContent(index: number) {
 window.addEventListener('popstate', (event) => {
     if (!event.state) return;
     const index: number = event.state.index;
-    if (index !== undefined) displayContent(index);
+    
+    if (index !== undefined) {
+        displayViewer(false);
+        displayContent(index);
+    }
 });
 
 // this is called on mobile devices when they swipe left
 document.addEventListener('swiped-left', () => {
-    if (isViewerOpen) return;
+    if (isViewerOpen) return; // do not allow swiping to other page when viewer is open
     const previousIndex = Math.max(0, lastIndex - 1);
     displayContent(previousIndex);
     
