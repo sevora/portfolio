@@ -361,7 +361,7 @@ div.hidden, a.hidden {
 
     /* We adjust the alignment of about page */
     #about {
-        width: 50%;
+        width: 65%;
         margin: auto;
         text-align: center;
         flex-direction: column;
@@ -385,7 +385,7 @@ div.hidden, a.hidden {
     /*  Adjust highlight viewer and its effects */
     #highlight-viewer {
         border-radius: 0px;
-        width: clamp(750px, 40%, 1000px);
+        width: clamp(20vw, 40%, 80vw);
         height: auto;
         padding-top: 0;
 
@@ -418,7 +418,7 @@ div.hidden, a.hidden {
     /* Change the spacing of the containers */
     #highlight-viewer .text-container {
         padding: 20px 50px;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
 
     /* Change the button sizes as well */
