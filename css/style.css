@@ -351,7 +351,7 @@ div.hidden, a.hidden {
     }
 
     html, body {
-        font-size: 18px;
+        font-size: 20px;
     }
 
     /* We want a larger font-size on navigation bar links */
@@ -361,8 +361,15 @@ div.hidden, a.hidden {
 
     /* We adjust the alignment of about page */
     #about {
+        width: 50%;
+        margin: auto;
+        text-align: center;
         flex-direction: column;
         align-items: center;
+    }
+
+    #about h3 {
+        font-size: 1.5rem;
     }
 
     /* Adjust image sizes on works */
@@ -377,7 +384,7 @@ div.hidden, a.hidden {
 
     /*  Adjust highlight viewer and its effects */
     #highlight-viewer {
-        border-radius: 25px;
+        border-radius: 0px;
         width: clamp(750px, 40%, 1000px);
         height: auto;
         padding-top: 0;
@@ -387,14 +394,15 @@ div.hidden, a.hidden {
         transform: translate(-50%, -50%);
         
         opacity: 1.0;
-        transition-duration: 0.5s;
+        transition-duration: 0.25s;
         transition-property: opacity;
     }
 
     /* Adjust the shadows of the viewer */
     #highlight-viewer::before,
     #highlight-viewer::after { 
-        border-radius: 25px;
+        display: none;
+        border-radius: 0px;
     }
 
     /* Change how the viewer goes hidden */
@@ -410,6 +418,7 @@ div.hidden, a.hidden {
     /* Change the spacing of the containers */
     #highlight-viewer .text-container {
         padding: 20px 50px;
+        font-size: 1.2rem;
     }
 
     /* Change the button sizes as well */
@@ -421,8 +430,12 @@ div.hidden, a.hidden {
     /* Changes the layout to be centered on larger devices */
     #contact h1, #contact p {
         width: 60%;
-        padding-left: 12%;
+        padding-left: 10%;
         text-align: left;
+    }
+
+    #contact p {
+        font-size: 1.2rem;
     }
     
 }
