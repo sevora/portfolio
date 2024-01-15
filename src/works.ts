@@ -43,7 +43,7 @@ const works: { [id: string]: Highlight } = {
     },
     'story': {
         title: 'My Story',
-        description: ' This is a website that shows my personal story. It won\'t give off a professional vibe but rather something more homey. I used the idea and the theme of a "watch" as I like the concept of being able to show the past and the present. Check it out to see what I mean. I optimized how it works as much as possible on both mobile and desktop.',
+        description: ' This is a website that shows my personal story. It won\'t give off a professional vibe but rather something more homey. I used the theme of a watch as I like the concept of being able to show the past and the present. I optimized how it works as much as possible on both mobile and desktop.',
         preview: 'https://story.ralphlouisgopez.com',
         github: 'https://github.com/sevora/story'
     },
