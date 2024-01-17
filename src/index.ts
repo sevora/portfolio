@@ -33,7 +33,7 @@ function main() {
     window.document.body.style.setProperty('scroll-behavior', 'auto');
 
     // the url may contain a hash which indicates the content's id that should be shown
-    const contentId = window.location.hash || 'about';
+    const contentId = window.location.hash || '#about';
 
     // we want to add the active tab and the first active navigation link
     activeTab.style.removeProperty('display');
