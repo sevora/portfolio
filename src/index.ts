@@ -160,8 +160,8 @@ function displayPage(index: number) {
             page.classList.add('hidden')
     });
 
-    // reset scroll to 0 when changing pages
-    window.scrollTo(0, 0);
+    // reset scroll to 0 instantly when changing "pages"
+    window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
 // this is called whenever the back button is pressed
