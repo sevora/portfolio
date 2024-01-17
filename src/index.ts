@@ -16,12 +16,10 @@ const contentElement: HTMLParagraphElement = highlightViewer.querySelector('p');
 const githubButton: HTMLAnchorElement = highlightViewer.querySelector('.github.button');
 const previewButton: HTMLAnchorElement = highlightViewer.querySelector('.preview.button');
 
-// stores the hash (or contentId) with its corresponding index
-let hashes: string[] = [];
+// these are extra state variables
+let hashes: string[] = []; // stores the hash (or contentId) with its corresponding index
 let isViewerOpen: boolean = false;
-
-// should contain the last scroll-y value
-let lastScrollY: number = 0;
+let lastScrollY: number = 0; // should contain the last scroll-y value
 let lastIndex: number = 0;
 
 /**
@@ -33,14 +31,15 @@ function main() {
     window.document.body.style.setProperty('scroll-behavior', 'auto');
 
     // the url may contain a hash which indicates the content's id that should be shown
-    const contentId = window.location.hash || '#about';
+    let contentId = window.location.hash;
+    let hasDisplayedPage = false;
 
     // we want to add the active tab and the first active navigation link
     activeTab.style.removeProperty('display');
     navigationLinks[0].classList.add('active');
 
     // here, we hook up the navigation links with setting the tab index
-    navigationLinks.forEach( (link, index) => {
+    navigationLinks.forEach((link, index) => {
         const { hash } = link;
         hashes.push(hash);
 
@@ -50,16 +49,19 @@ function main() {
             const target = event.currentTarget as HTMLAnchorElement;
 
             // we need to push the history in order to change the URL
-            history.pushState({ index }, '', target.href);
+            history.pushState(null, '', target.href);
             displayPage(index);
         });
 
         // if the url has a hash we want to set the corresponding content
-        if (hash === contentId) displayPage(index);
+        if (hash === contentId) {
+            displayPage(index);
+            hasDisplayedPage = true;
+        }
     });
 
     // hook up the highlights so that they show in the highlight viewer
-    highlightLinks.forEach( (link) => {
+    highlightLinks.forEach((link) => {
         link.addEventListener('click', event => {
             const target = event.currentTarget as HTMLAnchorElement;
             const image: HTMLImageElement = target.querySelector('img');
@@ -95,25 +97,32 @@ function main() {
         displayViewer(false);
     });
 
-    // when the highlight cover is activated we want to disable scroll
+    // when the highlight cover is activated we want to disable scroll by forcing the last y-position
     window.addEventListener('scroll', () => {
-        if  ( !highlightCover.classList.contains('hidden') ) {
+        if (!highlightCover.classList.contains('hidden')) {
             window.scrollTo({ top: lastScrollY, behavior: 'instant' });
             return;
         }
-        
+
         lastScrollY = window.scrollY;
     });
-    
-    // when there's no hash or it does not match any of the main hashes, we want to use 'about'
-    window.addEventListener('hashchange', () => {
-        if (!window.location.hash || hashes.indexOf(window.location.hash) === -1 )
-            window.location.hash = 'about';
-        
-        // ofcourse, we have to display that page as well
-        navigationLinks.forEach((link, index) => {
-            if (link.href === window.location.hash) displayPage(index);
-        });
+
+    // we want to ensure a valid hash when a page has not been displayed
+    if (!hasDisplayedPage) ensureValidHash();
+    window.addEventListener('hashchange', ensureValidHash);
+}
+
+/**
+ * Use this to ensure that the hash is valid. It automatically
+ * sets the hash to the first valid hash.
+ */
+function ensureValidHash() {
+    if (!window.location.hash || hashes.indexOf(window.location.hash) === -1)
+        window.location.hash = hashes[0];
+
+    // ofcourse, we have to display that page as well
+    navigationLinks.forEach((link, index) => {
+        if (link.href === window.location.hash) displayPage(index);
     });
 }
 
@@ -136,9 +145,9 @@ function displayViewer(show: boolean) {
 function displayPage(index: number) {
     lastIndex = index;
 
-    navigationLinks.forEach(link => link.classList.remove('active') );
+    navigationLinks.forEach(link => link.classList.remove('active'));
     navigationLinks[index].classList.add('active');
-    root.style.setProperty('--active-tab-index', String(index) );
+    root.style.setProperty('--active-tab-index', String(index));
 
     // here we show the right content which is done by hiding
     // all other content except for the targetContent
@@ -146,9 +155,9 @@ function displayPage(index: number) {
     const target = pages[index];
     pages.forEach(page => {
         if (page === target)
-            page.classList.remove('hidden') 
-        else 
-            page.classList.add('hidden')       
+            page.classList.remove('hidden')
+        else
+            page.classList.add('hidden')
     });
 
     // reset scroll to 0 when changing pages
@@ -156,11 +165,10 @@ function displayPage(index: number) {
 }
 
 // this is called whenever the back button is pressed
-window.addEventListener('popstate', (event) => {
-    if (!event.state) return;
-    const index: number = event.state.index;
-    
-    if (index !== undefined) {
+window.addEventListener('popstate', () => {
+    const index: number = hashes.indexOf(document.location.hash);
+
+    if (index > -1) {
         displayViewer(false);
         displayPage(index);
     }
@@ -171,19 +179,19 @@ document.addEventListener('swiped-left', () => {
     if (isViewerOpen) return; // do not allow swiping to other page when viewer is open
     const previousIndex = Math.max(0, lastIndex - 1);
     displayPage(previousIndex);
-    
+
     // we also push that into the history to update it
-    history.pushState({ index: previousIndex }, '', hashes[previousIndex]);
+    history.pushState(null, '', hashes[previousIndex]);
 });
 
 // this is called on mobile devices when they swipe right
 document.addEventListener('swiped-right', () => {
     if (isViewerOpen) return;
-    const nextIndex = Math.min(lastIndex + 1, hashes.length-1);
+    const nextIndex = Math.min(lastIndex + 1, hashes.length - 1);
     displayPage(nextIndex);
 
     // we also push that into the history to update it
-    history.pushState({ index: nextIndex }, '', hashes[nextIndex]);
+    history.pushState(null, '', hashes[nextIndex]);
 });
 
 // calls the main function when the page loads
