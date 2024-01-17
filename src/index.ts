@@ -107,6 +107,37 @@ function main() {
         lastScrollY = window.scrollY;
     });
 
+    // this is called whenever the back button is pressed
+    window.addEventListener('popstate', () => {
+        const index: number = hashes.indexOf(document.location.hash);
+
+        if (index > -1) {
+            displayViewer(false);
+            displayPage(index);
+        }
+    });
+
+    // this is called on mobile devices when they swipe left
+    document.addEventListener('swiped-left', () => {
+        if (isViewerOpen) return; // do not allow swiping to other page when viewer is open
+        const previousIndex = Math.max(0, lastIndex - 1);
+        displayPage(previousIndex);
+
+        // we also push that into the history to update it
+        history.pushState(null, '', hashes[previousIndex]);
+    });
+
+    // this is called on mobile devices when they swipe right
+    document.addEventListener('swiped-right', () => {
+        if (isViewerOpen) return;
+        const nextIndex = Math.min(lastIndex + 1, hashes.length - 1);
+        displayPage(nextIndex);
+
+        // we also push that into the history to update it
+        history.pushState(null, '', hashes[nextIndex]);
+    });
+
+
     // we want to ensure a valid hash when a page has not been displayed
     if (!hasDisplayedPage) ensureValidHash();
     window.addEventListener('hashchange', ensureValidHash);
@@ -163,36 +194,6 @@ function displayPage(index: number) {
     // reset scroll to 0 instantly when changing "pages"
     window.scrollTo({ top: 0, behavior: 'instant' });
 }
-
-// this is called whenever the back button is pressed
-window.addEventListener('popstate', () => {
-    const index: number = hashes.indexOf(document.location.hash);
-
-    if (index > -1) {
-        displayViewer(false);
-        displayPage(index);
-    }
-});
-
-// this is called on mobile devices when they swipe left
-document.addEventListener('swiped-left', () => {
-    if (isViewerOpen) return; // do not allow swiping to other page when viewer is open
-    const previousIndex = Math.max(0, lastIndex - 1);
-    displayPage(previousIndex);
-
-    // we also push that into the history to update it
-    history.pushState(null, '', hashes[previousIndex]);
-});
-
-// this is called on mobile devices when they swipe right
-document.addEventListener('swiped-right', () => {
-    if (isViewerOpen) return;
-    const nextIndex = Math.min(lastIndex + 1, hashes.length - 1);
-    displayPage(nextIndex);
-
-    // we also push that into the history to update it
-    history.pushState(null, '', hashes[nextIndex]);
-});
 
 // calls the main function when the page loads
 window.addEventListener('load', main);
