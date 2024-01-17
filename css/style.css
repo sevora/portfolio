@@ -21,8 +21,6 @@ body {
     margin: 0;
     padding: 0;
 
-    overflow-x: hidden;
-
     font-family: Roboto, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     color: var(--foreground-color);
     background-color: var(--background-color);
@@ -156,8 +154,6 @@ div.hidden, a.hidden {
     z-index: 0;
     width: 100%;
     height: auto;
-    
-    overflow: hidden;
 }
 
 #about video#white-pattern {
@@ -183,6 +179,8 @@ div.hidden, a.hidden {
     align-items: center;
     justify-content: center;
     position: relative;
+    
+    overflow-x: hidden;
 }
 
 /* This is the main text or hero text */
@@ -494,7 +492,7 @@ div.hidden, a.hidden {
     }
 
     #about #values {
-        padding: 10px 20%;
+        padding: 10px 30%;
         height: auto;
         margin-top: 100px;
         padding-bottom: 200px;
