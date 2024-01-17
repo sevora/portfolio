@@ -121,7 +121,7 @@ function displayViewer(show: boolean) {
 }
 
 /**
- * Use this to set the navigation bar amd content shown in the page.
+ * Use this to set the navigation bar and content shown.
  * @param index the index that corresponds to an element with the content class 
  * according to document order.
  */
@@ -142,6 +142,8 @@ function displayPage(index: number) {
         else 
             page.classList.add('hidden')       
     });
+
+    // reset scroll to 0 when changing pages
     window.scrollTo(0, 0);
 }
 

@@ -28,6 +28,7 @@ body {
     scroll-behavior: smooth;
 }
 
+/* These are the styling for common links */
 a.link {
     color: var(--background-color);
     background-color: var(--foreground-color);
@@ -38,6 +39,7 @@ a.link {
     border-radius: 10px;
 }
 
+/* Effects for common links */
 a.link:hover {
     opacity: 0.65;
 }
@@ -132,11 +134,12 @@ div.hidden, a.hidden {
     transition-timing-function: ease-out;
 }
 
-/* This is a single page content that occupies the entire viewport space */
+/* This is a single page that is shown one at a time */
 .page {
     width: 100%;
     min-height: calc(100vh - var(--navigation-bar-height));
 }
+
 
 .content {
     width: 100%;
@@ -158,15 +161,19 @@ div.hidden, a.hidden {
     overflow: hidden;
 }
 
+#about video {
+    width: 100%;
+    height: auto;
+}
+
 #about video#white-pattern {
     opacity: 0.5;
     display: block;
     transform: translateY(100%) rotate(-90deg) scale(2.5);
-
 }
 
 #about video#dark-pattern {
-    opacity: 0.1;
+    opacity: 0.2;
     display: none;
     transform: translateY(100%) rotate(-90deg) scale(2.5);
 }
@@ -195,6 +202,7 @@ div.hidden, a.hidden {
     font-weight: 300;
 }
 
+/* The timeline contains a title and a buncha segments with text */
 #about #timeline {
     width: 100%;
     background-color: var(--background-color);
@@ -208,12 +216,14 @@ div.hidden, a.hidden {
     
 }
 
+/* The segments is the actual timeline */
 #about #timeline #segments {
     padding: 0px 5%;
     display: flex;
     flex-direction: column;
 }
 
+/* This is for the title of the timeline */
 #about #timeline > h3 {
     font-size: 2rem;
     font-family: 'Dolce Vita';
@@ -221,6 +231,7 @@ div.hidden, a.hidden {
     text-align: center;
 }
 
+/* Look at the next following definitions to see how the automatic segments work */
 #about #timeline #segments > div {
     height: 32px;
     overflow-y: hidden;
@@ -254,6 +265,7 @@ div.hidden, a.hidden {
     background-image: url(/images/segments/end.png);
 }
 
+/* These is the values part */
 #about #values {
     text-align: left;
     padding: 20px;
@@ -265,6 +277,7 @@ div.hidden, a.hidden {
     justify-content: center;
 }
 
+/* Title of the values */
 #about #values h3 {
     font-family: 'Dolce Vita';
     font-weight: 100;
@@ -272,10 +285,10 @@ div.hidden, a.hidden {
     text-align: center;
 }
 
+/* Content of values */
 #about #values p {
     font-weight: 300;
 }
-
 
 /* This is the works content */
 #works {
@@ -287,6 +300,7 @@ div.hidden, a.hidden {
     height: auto;
     display: flex;
     flex-wrap: wrap;
+    align-content: center;
 }
 
 /* This is a direct image container (a link) */
@@ -486,10 +500,27 @@ div.hidden, a.hidden {
         align-items: center;
     }
 
+    /* We don't need the transforms on desktop */
+    #about video#white-pattern, #about video#dark-pattern  {
+        transform: unset;
+    }
+
+    /* Adjust position of hero */
+    #about #hero {
+        padding: 0px 20%;
+    }
+
+    /* And the font size */
+    #about #hero h3 {
+        font-size: 1.5rem;
+    }
+
+    /* Adjust segment position on desktop */
     #about #timeline #segments {
         padding: 10px 35%;
     }
 
+    /* Adjust values position as well */
     #about #values {
         padding: 10px 30%;
         height: auto;
@@ -497,14 +528,6 @@ div.hidden, a.hidden {
         padding-bottom: 200px;
     }
     
-    #about #hero {
-        padding: 0px 20%;
-    }
-
-    #about #hero h3 {
-        font-size: 1.5rem;
-    }
-
     /* Adjust image sizes on works */
     #works a {
         width: 33.33%;
@@ -580,6 +603,7 @@ div.hidden, a.hidden {
         --foreground-color: white;
     }
 
+    /* If the user prefers dark theme we show the dark pattern */
     #about video#white-pattern {
         display: none;
     }
@@ -588,10 +612,12 @@ div.hidden, a.hidden {
         display: block;
     }
 
+    /* The covers also change */
     #highlight-cover {
         background-color: rgba(0, 0, 0, 0.8);
     }
     
+    /* As well as the timeline segments */
     #about #timeline #segments > div:empty, #about #timeline #segments > div > div:first-child {
         filter: invert(90);
     }
