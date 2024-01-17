@@ -59,6 +59,7 @@ div.hidden, a.hidden {
     justify-content: center;
     align-items: center;
 
+    z-index: 5;
     position: fixed;
     background-color: var(--background-color);
 }
@@ -90,7 +91,7 @@ div.hidden, a.hidden {
     justify-content: center;
     align-items: center;
 
-    z-index: 1;
+    z-index: 7;
     cursor: pointer;
 
     transition-property: color;
@@ -117,7 +118,7 @@ div.hidden, a.hidden {
     height: var(--tab-height);
     background-color: var(--foreground-color);
 
-    z-index: 0;
+    z-index: 6;
 
     position: absolute;
     left: calc(50% - var(--active-tab-width) * 0.5 * var(--tabs-total) + var(--active-tab-width) * var(--active-tab-index) + 5px);
@@ -129,24 +130,57 @@ div.hidden, a.hidden {
 }
 
 /* This is a single page content that occupies the entire viewport space */
+.page {
+    width: 100%;
+    min-height: calc(100vh - var(--navigation-bar-height));
+}
+
 .content {
     width: 100%;
     min-height: calc(100vh - var(--navigation-bar-height));
+
     display: flex;
     flex-wrap: wrap;
 }
 
+#about video {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+}
+
+#about video#white-pattern {
+    opacity: 0.5;
+    display: block;
+
+    transform: translateY(-50%) rotate(-90deg) scale(2);
+
+}
+
+#about video#dark-pattern {
+    opacity: 0.1;
+    display: none;
+    transform: translateY(-50%) rotate(-90deg) scale(2);
+}
+
 /* This is the about section and its design */
-#about {
+#about #hero {
     padding: 20px;
     flex-direction: column;
 
+    z-index: 1;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
 
 /* This is the main text or hero text */
-#about h1 {
+#about #hero h1 {
     font-family: "Dolce Vita";
     text-transform: uppercase;
     font-weight: 400;
@@ -154,9 +188,92 @@ div.hidden, a.hidden {
 }
 
 /* This is the subtext */
-#about h3 {
+#about #hero h3 {
     font-weight: 300;
 }
+
+#about #timeline {
+    width: 100%;
+    margin: auto;
+    background-color: var(--background-color);
+
+    position: relative;
+    z-index: 1;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+}
+
+#about #timeline #segments {
+    padding: 0px 5%;
+    display: flex;
+    flex-direction: column;
+}
+
+#about #timeline > h3 {
+    font-size: 2rem;
+    font-family: 'Dolce Vita';
+    font-weight: 400;
+    text-align: center;
+}
+
+#about #timeline #segments > div {
+    height: 32px;
+    overflow-y: hidden;
+
+    font-family: Roboto;
+    font-weight: 300;
+
+    display: flex;
+    align-items: center;
+}
+
+#about #timeline #segments > div:empty, #about #timeline #segments > div > div:first-child {
+    width: 32px;
+    height: 32px;
+    background-image: url(/images/segments/extend.png);
+    
+    background-position: center;
+    background-size: contain;
+}
+
+
+#about #timeline #segments > div:first-of-type > div:first-child {
+    background-image: url(/images/segments/start.png);
+}
+
+#about #timeline #segments > div > div:first-child {
+    background-image: url(/images/segments/middle.png);
+}
+
+#about #timeline #segments > div:last-of-type > div:first-child {
+    background-image: url(/images/segments/end.png);
+}
+
+#about #values {
+    text-align: left;
+    padding: 20px;
+
+    row-gap: 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#about #values h3 {
+    font-family: 'Dolce Vita';
+    font-weight: 100;
+    font-size: 2rem;
+    text-align: center;
+}
+
+#about #values p {
+    font-weight: 300;
+}
+
 
 /* This is the works content */
 #works {
@@ -164,7 +281,7 @@ div.hidden, a.hidden {
 }
 
 /* The container should hold all the images */
-#works .container {
+#works .content {
     height: auto;
     display: flex;
     flex-wrap: wrap;
@@ -183,7 +300,7 @@ div.hidden, a.hidden {
 
     /* By default light theme is used */
     background-color: rgba(255, 255, 255, 0.8);
-    z-index: 1;
+    z-index: 9;
 
     position: fixed;
     top: 0;
@@ -191,7 +308,6 @@ div.hidden, a.hidden {
 
     cursor: pointer;
 }
-
 
 /* This is the hint in the highlight-cover which says how to close the highlight viewer */
 #highlight-cover p {
@@ -216,7 +332,7 @@ div.hidden, a.hidden {
     position: fixed;
     top: 20%;
     left: 0;
-    z-index: 2;
+    z-index: 10;
 
     transition-property: top, left;
     transition-duration: 0.3s;
@@ -321,7 +437,7 @@ div.hidden, a.hidden {
 }
 
 /* This is for the contact section */
-#contact {
+#contact .content {
     padding: 20px;
     align-items: center;
     justify-content: center;
@@ -331,15 +447,17 @@ div.hidden, a.hidden {
 
 /* Contact header */
 #contact h1 {
-    font-family: Roboto;
-    font-weight: 500;
+    font-family: 'Dolce Vita';
+    font-weight: unset;
 }
 
 /* Contact elements layout */
 #contact h1, #contact p {
     width: 100%;
     text-align: left;
+    font-weight: 300;
 }
+
 
 /* When the screen is for desktop */
 @media screen and (min-width: 1000px) {
@@ -368,7 +486,22 @@ div.hidden, a.hidden {
         align-items: center;
     }
 
-    #about h3 {
+    #about video {
+        transform: translateY(-50%) !important;
+    }
+
+    #about #timeline #segments {
+        padding: 10px 35%;
+    }
+
+    #about #values {
+        padding: 10px 20%;
+        height: auto;
+        margin-top: 100px;
+        padding-bottom: 200px;
+    }
+    
+    #about #hero h3 {
         font-size: 1.5rem;
     }
 
@@ -447,7 +580,19 @@ div.hidden, a.hidden {
         --foreground-color: white;
     }
 
+    #about video#white-pattern {
+        display: none;
+    }
+
+    #about video#dark-pattern {
+        display: block;
+    }
+
     #highlight-cover {
         background-color: rgba(0, 0, 0, 0.8);
+    }
+    
+    #about #timeline #segments > div:empty, #about #timeline #segments > div > div:first-child {
+        filter: invert(90);
     }
 }

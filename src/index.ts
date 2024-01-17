@@ -5,7 +5,7 @@ import works from './works';
 const root: HTMLElement = document.querySelector(':root');
 const activeTab: HTMLDivElement = document.querySelector('#active-tab');
 const navigationLinks: NodeListOf<HTMLAnchorElement> = document.querySelectorAll('#navigation-bar > a');
-const highlightLinks: NodeListOf<HTMLAnchorElement> = document.querySelectorAll('#works > .container > a');
+const highlightLinks: NodeListOf<HTMLAnchorElement> = document.querySelectorAll('#works > .content > a');
 const highlightViewer: HTMLDivElement = document.querySelector('#highlight-viewer');
 const highlightCover: HTMLDivElement = document.querySelector('#highlight-cover');
 
@@ -54,11 +54,11 @@ function main() {
 
             // we need to push the history in order to change the URL
             history.pushState({ index }, '', target.href);
-            displayContent(index);
+            displayPage(index);
         });
 
         // if the url has a hash we want to set the corresponding content
-        if (hash === contentId) displayContent(index);
+        if (hash === contentId) displayPage(index);
     });
 
     // hook up the highlights so that they show in the highlight viewer
@@ -125,7 +125,7 @@ function displayViewer(show: boolean) {
  * @param index the index that corresponds to an element with the content class 
  * according to document order.
  */
-function displayContent(index: number) {
+function displayPage(index: number) {
     lastIndex = index;
 
     navigationLinks.forEach(link => link.classList.remove('active') );
@@ -134,14 +134,15 @@ function displayContent(index: number) {
 
     // here we show the right content which is done by hiding
     // all other content except for the targetContent
-    const contents = document.querySelectorAll(`.content`);
-    const target = contents[index];
-    contents.forEach(content => {
-        if (content === target)
-            content.classList.remove('hidden') 
+    const pages = document.querySelectorAll(`.page`);
+    const target = pages[index];
+    pages.forEach(page => {
+        if (page === target)
+            page.classList.remove('hidden') 
         else 
-            content.classList.add('hidden')       
+            page.classList.add('hidden')       
     });
+    window.scrollTo(0, 0);
 }
 
 // this is called whenever the back button is pressed
@@ -151,7 +152,7 @@ window.addEventListener('popstate', (event) => {
     
     if (index !== undefined) {
         displayViewer(false);
-        displayContent(index);
+        displayPage(index);
     }
 });
 
@@ -159,7 +160,7 @@ window.addEventListener('popstate', (event) => {
 document.addEventListener('swiped-left', () => {
     if (isViewerOpen) return; // do not allow swiping to other page when viewer is open
     const previousIndex = Math.max(0, lastIndex - 1);
-    displayContent(previousIndex);
+    displayPage(previousIndex);
     
     // we also push that into the history to update it
     history.pushState({ index: previousIndex }, '', hashes[previousIndex]);
@@ -169,7 +170,7 @@ document.addEventListener('swiped-left', () => {
 document.addEventListener('swiped-right', () => {
     if (isViewerOpen) return;
     const nextIndex = Math.min(lastIndex + 1, hashes.length-1);
-    displayContent(nextIndex);
+    displayPage(nextIndex);
 
     // we also push that into the history to update it
     history.pushState({ index: nextIndex }, '', hashes[nextIndex]);
