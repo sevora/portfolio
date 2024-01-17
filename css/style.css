@@ -146,32 +146,29 @@ div.hidden, a.hidden {
     flex-wrap: wrap;
 }
 
-#about video {
+#about #background-video {
     position: absolute;
-    top: 50%;
+    top: var(--navigation-bar-height);
     left: 0;
 
     z-index: 0;
     width: 100%;
-    height: auto;
+    height: 100%;
+
+    overflow: hidden;
 }
 
 #about video#white-pattern {
     opacity: 0.5;
     display: block;
-
-    transform: translateY(-50%) rotate(-90deg) scale(2);
+    transform: translateY(100%) rotate(-90deg) scale(2.5);
 
 }
 
 #about video#dark-pattern {
     opacity: 0.1;
     display: none;
-    transform: translateY(-50%) rotate(-90deg) scale(2);
-}
-
-#about {
-    overflow-x: hidden;
+    transform: translateY(100%) rotate(-90deg) scale(2.5);
 }
 
 /* This is the about section and its design */
@@ -506,10 +503,6 @@ div.hidden, a.hidden {
 
     #about #hero h3 {
         font-size: 1.5rem;
-    }
-
-    #about video {
-        transform: translateY(-50%) !important;
     }
 
     /* Adjust image sizes on works */
