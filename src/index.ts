@@ -32,11 +32,8 @@ function main() {
     // remove smooth scrolling when js is enabled
     window.document.body.style.setProperty('scroll-behavior', 'auto');
 
-    // when there's no hash, we want to use 'about'
-    if (!window.location.hash) window.location.hash = 'about';
-
     // the url may contain a hash which indicates the content's id that should be shown
-    const contentId = window.location.hash;
+    const contentId = window.location.hash || 'about';
 
     // we want to add the active tab and the first active navigation link
     activeTab.style.removeProperty('display');
@@ -106,6 +103,17 @@ function main() {
         }
         
         lastScrollY = window.scrollY;
+    });
+    
+    // when there's no hash or it does not match any of the main hashes, we want to use 'about'
+    window.addEventListener('hashchange', () => {
+        if (!window.location.hash || hashes.indexOf(window.location.hash) === -1 )
+            window.location.hash = 'about';
+        
+        // ofcourse, we have to display that page as well
+        navigationLinks.forEach((link, index) => {
+            if (link.href === window.location.hash) displayPage(index);
+        });
     });
 }
 
