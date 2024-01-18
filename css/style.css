@@ -174,7 +174,7 @@ div.hidden, a.hidden {
 }
 
 #about video#dark-pattern {
-    opacity: 0.2;
+    opacity: 0.25;
     display: none;
     transform: translateY(100%) rotate(-90deg) scale(2.5);
 }
