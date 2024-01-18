@@ -530,7 +530,7 @@ div.hidden, a.hidden {
 
     /* Adjust segment position on desktop */
     #about #timeline #segments {
-        padding: 10px 35%;
+        padding: 10px 30%;
     }
 
     /* Adjust values position as well */
