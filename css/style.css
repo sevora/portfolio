@@ -29,7 +29,7 @@ body {
 }
 
 /* These are the styling for common links */
-a.link {
+a.link, a.link:visited  {
     color: var(--background-color);
     background-color: var(--foreground-color);
     text-decoration: none;
@@ -45,11 +45,7 @@ a.link:hover {
     opacity: 0.65;
 }
 
-a {
-    color: var(--foreground-color);
-}
-
-a:visited {
+a, a:visited {
     color: var(--foreground-color);
 }
 
