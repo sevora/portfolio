@@ -45,6 +45,14 @@ a.link:hover {
     opacity: 0.65;
 }
 
+a {
+    color: var(--foreground-color);
+}
+
+a:visited {
+    color: var(--foreground-color);
+}
+
 /* Hide element helper */
 div.hidden, a.hidden {
     display: none;
@@ -217,6 +225,15 @@ div.hidden, a.hidden {
     
 }
 
+/* This is for the title of the timeline */
+#about #timeline > h3 {
+    font-size: 2rem;
+    font-family: 'Dolce Vita';
+    font-weight: 400;
+    text-align: center;
+    margin: 20px 0;
+}
+
 /* The segments is the actual timeline */
 #about #timeline #segments {
     padding: 0px 5%;
@@ -224,24 +241,18 @@ div.hidden, a.hidden {
     flex-direction: column;
 }
 
-/* This is for the title of the timeline */
-#about #timeline > h3 {
-    font-size: 2rem;
-    font-family: 'Dolce Vita';
-    font-weight: 400;
-    text-align: center;
-}
-
 /* Look at the next following definitions to see how the automatic segments work */
 #about #timeline #segments > div {
     height: 32px;
-    overflow-y: hidden;
+    overflow-y: visible;
 
+    text-align: left;
     font-family: Roboto;
     font-weight: 300;
 
     display: flex;
     align-items: center;
+    justify-content: flex-start;
 }
 
 #about #timeline #segments > div:empty, #about #timeline #segments > div > div:first-child {
@@ -251,6 +262,7 @@ div.hidden, a.hidden {
     
     background-position: center;
     background-size: contain;
+    flex-shrink: 0;
 }
 
 
