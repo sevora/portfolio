@@ -480,9 +480,9 @@ div.hidden, a.hidden {
 @media screen and (min-width: 1000px) {
     /* Change some variables accordingly */
     :root {
-        --active-tab-width: 15%;
-        --tab-height: 65%;
-        --navigation-bar-height: 75px;
+        --active-tab-width: 20%;
+        --tab-height: 70%;
+        --navigation-bar-height: 80px;
     }
 
     html, body {
@@ -491,7 +491,7 @@ div.hidden, a.hidden {
 
     /* We want a larger font-size on navigation bar links */
     #navigation-bar > a {
-        font-size: 1.5rem;
+        font-size: 1.7rem;
     }
 
     /* We adjust the alignment of about page */
