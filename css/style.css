@@ -410,6 +410,11 @@ div.hidden, a.hidden {
     padding: 15px 35px;
 }
 
+/* Fix anchor  */
+#highlight-viewer a, #highlight-viewer a:visited {
+    color: #000; 
+}
+
 /* These are for the buttons in the highlight viewer */
 .button {
     display: block;
