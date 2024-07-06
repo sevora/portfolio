@@ -546,10 +546,15 @@ div.hidden, a.hidden {
     }
     
     /* Adjust image sizes on works */
+
     #works a {
         width: 33.33%;
     }
     
+    #works a:nth-child(-n+3) {
+        border-bottom: 1px solid #eee;
+    }
+
     /* Adjust the hint on the highlight cover */
     #highlight-cover p {
         margin-top: 25px;
