@@ -2,7 +2,7 @@
  * A dictionary of works, as it is an object we have O(1) time complexity
  * and so it is slightly optimized (?) and less code to write for searching.
  */
-const works: { [id: string]: Highlight } = {
+const works: { [id: string]: WorkHighlight } = {
     'aspire': {
         title: 'ASPIRE',
         description: 'A COVID risk-estimator web application. This was done mainly by a team in DLSU (De La Salle University) and I worked on optimizing or turning it into a custom single-page application. It is a web-application that computes the likelihood of viral spread (COVID) from given parameters such as location, activity, and so on.',
@@ -45,6 +45,11 @@ const works: { [id: string]: Highlight } = {
         title: 'Simple Calculator',
         description: 'A simple calculator with the most basic of features made with Java 11 and JavaFX. What\'s good about this project is the fact that it is neatly organized and is easily extensible.',
         github: 'https://github.com/sevora/simple-calculator'
+    },
+    'ramble': {
+        title: 'Ramble',
+        description: 'A lightweight Twitter Clone structured in a simple, manageable, and extendable style. I made this primarily for a university project in our Computer Science Course and the goal is to be able to write a CRUD-application utilizing a SQL database management system.',
+        github: 'https://github.com/sevora/ramble'
     }
 };
 

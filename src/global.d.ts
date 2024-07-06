@@ -1,5 +1,5 @@
 declare global {
-    interface Highlight {
+    interface WorkHighlight {
         /**
          * The title of the highlight
          */
