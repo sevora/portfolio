@@ -14,6 +14,11 @@ const works: { [id: string]: WorkHighlight } = {
         preview: 'https://blog.ralphlouisgopez.com',
         github: 'https://github.com/sevora/journey'
     },
+    'bl0g.pro': {
+        title: 'bl0g.pro',
+        description: 'This is an experimental blog-site project with special effects meant to add some immersion. Try it out. It\'s fun!',
+        preview: 'https://bl0g.pro',
+    },
     'cinelaya': {
         title: 'Cinelaya',
         description: 'A suite of tools to aid filmmakers bring their imagination into reality. This project, also a company, was founded by <a target="_blank" href="https://www.linkedin.com/in/gil-ponce-6704389">Gil Ponce</a>. I am the fullstack developer of the work-in-progress web application and is continuously adding features and optimizations into the site.',
