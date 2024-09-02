@@ -1,12 +1,12 @@
 {
-    "compilerOptions": {
-      "typeRoots": ["./node_modules/@types"],
-      "outDir": "./assets/",
-      "noImplicitAny": true,
-      "module": "es6",
-      "target": "es5",
-      "jsx": "react",
-      "allowJs": true,
-      "moduleResolution": "node"
-    }
+  "compilerOptions": {
+    "typeRoots": ["./node_modules/@types"],
+    "outDir": "./assets/",
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "es5",
+    "jsx": "react",
+    "allowJs": true,
+    "moduleResolution": "node"
   }
+}
