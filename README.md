@@ -6,6 +6,6 @@ This is the portfolio website of Ralph Louis Gopez who uses the codename Sevora.
 
 ## Commands
 These commands can be figured out by learning [Node.js](https://nodejs.org/)
-- `npm install` - to install all the dependencies for the transpiler setup. 
+- `npm install` - to install all the dependencies.
 - `npm run build` - to transpile the source code inside the js directory and save results to assets bundle folder.
-- `npm run dev` - to run the development server
+- `npm run dev` - to run the development server.

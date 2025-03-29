@@ -1,36 +1,21 @@
 {
   "name": "portfolio",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "start": "npx webpack serve --mode=development",
-    "build": "npx webpack --mode=production",
-    "dev": "npx webpack --mode=development"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sevora/portfolio.git"
-  },
-  "author": "Ralph Louis Gopez",
-  "license": "UNLICENSED",
-  "bugs": {
-    "url": "https://github.com/sevora/portfolio/issues"
-  },
-  "homepage": "https://github.com/sevora/portfolio#readme",
   "devDependencies": {
-    "css-loader": "^6.8.1",
-    "html-webpack-plugin": "^5.5.3",
-    "http-server": "^14.1.1",
-    "style-loader": "^3.3.3",
-    "ts-loader": "^9.4.4",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.2.2",
-    "webpack": "^5.74.0",
-    "webpack-cli": "^4.10.0",
-    "webpack-dev-server": "^4.15.1"
+    "typescript": "~5.7.2",
+    "vite": "^6.2.3"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.0.14",
+    "material-icons": "^1.13.14",
+    "tailwindcss": "^4.0.14",
     "animate.css": "^4.1.1",
     "swiped-events": "^1.1.9"
   }

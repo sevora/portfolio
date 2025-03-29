@@ -15,6 +15,7 @@ class Runnable {
      */
     constructor(fps?: number) {
         this.fps = fps || 60;
+        this.frameId = -1;
     }
 
     /**

@@ -2,19 +2,19 @@ import 'swiped-events';
 import works from './works';
 
 // these are the DOM elements necessary for this site
-const root: HTMLElement = document.querySelector(':root');
-const activeTab: HTMLDivElement = document.querySelector('#active-tab');
-const navigationLinks: NodeListOf<HTMLAnchorElement> = document.querySelectorAll('#navigation-bar > a');
-const highlightLinks: NodeListOf<HTMLAnchorElement> = document.querySelectorAll('#works > .content > a');
-const highlightViewer: HTMLDivElement = document.querySelector('#highlight-viewer');
-const highlightCover: HTMLDivElement = document.querySelector('#highlight-cover');
+const root = document.querySelector(':root') as HTMLElement;
+const activeTab = document.querySelector('#active-tab') as HTMLDivElement;
+const navigationLinks = document.querySelectorAll('#navigation-bar > a') as NodeListOf<HTMLAnchorElement>;
+const highlightLinks = document.querySelectorAll('#works > .content > a') as NodeListOf<HTMLAnchorElement>;
+const highlightViewer = document.querySelector('#highlight-viewer') as HTMLDivElement;
+const highlightCover = document.querySelector('#highlight-cover') as HTMLDivElement;
 
 // these are the DOM elements for the highlight viewing
-const imageElement: HTMLImageElement = highlightViewer.querySelector('img');
-const titleElement: HTMLHeadingElement = highlightViewer.querySelector('h1');
-const contentElement: HTMLParagraphElement = highlightViewer.querySelector('p');
-const githubButton: HTMLAnchorElement = highlightViewer.querySelector('.github.button');
-const previewButton: HTMLAnchorElement = highlightViewer.querySelector('.preview.button');
+const imageElement = highlightViewer.querySelector('img') as HTMLImageElement;
+const titleElement = highlightViewer.querySelector('h1') as HTMLHeadingElement;
+const contentElement = highlightViewer.querySelector('p') as HTMLParagraphElement;
+const githubButton = highlightViewer.querySelector('.github.button') as HTMLAnchorElement;
+const previewButton = highlightViewer.querySelector('.preview.button') as HTMLAnchorElement;
 
 // these are extra state variables
 let hashes: string[] = []; // stores the hash (or contentId) with its corresponding index
@@ -64,7 +64,7 @@ function main() {
     highlightLinks.forEach((link) => {
         link.addEventListener('click', event => {
             const target = event.currentTarget as HTMLAnchorElement;
-            const image: HTMLImageElement = target.querySelector('img');
+            const image = target.querySelector('img') as HTMLImageElement;
             const highlight = works[target.id];
 
             // if there is no highlight object then we can't proceed
@@ -78,8 +78,8 @@ function main() {
             imageElement.src = image.src;
             titleElement.innerHTML = title;
             contentElement.innerHTML = description;
-            githubButton.href = github;
-            previewButton.href = preview;
+            if (github) githubButton.href = github;
+            if (preview)previewButton.href = preview;
 
             // show or hide the corresponding buttons 
             githubButton.classList[github ? 'remove' : 'add']('hidden');
