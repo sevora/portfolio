@@ -1,16 +1,16 @@
 @font-face {
     font-family: "Dolce Vita";
-    font-weight: 300W;
-    src: url("fonts/Dolce Vita/Dolce Vita Light.ttf");
+    font-weight: 300;
+    src: url("/assets/fonts/Dolce Vita/Dolce Vita Light.ttf");
 }
 
 @font-face {
     font-family: "Dolce Vita";
-    src: url("fonts/Dolce Vita/Dolce Vita.ttf");
+    src: url("/assets/fonts/Dolce Vita/Dolce Vita.ttf");
 }
 
 @font-face {
     font-family: "Dolce Vita";
     font-weight: 900;
-    src: url("fonts/Dolce Vita/Dolce Vita Heavy Bold.ttf");
+    src: url("/assets/fonts/Dolce Vita/Dolce Vita Heavy Bold.ttf");
 }

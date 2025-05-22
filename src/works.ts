@@ -1,6 +1,6 @@
 /**
  * A dictionary of works, as it is an object we have O(1) time complexity
- * and so it is slightly optimized (?) and less code to write for searching.
+ * and so it is slightly optimized and less code to write for searching.
  */
 const works: { [id: string]: WorkHighlight } = {
     'blog': {
@@ -19,6 +19,12 @@ const works: { [id: string]: WorkHighlight } = {
         title: 'Cinelaya',
         description: 'A suite of tools to aid filmmakers bring their imagination into reality. This project, also a company, was founded by <a target="_blank" href="https://www.linkedin.com/in/gil-ponce-6704389">Gil Ponce</a>. I am the fullstack developer of the work-in-progress web application and is continuously adding features and optimizations into the site.',
         preview: 'https://www.cinelaya.com'
+    },
+    'lsdweb': {
+        title: 'lsdweb.net',
+        description: 'The open-for-all OpenAI page generator. The name is inspired by a certain component that may cause hallucinations fitting on how LLMs do work.',
+        preview: 'https://lsdweb.net',
+        github: 'https://github.com/sevora/lsdweb'
     },
     'stmviz': {
         title: 'stmviz',

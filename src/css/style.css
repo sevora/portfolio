@@ -262,7 +262,7 @@ div.hidden, a.hidden {
 #about #timeline #segments > div:empty, #about #timeline #segments > div > div:first-child {
     width: 32px;
     height: 32px;
-    background-image: url(/assets/images/segments/extend.png);
+    background-image: url(/assets/segments/extend.png);
     
     background-position: center;
     background-size: contain;
@@ -271,15 +271,15 @@ div.hidden, a.hidden {
 
 
 #about #timeline #segments > div:first-of-type > div:first-child {
-    background-image: url(/assets/images/segments/start.png);
+    background-image: url(/assets/segments/start.png);
 }
 
 #about #timeline #segments > div > div:first-child {
-    background-image: url(/assets/images/segments/middle.png);
+    background-image: url(/assets/segments/middle.png);
 }
 
 #about #timeline #segments > div:last-of-type > div:first-child {
-    background-image: url(/assets/images/segments/end.png);
+    background-image: url(/assets/segments/end.png);
 }
 
 /* These is the values part */
@@ -452,7 +452,7 @@ div.hidden, a.hidden {
     border-radius: 20px;
 
     background-color: black;
-    background-image: url(/assets/images/icons/Github_white.png);
+    background-image: url(/assets/icons/github.png);
     background-repeat: no-repeat;
     background-size: 35px;
     background-position: center;
@@ -468,7 +468,7 @@ div.hidden, a.hidden {
     border-radius: 20px;
 
     background-color: white;
-    background-image: url(/assets/images/icons/Play_black.png);
+    background-image: url(/assets/icons/play.png);
     background-repeat: no-repeat;
     background-size: 20px;
     background-position: center;
