@@ -121,6 +121,7 @@ function main() {
     document.addEventListener("swiped-left", () => {
         if (isViewerOpen) return; // do not allow swiping to other page when viewer is open
         const previousIndex = Math.max(0, lastIndex - 1);
+        if (previousIndex === lastIndex) return; // do not allow swiping to the same page
         displayPage(previousIndex);
 
         // we also push that into the history to update it
@@ -131,6 +132,7 @@ function main() {
     document.addEventListener("swiped-right", () => {
         if (isViewerOpen) return;
         const nextIndex = Math.min(lastIndex + 1, hashes.length - 1);
+        if (nextIndex === lastIndex) return; // do not allow swiping to the same page
         displayPage(nextIndex);
 
         // we also push that into the history to update it
