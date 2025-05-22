@@ -13,9 +13,8 @@
     --tabs-total: 3;
     --tab-height: 75%;
 
-    /* By default light theme is used */
-    --background-color: white;
-    --foreground-color: black;
+    --background-color: black;
+    --foreground-color: white;
 }
 
 /* We want to make things consistent so we do this, we also set universal fonts and color schemes */
@@ -26,7 +25,7 @@ body {
     margin: 0;
     padding: 0;
 
-    font-family: Roboto, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: Roboto, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI', Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue", sans-serif;
     color: var(--foreground-color);
     background-color: var(--background-color);
 
@@ -179,15 +178,8 @@ div.hidden, a.hidden {
     height: auto;
 }
 
-#about video#white-pattern {
-    opacity: 0.5;
-    display: block;
-    transform: rotate(-90deg) scale(2.5);
-}
-
-#about video#dark-pattern {
+#about video {
     opacity: 0.25;
-    display: none;
     transform: rotate(-90deg) scale(2.5);
 }
 
@@ -232,7 +224,7 @@ div.hidden, a.hidden {
 /* This is for the title of the timeline */
 #about #timeline > h3 {
     font-size: 2rem;
-    font-family: 'Dolce Vita';
+    font-family: "Dolce Vita";
     font-weight: 400;
     text-align: center;
     margin: 20px 0;
@@ -267,6 +259,7 @@ div.hidden, a.hidden {
     background-position: center;
     background-size: contain;
     flex-shrink: 0;
+    filter: invert(90);
 }
 
 
@@ -296,7 +289,7 @@ div.hidden, a.hidden {
 
 /* Title of the values */
 #about #values h3 {
-    font-family: 'Dolce Vita';
+    font-family: "Dolce Vita";
     font-weight: 100;
     font-size: 2rem;
     text-align: center;
@@ -331,8 +324,7 @@ div.hidden, a.hidden {
     width: 100vw;
     height: 100vh;
 
-    /* By default light theme is used */
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(0, 0, 0, 0.8);
     z-index: 9;
 
     position: fixed;
@@ -485,7 +477,7 @@ div.hidden, a.hidden {
 
 /* Contact header */
 #contact h1 {
-    font-family: 'Dolce Vita';
+    font-family: "Dolce Vita";
     font-weight: unset;
 }
 
@@ -496,9 +488,8 @@ div.hidden, a.hidden {
     font-weight: 300;
 }
 
-
 /* When the screen is for desktop */
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 1024px) {
     /* Change some variables accordingly */
     :root {
         --active-tab-width: 20%;
@@ -522,9 +513,9 @@ div.hidden, a.hidden {
         align-items: center;
     }
 
-    /* We don't need the transforms on desktop */
-    #about video#white-pattern, #about video#dark-pattern  {
-        transform: scale(1.1);
+    /* Adjust scaling on larger screens */
+    #about video  {
+        transform: scale(1.5);
     }
 
     /* Adjust position of hero */
@@ -619,33 +610,5 @@ div.hidden, a.hidden {
 
     #contact p {
         font-size: 1.2rem;
-    }
-    
-}
-
-/* This is applied when the user prefers dark theme, by default the white theme is used */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --background-color: black;
-        --foreground-color: white;
-    }
-
-    /* If the user prefers dark theme we show the dark pattern */
-    #about video#white-pattern {
-        display: none;
-    }
-
-    #about video#dark-pattern {
-        display: block;
-    }
-
-    /* The covers also change */
-    #highlight-cover {
-        background-color: rgba(0, 0, 0, 0.8);
-    }
-    
-    /* As well as the timeline segments */
-    #about #timeline #segments > div:empty, #about #timeline #segments > div > div:first-child {
-        filter: invert(90);
-    }
+    }   
 }

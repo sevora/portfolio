@@ -1,20 +1,20 @@
-import 'swiped-events';
-import works from './works';
+import "swiped-events";
+import works from "./works";
 
 // these are the DOM elements necessary for this site
-const root = document.querySelector(':root') as HTMLElement;
-const activeTab = document.querySelector('#active-tab') as HTMLDivElement;
-const navigationLinks = document.querySelectorAll('#navigation-bar > a') as NodeListOf<HTMLAnchorElement>;
-const highlightLinks = document.querySelectorAll('#works > .content > a') as NodeListOf<HTMLAnchorElement>;
-const highlightViewer = document.querySelector('#highlight-viewer') as HTMLDivElement;
-const highlightCover = document.querySelector('#highlight-cover') as HTMLDivElement;
+const root = document.querySelector(":root") as HTMLElement;
+const activeTab = document.querySelector("#active-tab") as HTMLDivElement;
+const navigationLinks = document.querySelectorAll("#navigation-bar > a") as NodeListOf<HTMLAnchorElement>;
+const highlightLinks = document.querySelectorAll("#works > .content > a") as NodeListOf<HTMLAnchorElement>;
+const highlightViewer = document.querySelector("#highlight-viewer") as HTMLDivElement;
+const highlightCover = document.querySelector("#highlight-cover") as HTMLDivElement;
 
 // these are the DOM elements for the highlight viewing
-const imageElement = highlightViewer.querySelector('img') as HTMLImageElement;
-const titleElement = highlightViewer.querySelector('h1') as HTMLHeadingElement;
-const contentElement = highlightViewer.querySelector('p') as HTMLParagraphElement;
-const githubButton = highlightViewer.querySelector('.github.button') as HTMLAnchorElement;
-const previewButton = highlightViewer.querySelector('.preview.button') as HTMLAnchorElement;
+const imageElement = highlightViewer.querySelector("img") as HTMLImageElement;
+const titleElement = highlightViewer.querySelector("h1") as HTMLHeadingElement;
+const contentElement = highlightViewer.querySelector("p") as HTMLParagraphElement;
+const githubButton = highlightViewer.querySelector(".github.button") as HTMLAnchorElement;
+const previewButton = highlightViewer.querySelector(".preview.button") as HTMLAnchorElement;
 
 // these are extra state variables
 let hashes: string[] = []; // stores the hash (or contentId) with its corresponding index
@@ -28,22 +28,22 @@ let lastIndex: number = 0;
  */
 function main() {
     // remove smooth scrolling when js is enabled
-    window.document.body.style.setProperty('scroll-behavior', 'auto');
+    window.document.body.style.setProperty("scroll-behavior", "auto");
 
     // the url may contain a hash which indicates the content's id that should be shown
     let contentId = window.location.hash;
     let hasDisplayedPage = false;
 
     // we want to add the active tab and the first active navigation link
-    activeTab.style.removeProperty('display');
-    navigationLinks[0].classList.add('active');
+    activeTab.style.removeProperty("display");
+    navigationLinks[0].classList.add("active");
 
     // here, we hook up the navigation links with setting the tab index
     navigationLinks.forEach((link, index) => {
         const { hash } = link;
         hashes.push(hash);
 
-        link.addEventListener('click', event => {
+        link.addEventListener("click", event => {
             // this is to prevent the automatic scroll to center but it also prevents changing URL
             event.preventDefault();
             const target = event.currentTarget as HTMLAnchorElement;
@@ -62,9 +62,9 @@ function main() {
 
     // hook up the highlights so that they show in the highlight viewer
     highlightLinks.forEach((link) => {
-        link.addEventListener('click', event => {
+        link.addEventListener("click", event => {
             const target = event.currentTarget as HTMLAnchorElement;
-            const image = target.querySelector('img') as HTMLImageElement;
+            const image = target.querySelector("img") as HTMLImageElement;
             const highlight = works[target.id];
 
             // if there is no highlight object then we can't proceed
@@ -82,8 +82,8 @@ function main() {
             if (preview)previewButton.href = preview;
 
             // show or hide the corresponding buttons 
-            githubButton.classList[github ? 'remove' : 'add']('hidden');
-            previewButton.classList[preview ? 'remove' : 'add']('hidden');
+            githubButton.classList[github ? "remove" : "add"]("hidden");
+            previewButton.classList[preview ? "remove" : "add"]("hidden");
 
             // show the viewer and add the cover
             displayViewer(true);
@@ -91,16 +91,16 @@ function main() {
     });
 
     // when we click the highlight cover we want to close the viewer
-    highlightCover.addEventListener('click', event => {
+    highlightCover.addEventListener("click", event => {
         const target = event.currentTarget as HTMLDivElement;
-        target.classList.add('hidden');
+        target.classList.add("hidden");
         displayViewer(false);
     });
 
     // when the highlight cover is activated we want to disable scroll by forcing the last y-position
-    window.addEventListener('scroll', () => {
-        if (!highlightCover.classList.contains('hidden')) {
-            window.scrollTo({ top: lastScrollY, behavior: 'instant' });
+    window.addEventListener("scroll", () => {
+        if (!highlightCover.classList.contains("hidden")) {
+            window.scrollTo({ top: lastScrollY, behavior: "instant" });
             return;
         }
 
@@ -108,7 +108,7 @@ function main() {
     });
 
     // this is called whenever the back button is pressed
-    window.addEventListener('popstate', () => {
+    window.addEventListener("popstate", () => {
         const index: number = hashes.indexOf(document.location.hash);
 
         if (index > -1) {
@@ -118,7 +118,7 @@ function main() {
     });
 
     // this is called on mobile devices when they swipe left
-    document.addEventListener('swiped-left', () => {
+    document.addEventListener("swiped-left", () => {
         if (isViewerOpen) return; // do not allow swiping to other page when viewer is open
         const previousIndex = Math.max(0, lastIndex - 1);
         displayPage(previousIndex);
@@ -128,7 +128,7 @@ function main() {
     });
 
     // this is called on mobile devices when they swipe right
-    document.addEventListener('swiped-right', () => {
+    document.addEventListener("swiped-right", () => {
         if (isViewerOpen) return;
         const nextIndex = Math.min(lastIndex + 1, hashes.length - 1);
         displayPage(nextIndex);
@@ -140,7 +140,7 @@ function main() {
 
     // we want to ensure a valid hash when a page has not been displayed
     if (!hasDisplayedPage) ensureValidHash();
-    window.addEventListener('hashchange', ensureValidHash);
+    window.addEventListener("hashchange", ensureValidHash);
 }
 
 /**
@@ -162,9 +162,9 @@ function ensureValidHash() {
  * @param show a boolean indicating whether to show the viewer or not.
  */
 function displayViewer(show: boolean) {
-    const displayMethodKey: 'add' | 'remove' = show ? 'remove' : 'add';
-    highlightCover.classList[displayMethodKey]('hidden');
-    highlightViewer.classList[displayMethodKey]('hidden');
+    const displayMethodKey: "add" | "remove" = show ? "remove" : "add";
+    highlightCover.classList[displayMethodKey]("hidden");
+    highlightViewer.classList[displayMethodKey]("hidden");
     isViewerOpen = show;
 }
 
@@ -176,9 +176,9 @@ function displayViewer(show: boolean) {
 function displayPage(index: number) {
     lastIndex = index;
 
-    navigationLinks.forEach(link => link.classList.remove('active'));
-    navigationLinks[index].classList.add('active');
-    root.style.setProperty('--active-tab-index', String(index));
+    navigationLinks.forEach(link => link.classList.remove("active"));
+    navigationLinks[index].classList.add("active");
+    root.style.setProperty("--active-tab-index", String(index));
 
     // here we show the right content which is done by hiding
     // all other content except for the targetContent
@@ -186,14 +186,14 @@ function displayPage(index: number) {
     const target = pages[index];
     pages.forEach(page => {
         if (page === target)
-            page.classList.remove('hidden')
+            page.classList.remove("hidden")
         else
-            page.classList.add('hidden')
+            page.classList.add("hidden")
     });
 
     // reset scroll to 0 instantly when changing "pages"
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    window.scrollTo({ top: 0, behavior: "instant" });
 }
 
 // calls the main function when the page loads
-window.addEventListener('load', main);
+window.addEventListener("load", main);
