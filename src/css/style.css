@@ -254,7 +254,7 @@ div.hidden, a.hidden {
 #about #timeline #segments > div:empty, #about #timeline #segments > div > div:first-child {
     width: 32px;
     height: 32px;
-    background-image: url(/assets/segments/extend.png);
+    background-image: url(/assets/icons/extend.png);
     
     background-position: center;
     background-size: contain;
@@ -264,15 +264,15 @@ div.hidden, a.hidden {
 
 
 #about #timeline #segments > div:first-of-type > div:first-child {
-    background-image: url(/assets/segments/start.png);
+    background-image: url(/assets/icons/start.png);
 }
 
 #about #timeline #segments > div > div:first-child {
-    background-image: url(/assets/segments/middle.png);
+    background-image: url(/assets/icons/middle.png);
 }
 
 #about #timeline #segments > div:last-of-type > div:first-child {
-    background-image: url(/assets/segments/end.png);
+    background-image: url(/assets/icons/end.png);
 }
 
 /* These is the values part */
