@@ -25,7 +25,7 @@ function main() {
     let hashes: string[] = []; // stores the hash (or contentId) with its corresponding index
     let isViewerOpen: boolean = false;
     let lastScrollY: number = 0; // should contain the last scroll-y value
-    let lastIndex: number = 0;
+    let lastIndex: number = -1;
 
     // remove smooth scrolling when js is enabled
     window.document.body.style.setProperty("scroll-behavior", "auto");
