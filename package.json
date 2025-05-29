@@ -13,10 +13,6 @@
     "vite": "^6.2.3"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.0.14",
-    "material-icons": "^1.13.14",
-    "tailwindcss": "^4.0.14",
-    "animate.css": "^4.1.1",
     "swiped-events": "^1.1.9"
   }
 }
