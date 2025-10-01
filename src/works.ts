@@ -11,8 +11,7 @@ const works: { [id: string]: WorkHighlight } = {
     },
     "bl0g.pro": {
         title: "bl0g.pro",
-        description: "This is an experimental blog-site project with special effects meant to add some immersion. Try it out. It's fun!",
-        preview: "https://bl0g.pro",
+        description: "This is an experimental blog-site project with special effects meant to add some immersion. Currently not hosted.",
         github: "https://github.com/sevora/bl0g"
     },
     "cinelaya": {
