@@ -16,7 +16,7 @@ const works: { [id: string]: WorkHighlight } = {
     },
     "cinelaya": {
         title: "Cinelaya",
-        description: "A suite of tools to aid filmmakers bring their imagination into reality. This project, also a company, was founded by <a target=\"_blank\" href=\"https://www.linkedin.com/in/gil-ponce-6704389\">Gil Ponce</a>. I am the fullstack developer of the work-in-progress web application and is continuously adding features and optimizations into the site.",
+        description: "A suite of tools to aid filmmakers bring their imagination into reality. This project, also a company, was founded by <a target=\"_blank\" href=\"https://www.linkedin.com/in/gil-ponce-6704389\">Gil Ponce</a>. I am the fullstack developer of the web application, and desktop software, continuously adding features and optimizations.",
         preview: "https://www.cinelaya.com"
     },
     "stmviz": {
