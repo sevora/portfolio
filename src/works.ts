@@ -19,11 +19,6 @@ const works: { [id: string]: WorkHighlight } = {
         description: "A suite of tools to aid filmmakers bring their imagination into reality. This project, also a company, was founded by <a target=\"_blank\" href=\"https://www.linkedin.com/in/gil-ponce-6704389\">Gil Ponce</a>. I am the fullstack developer of the web application, and desktop software, continuously adding features and optimizations.",
         preview: "https://www.cinelaya.com"
     },
-    "dibati": {
-        title: "dibati.com",
-        description: "An anonymous debate chat application. The idea is that users with opposing ideas get matched. This site was designed to be scalable and performant loading almost instantaneously and working seamlessly even for hundreds of thousands of users.",
-        preview: "https://dibati.com"
-    },
     "stmviz": {
         title: "stmviz",
         description: "This is a visualizer for the classic Gale-Shapley Algorithm as a submission on a competition. Implemented through a web-application and ES6. This is specifically designed to work on desktops.",
