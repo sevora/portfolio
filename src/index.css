@@ -13,6 +13,8 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #f5f5f4; /* stone-100 */
   min-height: 100%;
+  width: 100vw;
+  overflow-x: hidden;
 }
 
 /* Merriweather for body text */
