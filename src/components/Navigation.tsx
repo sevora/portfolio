@@ -33,11 +33,11 @@ export function Navigation({ data }: NavigationProps) {
 
     if (firstAnimatedBlock) {
       const wordCount = firstAnimatedBlock.content.split(/\s+/).length;
-      const totalAnimationTime = duration + (wordCount * staggerDelay);
+      const totalAnimationTime = duration + (wordCount * staggerDelay * 2); 
       
       const timer = setTimeout(() => {
         setIsReady(true);
-      }, totalAnimationTime + 200); // +200ms buffer
+      }, totalAnimationTime + 500); // +500ms buffer
 
       return () => clearTimeout(timer);
     } else {
@@ -127,7 +127,7 @@ export function Navigation({ data }: NavigationProps) {
         aria-expanded={isOpen}
         aria-label="Toggle navigation"
       >
-        <span className="text-sm text-stone-600 max-w-32 truncate">
+        <span className="text-sm text-stone-600 whitespace-nowrap">
           {activeItem?.content || 'Menu'}
         </span>
         <svg 
@@ -169,13 +169,13 @@ export function Navigation({ data }: NavigationProps) {
         </div>
 
         {/* Nav items */}
-        <ul className="py-2 px-2 min-w-48 max-h-80 overflow-y-auto">
+        <ul className="py-2 px-2 max-h-80 overflow-y-auto">
           {navItems.map((item) => (
             <li key={item.id}>
               <button
                 onClick={() => handleClick(item.id)}
                 className={`
-                  w-full text-left px-3 py-2 rounded-lg
+                  w-full text-left px-3 py-2 rounded-lg whitespace-nowrap
                   transition-colors duration-150 cursor-pointer
                   ${item.level === 3 ? 'pl-6 text-sm' : 'text-base'}
                   ${activeId === item.id 
