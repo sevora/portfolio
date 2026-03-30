@@ -7,10 +7,12 @@
 @import "@fontsource/merriweather/400.css";
 
 /* Apply Playfair Display as default font */
-body {
+html, body {
   font-family: 'Playfair Display', serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #f5f5f4; /* stone-100 */
+  min-height: 100%;
 }
 
 /* Merriweather for body text */
