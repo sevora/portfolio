@@ -109,6 +109,16 @@
       "animate": false
     },
     {
+      "type": "paragraph",
+      "content": "Github: https://github.com/sevora",
+      "animate": false
+    },
+    {
+      "type": "paragraph",
+      "content": "LinkedIn: https://www.linkedin.com/in/ralphlouisgopez/",
+      "animate": false
+    },
+    {
       "type": "spacer",
       "space": 120
     }
