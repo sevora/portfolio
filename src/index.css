@@ -1,1 +1,28 @@
 @import "tailwindcss";
+@import "@fontsource/playfair-display/400.css";
+@import "@fontsource/playfair-display/500.css";
+@import "@fontsource/playfair-display/600.css";
+@import "@fontsource/playfair-display/700.css";
+@import "@fontsource/merriweather/300.css";
+@import "@fontsource/merriweather/400.css";
+
+/* Apply Playfair Display as default font */
+body {
+  font-family: 'Playfair Display', serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Merriweather for body text */
+p {
+  font-family: 'Merriweather', serif;
+}
+
+/* Headers get margin-top only when NOT following a spacer */
+:not(.spacer, h1, h2, h3) + h2 {
+  margin-top: 2rem;
+}
+
+:not(.spacer, h1, h2, h3) + h3 {
+  margin-top: 1.5rem;
+}

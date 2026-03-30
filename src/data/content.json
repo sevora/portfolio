@@ -1,0 +1,102 @@
+{
+  "settings": {
+    "threshold": 0.2,
+    "scatterRadius": 300,
+    "rotationRange": 180,
+    "duration": 800,
+    "staggerDelay": 40,
+    "easing": "cubic-bezier(0.25, 0.46, 0.45, 0.94)"
+  },
+  "content": [
+    {
+      "type": "header",
+      "level": 1,
+      "content": "I'm Ralph",
+      "animate": false
+    },
+    {
+      "type": "paragraph",
+      "content": "I believe in endless possibilities and the power of creativity."
+    },
+    {
+      "type": "spacer",
+      "space": 60
+    },
+    {
+      "type": "header",
+      "level": 2,
+      "content": "About Me",
+      "animate": false
+    },
+    {
+      "type": "paragraph",
+      "content": "I'm a passionate software engineer with years of experience building web applications. I love turning complex problems into elegant, user-friendly solutions."
+    },
+    {
+      "type": "paragraph",
+      "content": "When I'm not coding, you'll find me exploring new technologies, contributing to open source, or enjoying a good cup of coffee while reading about the latest industry trends."
+    },
+    {
+      "type": "spacer",
+      "space": 60
+    },
+    {
+      "type": "header",
+      "level": 2,
+      "content": "My Skills"
+    },
+    {
+      "type": "paragraph",
+      "content": "TypeScript, React, Node.js, Python, and more. I believe in choosing the right tool for the job and continuously expanding my toolkit."
+    },
+    {
+      "type": "spacer",
+      "space": 60
+    },
+    {
+      "type": "header",
+      "level": 2,
+      "content": "Featured Projects"
+    },
+    {
+      "type": "header",
+      "level": 3,
+      "content": "Cinelaya"
+    },
+    {
+      "type": "paragraph",
+      "content": "An all-in-one desktop app for filmmakers that keeps everything from first idea to final shot list in a single place, so creators can focus on storytelling. Check it out at https://cinelaya.com"
+    },
+    {
+      "type": "header",
+      "level": 3,
+      "content": "My One Week Personality"
+    },
+    {
+      "type": "paragraph",
+      "content": "Anonymous debate site with a matchmaking gimmick based on the latest trends. Check it out at https://myoneweekpersonality.com"
+    },
+    {
+      "type": "spacer",
+      "space": 60
+    },
+    {
+      "type": "header",
+      "level": 2,
+      "content": "Let's Connect"
+    },
+    {
+      "type": "paragraph",
+      "content": "I'm always open to discussing projects, creative ideas, or opportunities to collaborate. Feel free to reach out!"
+    },
+    {
+      "type": "paragraph",
+      "content": "Email: ralph.louis.g@gmail.com",
+      "animate": false
+    },
+    {
+      "type": "spacer",
+      "space": 100
+    }
+  ]
+}
