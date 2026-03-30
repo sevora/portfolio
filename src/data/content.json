@@ -33,8 +33,18 @@
       "content": "I'm a passionate software engineer with years of experience building web applications. I love turning complex problems into elegant, user-friendly solutions."
     },
     {
+      "type": "spacer",
+      "space": 60
+    },
+    {
+      "type": "header",
+      "level": 2,
+      "content": "My Skills",
+      "animate": false
+    },
+    {
       "type": "paragraph",
-      "content": "When I'm not coding, you'll find me exploring new technologies, contributing to open source, or enjoying a good cup of coffee while reading about the latest industry trends."
+      "content": "I am a full-stack developer with hands-on experience across the entire development lifecycle, from conceptualization to deployment. I am proficient in TypeScript, React, Node.js, Python, Rust, and Tauri, with solid exposure to cloud infrastructure through AWS and Linux environments. I have practical experience in database management, IoT development, and algorithm optimization."
     },
     {
       "type": "spacer",
@@ -43,20 +53,8 @@
     {
       "type": "header",
       "level": 2,
-      "content": "My Skills"
-    },
-    {
-      "type": "paragraph",
-      "content": "TypeScript, React, Node.js, Python, and more. I believe in choosing the right tool for the job and continuously expanding my toolkit."
-    },
-    {
-      "type": "spacer",
-      "space": 60
-    },
-    {
-      "type": "header",
-      "level": 2,
-      "content": "Featured Projects"
+      "content": "Featured Projects",
+      "animate": false
     },
     {
       "type": "header",
@@ -83,7 +81,8 @@
     {
       "type": "header",
       "level": 2,
-      "content": "Let's Connect"
+      "content": "Let's Connect",
+      "animate": false
     },
     {
       "type": "paragraph",
@@ -96,7 +95,7 @@
     },
     {
       "type": "spacer",
-      "space": 100
+      "space": 120
     }
   ]
 }

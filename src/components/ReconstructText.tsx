@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 import type { AnimationSettings } from '../types/content';
+import { getHref } from '../utils/linkify';
 
 interface ReconstructTextProps {
   text: string;
@@ -8,6 +9,7 @@ interface ReconstructTextProps {
   className?: string;
   as?: 'span' | 'p' | 'h1' | 'h2' | 'h3';
   id?: string;
+  linkify?: boolean;
 }
 
 interface WordData {
@@ -23,6 +25,7 @@ export function ReconstructText({
   className = '',
   as: Component = 'span',
   id,
+  linkify = false,
 }: ReconstructTextProps) {
   const { ref, isVisible } = useIntersectionObserver({
     threshold: settings.threshold,
@@ -63,6 +66,21 @@ export function ReconstructText({
         const currentIndex = wordIndex++;
         const delay = currentIndex * settings.staggerDelay;
 
+        // Check if word is a link/email
+        const href = linkify ? getHref(wordData.word) : null;
+        const content = href ? (
+          <a 
+            href={href} 
+            className="underline hover:text-stone-900 transition-colors"
+            target={href.startsWith('mailto:') ? undefined : '_blank'}
+            rel={href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+          >
+            {wordData.word}
+          </a>
+        ) : (
+          wordData.word
+        );
+
         return (
           <span
             key={i}
@@ -75,7 +93,7 @@ export function ReconstructText({
               transition: `transform ${settings.duration}ms ${settings.easing} ${delay}ms, opacity ${settings.duration}ms ${settings.easing} ${delay}ms`,
             }}
           >
-            {wordData.word}
+            {content}
           </span>
         );
       })}

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import type { ContentData, HeaderBlock } from '../types/content';
+import type { ContentData, HeaderBlock, ParagraphBlock } from '../types/content';
 import { slugify } from '../utils/slugify';
 
 interface NavigationProps {
@@ -15,7 +15,36 @@ interface NavItem {
 export function Navigation({ data }: NavigationProps) {
   const [activeId, setActiveId] = useState<string>('');
   const [isOpen, setIsOpen] = useState(false);
+  const [isReady, setIsReady] = useState(false);
   const lastScrollY = useRef(0);
+
+  // Calculate delay based on first visible animated block
+  useEffect(() => {
+    const { settings, content } = data;
+    const duration = settings.duration ?? 800;
+    const staggerDelay = settings.staggerDelay ?? 40;
+
+    // Find first animated text block to estimate when animations finish
+    const firstAnimatedBlock = content.find(
+      (block): block is HeaderBlock | ParagraphBlock =>
+        (block.type === 'header' || block.type === 'paragraph') && 
+        block.animate !== false
+    );
+
+    if (firstAnimatedBlock) {
+      const wordCount = firstAnimatedBlock.content.split(/\s+/).length;
+      const totalAnimationTime = duration + (wordCount * staggerDelay);
+      
+      const timer = setTimeout(() => {
+        setIsReady(true);
+      }, totalAnimationTime + 200); // +200ms buffer
+
+      return () => clearTimeout(timer);
+    } else {
+      // No animated blocks, show immediately
+      setIsReady(true);
+    }
+  }, [data]);
 
   // Extract h2 and h3 headers from content
   const navItems: NavItem[] = data.content
@@ -76,7 +105,10 @@ export function Navigation({ data }: NavigationProps) {
   const activeItem = navItems.find((item) => item.id === activeId);
 
   return (
-    <div className="fixed top-4 left-0 right-0 z-50 flex justify-center pointer-events-none">
+    <div 
+      className="fixed top-4 left-0 right-0 z-50 flex justify-center pointer-events-none transition-opacity duration-500"
+      style={{ opacity: isReady ? 1 : 0 }}
+    >
       <nav 
         className="pointer-events-auto" 
         style={{ fontFamily: "'Merriweather', serif" }}
@@ -89,7 +121,7 @@ export function Navigation({ data }: NavigationProps) {
           bg-stone-100/95 backdrop-blur-sm 
           border border-stone-300 rounded-full
           shadow-sm hover:shadow-md
-          transition-all duration-200
+          transition-all duration-200 cursor-pointer
           ${isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}
         `}
         aria-expanded={isOpen}
@@ -127,7 +159,7 @@ export function Navigation({ data }: NavigationProps) {
         <div className="flex justify-end p-2 border-b border-stone-200">
           <button
             onClick={() => setIsOpen(false)}
-            className="p-1 text-stone-500 hover:text-stone-700 transition-colors"
+            className="p-1 text-stone-500 hover:text-stone-700 transition-colors cursor-pointer"
             aria-label="Close navigation"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -144,7 +176,7 @@ export function Navigation({ data }: NavigationProps) {
                 onClick={() => handleClick(item.id)}
                 className={`
                   w-full text-left px-3 py-2 rounded-lg
-                  transition-colors duration-150
+                  transition-colors duration-150 cursor-pointer
                   ${item.level === 3 ? 'pl-6 text-sm' : 'text-base'}
                   ${activeId === item.id 
                     ? 'bg-stone-200 text-stone-900 font-medium' 
