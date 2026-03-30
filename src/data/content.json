@@ -30,7 +30,7 @@
     },
     {
       "type": "paragraph",
-      "content": "I'm a passionate software engineer with years of experience building web applications. I love turning complex problems into elegant, user-friendly solutions."
+      "content": "I'm a passionate learner with years of experience programming and building fullstack web applications. I also love art and believe that humanity's imagination, potential, and creativity cannot be toppled without heart and soul."
     },
     {
       "type": "spacer",
@@ -78,6 +78,21 @@
       "type": "spacer",
       "space": 60
     },
+    {
+      "type": "header",
+      "level": 2,
+      "content": "Goals and Aspirations",
+      "animate": false
+    },
+    {
+      "type": "paragraph",
+      "content": "I want to reach as many people as possible with my work. To inspire and to change lives. More than ever, the world is polluted with the unnecessary, the uninspired, and the grift. I wish to create things that are meaningful. I want to make art, games, and entertainment for the soul."
+    },
+    {
+      "type": "spacer",
+      "space": 60
+    },
+    
     {
       "type": "header",
       "level": 2,
