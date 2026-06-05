@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+@theme {
+    --font-sans: "Space Grotesk", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+    --font-display: "Archivo Black", "Space Grotesk", system-ui, sans-serif;
+}
+
+html {
+    scrollbar-gutter: stable;
+}
+
+html,
+body {
+    font-family: "Space Grotesk", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #f5f5f4;
+    overflow-x: clip;
+}
+
+.font-display {
+    font-family: "Archivo Black", "Space Grotesk", system-ui, sans-serif;
+}
+
+.font-mono-label {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.page-vignette {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 20;
+    background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.12) 100%);
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+*::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.18);
+    border-radius: 9999px;
+    transition: background-color 0.2s ease;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.35);
+}
+
+*::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+.perspective-floor {
+    --floor-perspective: 400px;
+    --floor-tilt: 60deg;
+    --floor-cell: 40px;
+    --floor-bottom: -110px;
+    --floor-z: 70px;
+    --floor-scale: 1.5;
+    --floor-height: 80dvh;
+    --floor-line: rgba(0, 0, 0, 0.25);
+
+    position: absolute;
+    left: 50%;
+    bottom: var(--floor-bottom);
+    width: 300vw;
+    height: var(--floor-height);
+    transform: translateX(-50%) scale(var(--floor-scale)) perspective(var(--floor-perspective)) rotateX(var(--floor-tilt)) translateZ(var(--floor-z));
+    transform-origin: bottom center;
+    background-image:
+        linear-gradient(to right, var(--floor-line) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--floor-line) 1px, transparent 1px);
+    background-size: var(--floor-cell) var(--floor-cell);
+    background-position: center bottom;
+    -webkit-mask-image: linear-gradient(to top, black 15%, transparent 90%);
+    mask-image: linear-gradient(to top, black 15%, transparent 90%);
+    pointer-events: none;
+    z-index: 0;
+    will-change: transform;
+}
