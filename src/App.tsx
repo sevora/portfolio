@@ -1,5 +1,6 @@
 import ChromaKeyVideo from './components/ChromaKeyVideo';
 import PageScrollIndicator from './components/PageScrollIndicator';
+import SelectedWorks from './components/SelectedWorks';
 
 const INTERESTS = [
     'Electronics',
@@ -93,7 +94,9 @@ function App() {
                         </p>
                     </div>
 
-                    <div className="flex flex-col gap-4 mt-6">
+                    <SelectedWorks />
+
+                    <div className="flex flex-col gap-4 mt-4 mb-8">
                         <div className="font-mono-label select-none">Find Me At</div>
                         <div className="flex flex-wrap gap-2">
                             <a className="font-mono inline-flex items-center px-3 py-1 rounded-full border border-black/40 text-xs hover:bg-black hover:text-white transition-colors" href="https://fb.com/p.ralphlouisgopez" target="_blank" rel="noopener noreferrer">

@@ -10,11 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@fontsource/archivo-black": "^5.2.8",
-    "@fontsource/jetbrains-mono": "^5.2.8",
-    "@fontsource/merriweather": "^5.2.11",
-    "@fontsource/playfair-display": "^5.2.8",
-    "@fontsource/space-grotesk": "^5.2.10",
+    "@fontsource-variable/familjen-grotesk": "^5.2.8",
+    "@fontsource-variable/martian-mono": "^5.2.7",
+    "@fontsource/schibsted-grotesk": "^5.2.8",
     "@tailwindcss/vite": "^4.2.2",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",

@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-    --font-sans: "Space Grotesk", system-ui, sans-serif;
-    --font-mono: "JetBrains Mono", ui-monospace, monospace;
-    --font-display: "Archivo Black", "Space Grotesk", system-ui, sans-serif;
+    --font-sans: "Familjen Grotesk Variable", system-ui, sans-serif;
+    --font-mono: "Martian Mono Variable", ui-monospace, monospace;
+    --font-display: "Schibsted Grotesk", "Familjen Grotesk Variable", system-ui, sans-serif;
 }
 
 html {
@@ -12,7 +12,7 @@ html {
 
 html,
 body {
-    font-family: "Space Grotesk", system-ui, sans-serif;
+    font-family: "Familjen Grotesk Variable", system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: #f5f5f4;
@@ -20,11 +20,12 @@ body {
 }
 
 .font-display {
-    font-family: "Archivo Black", "Space Grotesk", system-ui, sans-serif;
+    font-family: "Schibsted Grotesk", "Familjen Grotesk Variable", system-ui, sans-serif;
+    font-weight: 900;
 }
 
 .font-mono-label {
-    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-family: "Martian Mono Variable", ui-monospace, monospace;
     font-size: 12px;
     letter-spacing: 0.12em;
     font-weight: 500;
