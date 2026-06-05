@@ -1,0 +1,26 @@
+{
+  "name": "Ralph Louis Gopez",
+  "short_name": "RLG",
+  "description": "I explore programming, robotics, electronics, and the mysteries of science while reflecting on technology, AI, society, and the pursuit of meaningful creation beyond profit and prestige.",
+  "start_url": "/",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#f5f5f4",
+  "background_color": "#f5f5f4",
+  "display": "standalone",
+  "orientation": "portrait",
+  "lang": "en-US"
+}
