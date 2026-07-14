@@ -10,9 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@fontsource-variable/familjen-grotesk": "^5.2.8",
-    "@fontsource-variable/martian-mono": "^5.2.7",
-    "@fontsource/schibsted-grotesk": "^5.2.8",
+    "@fontsource-variable/newsreader": "^5.2.10",
+    "@fontsource-variable/nunito-sans": "^5.2.7",
     "@tailwindcss/vite": "^4.2.2",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",

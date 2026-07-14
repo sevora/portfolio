@@ -1,9 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-    --font-sans: "Familjen Grotesk Variable", system-ui, sans-serif;
-    --font-mono: "Martian Mono Variable", ui-monospace, monospace;
-    --font-display: "Schibsted Grotesk", "Familjen Grotesk Variable", system-ui, sans-serif;
+    --font-sans: "Nunito Sans Variable", system-ui, sans-serif;
+    --font-display: "Newsreader Variable", ui-serif, Georgia, serif;
 }
 
 html {
@@ -12,7 +11,7 @@ html {
 
 html,
 body {
-    font-family: "Familjen Grotesk Variable", system-ui, sans-serif;
+    font-family: "Nunito Sans Variable", system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: #f5f5f4;
@@ -20,15 +19,15 @@ body {
 }
 
 .font-display {
-    font-family: "Schibsted Grotesk", "Familjen Grotesk Variable", system-ui, sans-serif;
-    font-weight: 900;
+    font-family: "Newsreader Variable", ui-serif, Georgia, serif;
+    font-weight: 500;
 }
 
 .font-mono-label {
-    font-family: "Martian Mono Variable", ui-monospace, monospace;
+    font-family: "Nunito Sans Variable", system-ui, sans-serif;
     font-size: 12px;
-    letter-spacing: 0.12em;
-    font-weight: 500;
+    letter-spacing: 0.18em;
+    font-weight: 600;
     text-transform: uppercase;
     color: rgba(0, 0, 0, 0.7);
 }
