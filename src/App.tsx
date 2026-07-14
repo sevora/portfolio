@@ -32,7 +32,7 @@ function App() {
             <div className="px-8 py-4 md:w-1/2 xl:w-1/3 mx-auto flex flex-col relative pb-40 min-h-[100dvh]">
                 <ChromaKeyVideo className="absolute top-0 left-1/2 transform -translate-x-1/2 pointer-events-none z-10" src="/videos/drone.mp4" keyColor="#cdcbcd" threshold={50} smoothness={40} width={350} spillSuppression={1} edgeInset={3} />
         
-                <div className="w-full mt-4 mb-2 flex items-center justify-center">
+                <div className="w-full mt-16 md:mt-4 mb-2 flex items-center justify-center">
                     <h1 className="font-display text-8xl md:text-9xl tracking-tighter select-none leading-none">
                         RALPH
                     </h1>
