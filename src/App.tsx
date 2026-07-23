@@ -6,6 +6,11 @@ const INTERESTS = [
     'Electronics',
     'Programming',
     'Robotics',
+    'Sound Design',
+    '3D Printing',
+    'Lineart',
+    'Mathematics',
+    'Physics',
     'Quantum Mechanics',
     'Antimatter',
     'Time Travel',
@@ -39,47 +44,44 @@ function App() {
                 </div>
 
                 <div className="w-full flex items-center justify-between font-mono-label select-none">
-                    <span>Curiosity / Wonder</span>
+                    <span>Growth / Wonder</span>
                     <span>EST. 2026</span>
                 </div>
 
                 <div className="flex flex-col gap-4 text-sm md:text-base mt-8 md:mt-12">
                     <div className="flex flex-col gap-4 select-none">
                         <p className="leading-relaxed">
-                            I find a lot of things fascinating: electronics, programming, robotics,
-                            quantum mechanics, antimatter, and even time travel.
+                            I am interested in a lot of things: electronics, programming, robotics, sound design, 
+                            3D printing, lineart, mathematics, physics, quantum mechanics, antimatter, and even time travel.
                         </p>
                         <p className="leading-relaxed font-bold">
-                            Of which I have no real budget to explore but I try.
+                            So I learn and take action on my own. I'd rather do things than ONLY admire thinking doing so.
                         </p>
                     </div>
                     
                     <div className="flex flex-col gap-4 select-none">
                         <p className="leading-relaxed">
-                            The world is amazing at scale. Unfortunately, our society has lost sight
-                            of what matters. We are stuck in a vicious world of our making infested
-                            by greed, grift, and bastardization. More than ever we praise lack of
-                            integrity, discipline, and humanity.
+                            The world is vast. I find that I want to explore, understand, and know everything. 
+                            I am in the endless pursuit of growth and wonder so that I may be better each
+                            and every passing day.
                         </p>
                         <p className="leading-relaxed">
-                            I dream of freedom. To have everything imaginable under the sun. Yet I
-                            will never surrender my heart and soul. I will never lose sight of
-                            myself. I know exactly what I want.
+                            As I dream of growth, I also dream of freedom. Even if I want to have everything imaginable under the sun, I know that I will never 
+                            surrender my heart and soul. I will never lose sight of myself. I know exactly what I want.
                         </p>
                         <p className="leading-relaxed font-bold">
-                            I will never just be a cog in a machine.
+                            I will never stop.
                         </p>
                         <p className="leading-relaxed">
-                            I want to focus on creating something meaningful and impactful even if
-                            it doesn't come with prestige or the biggest bag of money. Heart and
-                            soul. Curiosity. Wonder in wander.
+                            I want to create meaning and impact even if it doesn't come with prestige or the biggest bag of 
+                            money. I love the heart and soul. Curiosity. Wonder in wander. Greatness in growth.
                         </p>
                     </div>
 
                     <div className=" border-t border-b border-black/20 py-6 mt-3 select-none">
                         <div className="font-mono-label mb-3">Ultimately I Seek,</div>
                         <p className="font-display text-2xl md:text-3xl leading-tight tracking-tight">
-                            That which cannot be made artificial.
+                            That which is relentless.
                         </p>
                     </div>
 
