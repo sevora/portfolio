@@ -69,6 +69,7 @@ const SUGGESTIONS = [
     'cat interests.txt',
     'ls projects/',
     'cat contact.txt',
+    'clear',
 ];
 
 const PROMPT = 'ralph@site:~$ ';
@@ -136,7 +137,7 @@ function Terminal() {
     }, [isDesktop, history.length]);
 
     return (
-        <div className="font-mono text-term-fg text-base md:text-md leading-relaxed">
+        <div className="font-mono text-term-fg text-xs md:text-base leading-relaxed">
             <div className="whitespace-pre-wrap" onClick={() => isDesktop && inputRef.current?.focus()}>
                 <Banner />
                 {
@@ -172,10 +173,17 @@ function Terminal() {
                 <div ref={bottomRef} />
             </div>
 
-            <div className="mt-6 flex flex-wrap gap-x-4 gap-y-1">
-                {SUGGESTIONS.map((suggestion) => (
-                    <button key={suggestion} type="button" onClick={() => execute(suggestion)} className="text-term-dim hover:text-term-accent cursor-pointer text-left">{suggestion}</button>
-                ))}
+            <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1">
+                {
+                    SUGGESTIONS.map(
+                        (suggestion) => {
+                            if (suggestion === 'clear' && history.length === 0) {
+                                return null;
+                            }
+                            return <button key={suggestion} type="button" onClick={() => execute(suggestion)} className="text-term-dim hover:text-term-accent cursor-pointer text-left">{suggestion}</button>
+                        }
+                    )
+                }
             </div>
         </div>
     );
@@ -205,7 +213,15 @@ function renderOutput(rawCommand: string): ReactNode {
     }
 
     if (command === 'cat interests.txt') {
-        return <>{INTERESTS.map((name) => <div key={name}>{name}</div>)}</>;
+        return (
+            <>
+                {
+                    INTERESTS.map(
+                        (name) => <div key={name}>{name}</div>
+                    )
+                }
+            </>
+            );
     }
 
     if (command === 'ls projects' || command === 'ls projects/') {
