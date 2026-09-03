@@ -93,7 +93,7 @@ function Banner() {
 
     return (
         <div className="mb-6 text-term-dim">
-            {art && <pre className="text-term-accent mb-4 whitespace-pre leading-normal text-xs">{art}</pre>}
+            {art && <pre className="text-term-accent whitespace-pre leading-normal text-[7px] md:text-xs mb-2">{art}</pre>}
             <div>Welcome to <span className="text-term-fg">ralphlouisgopez.com</span> [portfolio 2026]</div>
             <div className="mt-2"> * Source:  <a href="https://github.com/sevora" target="_blank" rel="noopener noreferrer" className="text-term-accent underline underline-offset-4 decoration-term-accent/40 hover:decoration-term-accent">github.com/sevora</a></div>
             <div> * Type <span className="text-term-fg">help</span> for available commands.</div>
